@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto:400");
+body{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    background-color: rgb(52, 47, 47);
+}
+html, body{
+    height: 100%;
+}
+div{
+    width: 100%;
+    color: #06aaa1;
+    background-color: #00000b;
+}
+.calculadora{
+    border: 1px solid #03A9F4;
+    padding: 12px;
+    width: 309px;
+    margin: 0 auto;
+    animation: reverse 3s 1;
+    box-shadow: 0 0 15px #00000b;
+}
+input{
+    font-family:'Roboto', sans-serif;
+}button{
+    background-color: #e7e7e7;
+    border: 1px solid #8b8b8b;
+    width: 70px;
+    height: 70px;
+    margin: 0 4px 5px 0;
+    font-size: 40pt;
+    outline: none;
+    transition: all 500ms ease;
+    border-radius: 55px;
+}
+button:hover{
+    background-color: #dbc8c8;
+}
+button:active{
+    background-color: #78c5e8;
+}
+input[type="text"]{
+    width: 284px;
+    padding: 8px;
+    font-size: 19pt;
+    outline: none;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 2px #afa9a9;
+    transition: all 500ms ease;
+}
+.igual{
+    width: 150%;
+}
+.ultimo{
+    text-align: center;
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,12 @@
+*{
+    display: flexbox;
+    align-items: center;
+    text-align: center;
+}
+body{
+    background-color: #232328;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.contenedor{
+    color: wheat;
+}
