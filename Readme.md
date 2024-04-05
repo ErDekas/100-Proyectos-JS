@@ -11,7 +11,7 @@
 - **Lista de Tareas** ✅
 - **Galería de Imágenes** ✅
 - **Selector de Color RGB** ✅
-- **Generador de Contraseñas**
+- **Generador de Contraseñas** ✅
 - **Convertidor de Monedas**
 - **Buscador de Películas** (usando una API)
 - **Carrusel de Imágenes**
