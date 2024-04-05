@@ -2,6 +2,7 @@ const rojo = document.getElementById('rojo');
 const verde = document.getElementById('verde');
 const azul = document.getElementById('azul');
 const root = document.documentElement.style;
+const copiar = document.getElementById('copiar');
 
 const cambiarRojo = e => root.setProperty('--red', e.target.value);
 rojo.addEventListener('change' , e => cambiarRojo(e));
@@ -14,3 +15,7 @@ verde.addEventListener('mousemove' , e => cambiarVerde(e));
 const cambiarAzul = e => root.setProperty('--blue', e.target.value);
 azul.addEventListener('change' , e => cambiarAzul(e));
 azul.addEventListener('mousemove' , e => cambiarAzul(e));
+
+const copiarColor = copiar.addEventListener('click', () => {
+    navigator.clipboard.writeText(`rgb(${rojo.value},${verde.value},${azul.value})`);
+})

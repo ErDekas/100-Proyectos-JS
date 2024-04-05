@@ -35,3 +35,13 @@ input{
     display: block;
     width: 40vw;
 }
+.botonCopiar{
+    display: grid;
+    margin: auto;
+    padding: inherit;
+    border-radius: inherit;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    color: rgb(var(--red), var(--green), var(--blue));
+    filter: invert(100%);
+}
