@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de contraseñas</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1 class="center titulo">Generador de contraseñas</h1>
     <p class="center">Cree contraseñas seguras para sus cuentas</p>
     <nav><input type="checkbox" id="letras" checked>Letras(Aa)</input>    <input type="checkbox" id="numeros" checked>Numeros(123)</input>   <input type="checkbox" id="simbolos" checked>Simbolos(!@#$%&*)</input></nav>
-    Longitud <input type="range" min="4" max="50" value="12" class="slider" id="slider">
     <br>
-    <input type="text" name="contrasena" id="contrasena" value="AsxuAzxbbGHv"><button onclick="copyToClipBoard()">Copiar</button>
+    Longitud <input type="range" min="4" max="50" value="12" class="slider" id="slider" oninput="this.nextElementSibling.value = this.value" onchange="this.nextElementSibling.value = this.value">
+    <output>12</output>
     <br>
+    <div class="contenedor">
+        <input type="text" name="contrasena" id="contrasena" value="AsxuAzxbbGHv">
+        <button onclick="copyToClipBoard()" id="copiar">Copiar</button>
+    </div>    
     <button type="button" id="regenerarContrasena" class="boton" onclick="regenerarContrasena()">↻</button>
+
     <script src="index.js"></script>
 </body>
 </html>

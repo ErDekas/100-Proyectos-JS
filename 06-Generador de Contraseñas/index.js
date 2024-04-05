@@ -3,51 +3,42 @@
  *
  */
 function copyToClipBoard(){
-    let content = document.getElementById('contrasena');
+    let copyText = document.getElementById("contrasena");
 
-    content.select();
-    document.execCommand('copy');
+    // Select the text field
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+  
+     // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
 }
-let letras =['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-let numeros = ['1','2','3','4','5','6','7','8','9','0'];
-let simbolos = ['~','`','!','@','#','$','%','^','&','*','(',')','-','_','+','=','{','[','}',']','|',':',';','"','<','>','?','/','\\'];
-let contrasena = [];
 /**
- * Generates a password based on the selected options.
+ * Generates a new random password based on user-selected options and updates the password input field.
  *
- * @return {undefined}
+ * @param {none}
+ * @return {void}
  */
-function generarContrasena(){
-    let contrasena = document.getElementById('contrasena');
-    let letras = document.getElementById('letras').checked;
-    let simbolos = document.getElementById('simbolos').checked;
-    let numeros = document.getElementById('numeros').checked;
-    let longitud = document.getElementById('longitud').value;
+function regenerarContrasena() {
+    // Obtener las opciones seleccionadas por el usuario
+    let usarLetras = document.getElementById("letras").checked;
+    let usarNumeros = document.getElementById("numeros").checked;
+    let usarSimbolos = document.getElementById("simbolos").checked;
+    let longitud = document.getElementById("slider").value;
 
-    recorrerArrays(letras, simbolos, numeros);
-    }
-    
-console.log(letras.length);
-console.log(numeros.length);
-console.log(simbolos.length);
-let suma = letras.length+numeros.length+simbolos.length;
-console.log(suma);
+    // Definir los caracteres disponibles según las opciones seleccionadas
+    let caracteres = '';
+    if (usarLetras) caracteres += 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    if (usarNumeros) caracteres += '0123456789';
+    if (usarSimbolos) caracteres += '!@#$%&*()_+{}|[];\',./<>?:';
 
-function recorrerArrays(letras, simbolos, numeros) {
-    if (letras == checked) {
-        letras.forEach(function (element, indice, _array) {
-            console.log(element, indice);
-        });
+    // Generar una nueva contraseña aleatoria
+    let nuevaContrasena = '';
+    for (let i = 0; i < longitud; i++) {
+        nuevaContrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
 
-    }
-    if (simbolos == checked) {
-        simbolos.forEach(function (element, indice, _array) {
-            console.log(element, indice);
-        });
-    }
-    if (numeros == checked) {
-        simbolos.forEach(function (element, indice, _array) {
-            console.log(element, indice);
-        });
-    }
+    // Actualizar el valor del campo de entrada de texto con la nueva contraseña
+    document.getElementById("contrasena").value = nuevaContrasena;
 }
+
+
