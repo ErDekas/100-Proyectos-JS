@@ -30,3 +30,9 @@ let intervalID;
 function startInterval(){
     intervalID = setInterval(nextOpinion, 3000);
 }
+
+function stopInterval(){
+    clearInterval(intervalID);
+}
+
+startInterval();

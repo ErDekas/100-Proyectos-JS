@@ -44,3 +44,8 @@ body{
     align-self: flex-end;
     margin: 50px;
 }
+.carrusel {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+}
