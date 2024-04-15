@@ -1,0 +1,160 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .question {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .answers label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  #submit,
+  #restart {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  #submit:hover,
+  #restart:hover {
+    background-color: #45a049;
+  }
+  
+  #results {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  /* Estilos de las respuestas */
+  .answers input[type="radio"] {
+    display: none;
+  }
+  
+  .answers label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+  }
+  
+  .answers label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #333;
+    border-radius: 50%;
+  }
+  
+  .answers label:hover:before {
+    border-color: #4CAF50;
+  }
+  
+  .answers input[type="radio"]:checked + label:before {
+    background-color:blue;
+    border-color: blue;
+  }
+  
+  .answers input[type="radio"]:checked + label:after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #fff;
+  }
+  
+  /* Estilos para el mensaje de felicitaciones */
+  #results {
+    text-align: center;
+    font-size: 18px;
+    color: #4CAF50;
+    font-weight: bold;
+  }
+  
+  #hidden-link {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Estilos adicionales para hacer el juego más entretenido */
+  .container {
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .question {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .answers label {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  #submit,
+  #restart {
+    width: 200px;
+    font-size: 18px;
+  }
+  
+  #submit {
+    background-color: #4CAF50;
+  }
+  
+  #restart {
+    background-color: #f44336;
+  }
+  
+  #submit:hover,
+  #restart:hover {
+    background-color: #45a049;
+  }
+  
+  #results {
+    font-size: 24px;
+    color: #4CAF50;
+  }
+  
+  #hidden-link {
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  #hidden-link:hover {
+    color: #4CAF50;
+  }
+  
