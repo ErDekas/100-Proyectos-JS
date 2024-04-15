@@ -30,13 +30,18 @@ function prevImagen(){
 let intervalID;
 
 function startInterval(){
+<<<<<<< HEAD
     intervalID = setInterval(nextImagen, 3000);
+=======
+    intervalID = setInterval(nextOpinion, 3000);
+>>>>>>> refs/remotes/origin/main
 }
 
 function stopInterval(){
     clearInterval(intervalID);
 }
 
+<<<<<<< HEAD
 document.getElementById('retroceso').addEventListener('mouseenter', stopInterval);
 document.getElementById('adelante').addEventListener('mouseenter', stopInterval);
 
@@ -47,4 +52,6 @@ document.getElementById('imagenContainer').addEventListener('mouseenter', stopIn
 document.getElementById('imagenContainer').addEventListener('mouseleave', startInterval);
 
 displayImagenContainer();
+=======
+>>>>>>> refs/remotes/origin/main
 startInterval();
