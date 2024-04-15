@@ -1,0 +1,25 @@
+:root{
+    --color-fondo: rgb(42, 43, 44);
+    --color-texto: rgb(221, 219, 219);
+}
+
+body{
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+}
+
+textarea{
+    width: 100%;
+    height: 100px;
+    font-size: 1.5em;
+    font-family: 'Courier New', Courier, monospace;
+    resize: none;
+}
+
+button{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5em;
+    text-align: justify;
+    display: flex;
+    align-items: center;
+}

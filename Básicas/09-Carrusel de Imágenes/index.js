@@ -1,32 +1,50 @@
 let imagenes = [
-    { imagen: "img1.jpg"},
-    { imagen: "img2.jpg"},
-    { imagen: "img3.jpg"},
-    { imagen: "img4.jpg"},
-    { imagen: "img5.jpg"}
+    { imagen: "img/img1.jpg"},
+    { imagen: "img/img2.jpg"},
+    { imagen: "img/img3.jpg"},
+    { imagen: "img/img4.jpg"},
+    { imagen: "img/img5.jpg"}
 ]
 
-const carrusel = document.getElementById('carrusel');
+const body = document.body;
+
+const imagenContainer = document.getElementById('imagenContainer');
 
 let currentIndex = 0;
 
-function displayCurrentOpinion(){
-    const currentOpinion = imagenes[currentIndex];
-    carrusel.innerHTML = `<img src="${currentOpinion.imagen}" alt="Imagen ${currentIndex + 1}">`;
+function displayImagenContainer(){
+    const currentImagen = imagenes[currentIndex];
+    imagenContainer.innerHTML = `<img src="${currentImagen.imagen}">`;
 }
 
-function nextOpinion(){
+function nextImagen(){
     currentIndex = (currentIndex + 1) % imagenes.length;
-    displayCurrentOpinion();
+    displayImagenContainer();
 }
 
-function prevOpinon(){
+function prevImagen(){
     currentIndex = (currentIndex - 1 + imagenes.length) % imagenes.length;
-    displayCurrentOpinion();
+    displayImagenContainer();
 }
 
 let intervalID;
 
 function startInterval(){
-    intervalID = setInterval(nextOpinion, 3000);
+    intervalID = setInterval(nextImagen, 3000);
 }
+
+function stopInterval(){
+    clearInterval(intervalID);
+}
+
+document.getElementById('retroceso').addEventListener('mouseenter', stopInterval);
+document.getElementById('adelante').addEventListener('mouseenter', stopInterval);
+
+document.getElementById('retroceso').addEventListener('mouseleave', startInterval);
+document.getElementById('adelante').addEventListener('mouseleave', startInterval);
+
+document.getElementById('imagenContainer').addEventListener('mouseenter', stopInterval);
+document.getElementById('imagenContainer').addEventListener('mouseleave', startInterval);
+
+displayImagenContainer();
+startInterval();

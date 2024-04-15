@@ -1,8 +1,6 @@
 :root{
-    --color-fondo-claro: #dad4d4ea;
-    --color-texto-claro: #413e3e;
-    --color-fondo-oscuro: #413e3e;
-    --color-texto-oscuro: #dad4d4ea;
+    --color-fondo: #dad4d4ea;
+    --color-texto: #413e3e;
 }
 .container{
     display: flex;
@@ -12,8 +10,8 @@
 }
 body{    
     font-family: 'Courier New', Courier, monospace;
-    background-color: var(--color-fondo-claro);
-    color: var(--color-texto-claro);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
 }
 .flecha{
     width: 50px;
@@ -36,11 +34,10 @@ body{
     right: 5%; /* Alineación a la derecha */
 }
 #imagenContainer{
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    align-self: flex-end;
-    margin: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40%;
 }

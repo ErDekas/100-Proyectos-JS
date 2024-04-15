@@ -14,8 +14,8 @@
 - **Generador de Contraseñas** ✅
 - **Convertidor de Monedas** ✅
 - **Buscador de Películas** (usando una API) ✅
-- **Carrusel de Imágenes**
-- **Contador de Palabras en un Texto**
+- **Carrusel de Imágenes** ✅
+- **Contador de Palabras en un Texto** ✅
 - **Juego de Preguntas y Respuestas**
 - **Temporizador Pomodoro**
 - **Conversor de Unidades** (longitud, peso, temperatura)
