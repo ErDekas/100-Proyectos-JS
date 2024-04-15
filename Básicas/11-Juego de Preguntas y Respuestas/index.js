@@ -109,7 +109,7 @@ const myQuestions = [
     b: "La PLAY 5",
     c: "La PLAY 2"
   },
-  correctAnswer: "b"
+  correctAnswer: "c"
 },
   
   
