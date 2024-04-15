@@ -1,0 +1,18 @@
+:root{
+    --color-fondo: rgb(211, 224, 237);
+    --color-letra-pomodoro: rgb(45, 58, 156);
+    --color-letra-descanso: rgb(75, 187, 95);
+}
+
+body{
+    background-color: var(--color-fondo);
+    color: var(--color-letra-pomodoro);
+}
+
+button{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5em;
+    text-align: justify;
+    display: grid;
+    align-items: center;
+}
