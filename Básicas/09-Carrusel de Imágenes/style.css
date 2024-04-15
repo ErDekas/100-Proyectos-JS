@@ -34,25 +34,10 @@ body{
     right: 5%; /* Alineación a la derecha */
 }
 #imagenContainer{
-<<<<<<< HEAD
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     grid-gap: 10px;
     justify-content: center;
     align-items: center;
     padding-top: 40%;
-=======
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    align-self: flex-end;
-    margin: 50px;
-}
-.carrusel {
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
->>>>>>> refs/remotes/origin/main
 }
