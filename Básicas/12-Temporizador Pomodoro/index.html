@@ -6,20 +6,19 @@
     <title>Temporizador Pomodoro</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>Temporizador Pomodoro</h1>
-    <div id="sliderDeCronometros">
-        <button class="botonCronometro" id="pomodoro">Pomodoro</button>
-        <button class="botonCronometro" id="short">Descanso</button>
-        <button class="botonCronometro" id="long">Descanso largo</button>        
-    </div>
-
-    <div id="tiempo"></div>
-
-    <button id="iniciar" class="botonModo">Iniciar</button>
-    <button id="pausar" class="botonModo">Pausar</button>
-    <button id="reiniciar" class="botonModo">Reiniciar</button>
-
+    <body class="flex-container">
+        <div id="pomodoro" class="flex-container">
+          <div id="pomodoro-progress" class="flex-container">
+            <div class="progress-cell"></div>
+            <div class="progress-cell"></div>
+            <div class="progress-cell"></div>
+            <div class="progress-cell"></div>
+          </div>
+          <div id="pomodoro-timer">
+            <span id="pomodoro-timer-min">25</span>:<span id="pomodoro-timer-sec">00</span>
+          </div>
+          <button id="pomodoro-button">start pomodoro</button>
+        </div>
     <script src="index.js"></script>
 </body>
 </html>
