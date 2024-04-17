@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertidor de Unidades</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="titulo">Convertidor de Unidades</h1>
+    <div class="container">
+        <form action="" class="formulario">
+            <h2>Masa</h2>
+            <div class="masa" id="masa">
+                <input type="number" name="cantidad" value="1" id="cantidadMasa" class="cantidad">
+                <br>
+                <select name="masaOriginal" id="masaOriginal">
+                    <optgroup label="Métrico">
+                        <option>Toneladas (t)</option>
+                        <option>Kilonewton (kN)</option>
+                        <option>Kilogramo (kg)</option>
+                        <option>Hectogramo (hg)</option>
+                        <option>Decagramo (dag)</option>
+                        <option>Gramo (g)</option>
+                        <option>Decigramo (dg)</option>
+                        <option>Centigramo (cg)</option>
+                        <option>Miligramo (mg)</option>
+                        <option>Microgramo (ug)</option>
+                        <option>Nanogramo (ng)</option>
+                        <option>Unidad de masa atómica (u)</option>
+                    </optgroup>
+                    <optgroup label="Avoirdupois (EE.UU.)">
+                        <option>Tonelada larga</option>
+                        <option>Tonelada corta</option>
+                        <option>Quintal largo</option>
+                        <option>Quintal corto</option>
+                        <option>Piedra</option>
+                        <option>Libra (lb)</option>
+                        <option>Onza</option>
+                        <option>Dram</option>
+                        <option>Gramo (gr)</option>
+                    </optgroup>
+                </select>
+                <p><b>A:</b></p>
+                <select name="masaNueva" id="masaNueva">
+                    <optgroup label="Métrico">
+                        <option>Toneladas (t)</option>
+                        <option>Kilonewton (kN)</option>
+                        <option>Kilogramo (kg)</option>
+                        <option>Hectogramo (hg)</option>
+                        <option>Decagramo (dag)</option>
+                        <option>Gramo (g)</option>
+                        <option>Decigramo (dg)</option>
+                        <option>Centigramo (cg)</option>
+                        <option>Miligramo (mg)</option>
+                        <option>Microgramo (μg)</option>
+                        <option>Nanogramo (ng)</option>
+                        <option>Unidad de masa atómica (u)</option>
+                    </optgroup>
+                    <optgroup label="Avoirdupois (EE.UU.)">
+                        <option>Tonelada larga</option>
+                        <option>Tonelada corta</option>
+                        <option>Quintal largo</option>
+                        <option>Quintal corto</option>
+                        <option>Piedra</option>
+                        <option>Libra (lb)</option>
+                        <option>Onza</option>
+                        <option>Dram</option>
+                        <option>Gramo (gr)</option>
+                    </optgroup>
+                </select>
+                <br>
+                <div class="result" id="resultadoMasa"></div>
+            </div>
+        </form>
+        <br>
+        <form action="" class="formulario">
+            <h2>Longitud</h2>
+            <div class="longitud" id="longitud">
+                <input type="number" name="cantidad" value="1" id="cantidadLongitud" class="cantidad">
+                <br>
+                <select name="longitudOriginal" id="longitudOriginal">
+                    <optgroup label="Métrico">
+                        <option>Kilómetro (km)</option>
+                        <option>Hectómetro (hm)</option>
+                        <option>Decámetro (dam)</option>
+                        <option>Metro (m)</option>
+                        <option>Decimetro (dm)</option>
+                        <option>Centimetro (cm)</option>
+                        <option>Milimetro (mm)</option>
+                        <option>Micrometro (μm)</option>
+                        <option>Nanometro (nm)</option>
+                        <option>Angstron (A)</option>
+                    </optgroup>
+                    <optgroup label="Ingles">
+                        <option>Legua</option>
+                        <option>Milla (mi)</option>
+                        <option>Estadio</option>
+                        <option>Cadena</option>
+                        <option>Barra (rd)</option>
+                        <option>Yarda (yd)</option>
+                        <option>Pie (ft)</option>
+                        <option>Link</option>
+                        <option>Mano</option>
+                        <option>Pulgada (in)</option>
+                        <option>Línea</option>
+                        <option>Mil (mil)</option>
+                        <option>Thou (thou)</option>
+                    </optgroup>
+                </select>
+                <p><b>A:</b></p>
+                <select name="longitudNueva" id="longitudNueva">
+                    <optgroup label="Métrico">
+                        <option>Kilómetro (km)</option>
+                        <option>Hectómetro (hm)</option>
+                        <option>Decámetro (dam)</option>
+                        <option>Metro (m)</option>
+                        <option>Decimetro (dm)</option>
+                        <option>Centimetro (cm)</option>
+                        <option>Milimetro (mm)</option>
+                        <option>Micrometro (μm)</option>
+                        <option>Nanometro (nm)</option>
+                        <option>Angstron (A)</option>
+                    </optgroup>
+                    <optgroup label="Ingles">
+                        <option>Legua</option>
+                        <option>Milla (mi)</option>
+                        <option>Estadio</option>
+                        <option>Cadena</option>
+                        <option>Barra (rd)</option>
+                        <option>Yarda (yd)</option>
+                        <option>Pie (ft)</option>
+                        <option>Link</option>
+                        <option>Mano</option>
+                        <option>Pulgada (in)</option>
+                        <option>Línea</option>
+                        <option>Mil (mil)</option>
+                        <option>Thou (thou)</option>
+                    </optgroup>
+                </select>
+                <br>
+                <div class="result" id="resultadoLongitud"></div>
+            </div>
+        </form>
+        <br>
+        <form action="" class="formulario">
+            <h2>Temperatura</h2>
+            <div class="temperatura" id="temperatura">
+                <input type="number" name="cantidad" value="1" id="cantidadTemperatura" class="cantidad">
+                <br>
+                <select name="temperaturaOriginal" id="temperaturaOriginal">
+                    
+                </select>
+                <p><b>A:</b></p>
+                <select name="temperaturaNueva" id="temperaturaNueva"></select>
+                <br>
+                <div class="result" id="resultadoTemperatura"></div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -17,7 +17,7 @@
 - **Carrusel de Imágenes** ✅
 - **Contador de Palabras en un Texto** ✅
 - **Juego de Preguntas y Respuestas** ✅
-- **Temporizador Pomodoro**
+- **Temporizador Pomodoro** ✅
 - **Conversor de Unidades** (longitud, peso, temperatura)
 - **Validador de Formulario**
 - **Simulador de Dados**
