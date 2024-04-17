@@ -17,35 +17,6 @@
                 <select name="masaOriginal" id="masaOriginal">
                     <optgroup label="Métrico">
                         <option>Toneladas (t)</option>
-                        <option>Kilonewton (kN)</option>
-                        <option>Kilogramo (kg)</option>
-                        <option>Hectogramo (hg)</option>
-                        <option>Decagramo (dag)</option>
-                        <option>Gramo (g)</option>
-                        <option>Decigramo (dg)</option>
-                        <option>Centigramo (cg)</option>
-                        <option>Miligramo (mg)</option>
-                        <option>Microgramo (ug)</option>
-                        <option>Nanogramo (ng)</option>
-                        <option>Unidad de masa atómica (u)</option>
-                    </optgroup>
-                    <optgroup label="Avoirdupois (EE.UU.)">
-                        <option>Tonelada larga</option>
-                        <option>Tonelada corta</option>
-                        <option>Quintal largo</option>
-                        <option>Quintal corto</option>
-                        <option>Piedra</option>
-                        <option>Libra (lb)</option>
-                        <option>Onza</option>
-                        <option>Dram</option>
-                        <option>Gramo (gr)</option>
-                    </optgroup>
-                </select>
-                <p><b>A:</b></p>
-                <select name="masaNueva" id="masaNueva">
-                    <optgroup label="Métrico">
-                        <option>Toneladas (t)</option>
-                        <option>Kilonewton (kN)</option>
                         <option>Kilogramo (kg)</option>
                         <option>Hectogramo (hg)</option>
                         <option>Decagramo (dag)</option>
@@ -55,18 +26,21 @@
                         <option>Miligramo (mg)</option>
                         <option>Microgramo (μg)</option>
                         <option>Nanogramo (ng)</option>
-                        <option>Unidad de masa atómica (u)</option>
                     </optgroup>
-                    <optgroup label="Avoirdupois (EE.UU.)">
-                        <option>Tonelada larga</option>
-                        <option>Tonelada corta</option>
-                        <option>Quintal largo</option>
-                        <option>Quintal corto</option>
-                        <option>Piedra</option>
-                        <option>Libra (lb)</option>
-                        <option>Onza</option>
-                        <option>Dram</option>
-                        <option>Gramo (gr)</option>
+                </select>
+                <p><b>A:</b></p>
+                <select name="masaNueva" id="masaNueva">
+                    <optgroup label="Métrico">
+                        <option>Toneladas (t)</option>
+                        <option>Kilogramo (kg)</option>
+                        <option>Hectogramo (hg)</option>
+                        <option>Decagramo (dag)</option>
+                        <option>Gramo (g)</option>
+                        <option>Decigramo (dg)</option>
+                        <option>Centigramo (cg)</option>
+                        <option>Miligramo (mg)</option>
+                        <option>Microgramo (μg)</option>
+                        <option>Nanogramo (ng)</option>
                     </optgroup>
                 </select>
                 <br>
@@ -90,22 +64,6 @@
                         <option>Milimetro (mm)</option>
                         <option>Micrometro (μm)</option>
                         <option>Nanometro (nm)</option>
-                        <option>Angstron (A)</option>
-                    </optgroup>
-                    <optgroup label="Ingles">
-                        <option>Legua</option>
-                        <option>Milla (mi)</option>
-                        <option>Estadio</option>
-                        <option>Cadena</option>
-                        <option>Barra (rd)</option>
-                        <option>Yarda (yd)</option>
-                        <option>Pie (ft)</option>
-                        <option>Link</option>
-                        <option>Mano</option>
-                        <option>Pulgada (in)</option>
-                        <option>Línea</option>
-                        <option>Mil (mil)</option>
-                        <option>Thou (thou)</option>
                     </optgroup>
                 </select>
                 <p><b>A:</b></p>
@@ -120,22 +78,6 @@
                         <option>Milimetro (mm)</option>
                         <option>Micrometro (μm)</option>
                         <option>Nanometro (nm)</option>
-                        <option>Angstron (A)</option>
-                    </optgroup>
-                    <optgroup label="Ingles">
-                        <option>Legua</option>
-                        <option>Milla (mi)</option>
-                        <option>Estadio</option>
-                        <option>Cadena</option>
-                        <option>Barra (rd)</option>
-                        <option>Yarda (yd)</option>
-                        <option>Pie (ft)</option>
-                        <option>Link</option>
-                        <option>Mano</option>
-                        <option>Pulgada (in)</option>
-                        <option>Línea</option>
-                        <option>Mil (mil)</option>
-                        <option>Thou (thou)</option>
                     </optgroup>
                 </select>
                 <br>
@@ -149,10 +91,20 @@
                 <input type="number" name="cantidad" value="1" id="cantidadTemperatura" class="cantidad">
                 <br>
                 <select name="temperaturaOriginal" id="temperaturaOriginal">
-                    
+                    <optgroup label="Cientifíca">
+                        <option>Centígrados (°C)</option>
+                        <option>Fahrenheit (°F)</option>
+                        <option>Kelvin (K)</option>
+                    </optgroup>
                 </select>
                 <p><b>A:</b></p>
-                <select name="temperaturaNueva" id="temperaturaNueva"></select>
+                <select name="temperaturaNueva" id="temperaturaNueva">
+                    <optgroup label="Cientifíca">
+                        <option>Centígrados (°C)</option>
+                        <option>Fahrenheit (°F)</option>
+                        <option>Kelvin (K)</option>
+                    </optgroup>
+                </select>
                 <br>
                 <div class="result" id="resultadoTemperatura"></div>
             </div>
