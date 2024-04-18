@@ -112,6 +112,14 @@ button{
     cursor: pointer;
 }
 
+p{
+    text-align: center;
+    color: rgba(154, 102, 228, 0.999);
+    font-size: 14px;
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
 @media screen and (max-width: 500px){
     form{
         width: 80%;
