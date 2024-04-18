@@ -14,7 +14,7 @@
             <div class="masa" id="masa">
                 <input type="number" name="cantidad" value="1" id="cantidadMasa" class="cantidad">
                 <br>
-                <select name="masaOriginal" id="masaOriginal">
+                <select name="masaOriginal" id="masaOriginal" onchange="convertirMasa()">
                     <optgroup label="Métrico">
                         <option>Toneladas (t)</option>
                         <option>Kilogramo (kg)</option>
@@ -27,7 +27,7 @@
                     </optgroup>
                 </select>
                 <p><b>A:</b></p>
-                <select name="masaNueva" id="masaNueva">
+                <select name="masaNueva" id="masaNueva" onchange="convertirMasa()">
                     <optgroup label="Métrico">
                         <option>Toneladas (t)</option>
                         <option>Kilogramo (kg)</option>
@@ -49,7 +49,7 @@
             <div class="longitud" id="longitud">
                 <input type="number" name="cantidad" value="1" id="cantidadLongitud" class="cantidad">
                 <br>
-                <select name="longitudOriginal" id="longitudOriginal">
+                <select name="longitudOriginal" id="longitudOriginal" onchange="convertirLongitud()">
                     <optgroup label="Métrico">
                         <option>Kilómetro (km)</option>
                         <option>Hectómetro (hm)</option>
@@ -61,7 +61,7 @@
                     </optgroup>
                 </select>
                 <p><b>A:</b></p>
-                <select name="longitudNueva" id="longitudNueva">
+                <select name="longitudNueva" id="longitudNueva" onchange="convertirLongitud()">
                     <optgroup label="Métrico">
                         <option>Kilómetro (km)</option>
                         <option>Hectómetro (hm)</option>
@@ -82,7 +82,7 @@
             <div class="temperatura" id="temperatura">
                 <input type="number" name="cantidad" value="1" id="cantidadTemperatura" class="cantidad">
                 <br>
-                <select name="temperaturaOriginal" id="temperaturaOriginal">
+                <select name="temperaturaOriginal" id="temperaturaOriginal" onchange="convertirTemperatura()">
                     <optgroup label="Cientifíca">
                         <option>Centígrados (°C)</option>
                         <option>Fahrenheit (°F)</option>
@@ -90,7 +90,7 @@
                     </optgroup>
                 </select>
                 <p><b>A:</b></p>
-                <select name="temperaturaNueva" id="temperaturaNueva">
+                <select name="temperaturaNueva" id="temperaturaNueva" onchange="convertirTemperatura()">
                     <optgroup label="Cientifíca">
                         <option>Centígrados (°C)</option>
                         <option>Fahrenheit (°F)</option>
@@ -102,5 +102,6 @@
             </div>
         </form>
     </div>
+    <script src="index.js"></script>
 </body>
 </html>
