@@ -19,7 +19,7 @@
 - **Juego de Preguntas y Respuestas** ✅
 - **Temporizador Pomodoro** ✅
 - **Conversor de Unidades** (longitud, peso, temperatura) ✅
-- **Validador de Formulario**
+- **Validador de Formulario** ✅
 - **Simulador de Dados**
 - **Galería de Fotos con Filtro** (por categoría)
 - **Lista de Compras**
