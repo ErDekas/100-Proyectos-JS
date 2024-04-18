@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de formularios</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form action="" method="post" id="form">
+        <div class="form">
+            <h1>Registro</h1>
+            <div class="grupo">
+                <input type="text" name="name" id="name" required><span class="barra"></span></input>
+                <label for="">Nombre</label>
+            </div>
+            <div class="grupo">
+                <input type="email" name="email" id="email" required><span class="barra"></span></input>
+                <label for="">Email</label>
+            </div>
+            <div class="grupo">
+                <input type="password" name="password" id="password" required><span class="barra"></span></input>
+                <label for="">Password</label>
+            </div>
+            <button type="submit">Validar</button>
+            <p class="warnings" id="warnings"></p>
+        </div>
+        <script src="index.js"></script>
+    </form>
+</body>
+</html>
