@@ -4,27 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Dados</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
     <h1>Simulador de dados</h1>
-
+    <div class="button">
+        <button id="boton" class="rollButton">Tira los dados</button>
+    </div>
     <div class="container">
-        <div class="dice">
-            <nav>
-                <optgroup label="Dados">
-                    <option value="1">1 dado</option>
-                    <option value="2">2 dados</option>
-                    <option value="3">3 dados</option>
-                    <option value="4">4 dados</option>
-                </optgroup>
-                <optgroup>
-                    <option value="3">3 caras</option>
-                    <option value="6">6 caras</option>
-                    <option value="18">18 caras</option>
-                    <option value="22">22 caras</option>
-                </optgroup>
-            </nav>
+        <div class="dice" id="dice">
+            <div class="punto p1"></div>
+            <div class="punto p2"></div>
+            <div class="punto p3"></div>
+            <div class="punto p4"></div>
+            <div class="punto p5"></div>
+            <div class="punto p6"></div>
+            <div class="punto p7"></div>
+            <div class="punto p8"></div>
+            <div class="punto p9"></div>
         </div>
     </div>
+    <script src="index.js"></script>
 </body>
 </html>
