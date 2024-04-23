@@ -20,7 +20,7 @@
 - **Temporizador Pomodoro** ✅
 - **Conversor de Unidades** (longitud, peso, temperatura) ✅
 - **Validador de Formulario** ✅
-- **Simulador de Dados**
+- **Simulador de Dados** ✅
 - **Galería de Fotos con Filtro** (por categoría)
 - **Lista de Compras**
 - **Generador de Tarjetas de Visita**
