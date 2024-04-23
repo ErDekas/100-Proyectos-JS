@@ -22,8 +22,6 @@ html {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     margin: 1em;
-    /* animation: rollDice 2s; /* Apply the animation to the dice */
-    /* transform-style: preserve-3d; Enable 3D transformations */
   }
   
   .punto {
