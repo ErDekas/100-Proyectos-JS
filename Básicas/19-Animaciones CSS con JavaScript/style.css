@@ -1,0 +1,39 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    background-color: #ddf0ea;
+    overflow: hidden;
+}
+
+.tree {
+    position: relative;
+    width: 200px;
+    height: 400px;
+    transform-origin: bottom center;
+}
+
+.trunk {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 200px;
+    background-color: #8b572a;
+    border-radius: 20px 20px 0 0;
+}
+
+.leaves {
+    position: absolute;
+    bottom: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    background-color: #4f8a4f;
+    border-radius: 50%;
+}

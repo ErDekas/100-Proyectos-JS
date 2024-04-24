@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Tarjetas de Visita</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="welcome-screen">
+        <h1>Bienvenido al Generador de Tarjetas de Visita</h1>
+        <button id="generateButton">Generar Tarjeta de Visita</button>
+    </div>
+
+    <div class="card-form hidden">
+        <h2>Completa los datos:</h2>
+        <form id="cardForm">
+            <div>
+                <label for="nameInput">Nombre:</label>
+                <input type="text" id="nameInput" required>
+            </div>
+            <div>
+                <label for="textInput">Texto:</label>
+                <textarea id="textInput" required></textarea>
+            </div>
+            <button type="submit">Generar Tarjeta</button>
+        </form>
+    </div>
+
+    <div class="card-container hidden">
+        <div class="card">
+            <h2 id="cardName"></h2>
+            <p id="cardText"></p>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

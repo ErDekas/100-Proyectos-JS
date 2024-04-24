@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.hidden {
+    display: none;
+}
+
+.welcome-screen {
+    text-align: center;
+}
+
+.card-form {
+    text-align: center;
+}
+
+.card-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.card {
+    border: 2px solid #000;
+    padding: 20px;
+    max-width: 400px;
+}
