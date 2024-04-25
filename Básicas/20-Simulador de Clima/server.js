@@ -1,4 +1,4 @@
-import express from 'express';
+const express = require('express');
 const app = express();
 
 // Endpoint para obtener datos meteorológicos aleatorios
