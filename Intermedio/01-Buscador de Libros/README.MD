@@ -1,0 +1,1 @@
+![Preview del buscador](./Imagen/Buscador.png)
