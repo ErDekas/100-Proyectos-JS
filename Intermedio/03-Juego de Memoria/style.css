@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .memory-card {
+    width: 100px;
+    height: 100px;
+    background-color: #ccc;
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .hidden {
+    background-color: #999;
+    color: #999;
+  }
+  
