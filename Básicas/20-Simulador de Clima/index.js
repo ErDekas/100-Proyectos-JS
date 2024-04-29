@@ -1,37 +1,54 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const searchButton = document.getElementById('searchButton');
-    const weatherData = document.getElementById('weatherData');
+const apiKey = "103d59d7b55108d58cb02d9d7ef8ff8c";
 
-    searchButton.addEventListener('click', function() {
-        const location = searchInput.value.trim();
-        if (location !== '') {
-            getWeatherData(location);
+const main = document.getElementById('main');
+const form = document.getElementById('form');
+const search = document.getElementById('search');
+  
+const url = (city)=> `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+
+
+async function getWeatherByLocation(city){
+     
+         const resp = await fetch(url(city), {
+             origin: "cros" });
+         const respData = await resp.json();
+     
+           addWeatherToPage(respData);
+          
+     }
+
+      function addWeatherToPage(data){
+          const temp = Ktoc(data.main.temp);
+
+          const weather = document.createElement('div')
+          weather.classList.add('weather');
+
+          weather.innerHTML = `
+          <h2><img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" /> ${temp}°C <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" /></h2>
+          <small>${data.weather[0].main}</small>
+          
+          `;
+
+
+        //   cleanup 
+          main.innerHTML= "";
+           main.appendChild(weather);
+      };
+
+
+     function Ktoc(K){
+         return Math.floor(K - 273.15);
+     }
+
+
+
+     form.addEventListener('submit',(e) =>{
+        e.preventDefault();
+
+        const city = search.value;
+
+        if(city){
+            getWeatherByLocation(city)
         }
-    });
 
-    async function getWeatherData(location) {
-        try {
-            const response = await fetch(`http://localhost:3000/weather?location=${location}`);
-            const data = await response.json();
-
-            displayWeatherData(data);
-        } catch (error) {
-            console.error('Error al obtener datos meteorológicos:', error);
-            weatherData.innerHTML = 'Error al obtener datos meteorológicos';
-            weatherData.classList.remove('hidden');
-        }
-    }
-
-    function displayWeatherData(data) {
-        const temperature = data.temperature;
-        const description = data.weather;
-
-        weatherData.innerHTML = `
-            <h2>${searchInput.value}</h2>
-            <p>Temperatura: ${temperature} °C</p>
-            <p>Clima: ${description}</p>
-        `;
-        weatherData.classList.remove('hidden');
-    }
-});
+     });

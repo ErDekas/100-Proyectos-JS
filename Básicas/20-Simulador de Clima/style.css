@@ -1,47 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap");
+* {
+    box-sizing: border-box;
+}
 body {
     margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    font-family: "Poppins", sans-serif;
+    background-color: linear-gradiet(300deg, #757b87, #909d9d);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
 }
-
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    text-align: center;
-}
-
-h1 {
-    margin-bottom: 20px;
-}
-
-.search {
-    margin-bottom: 20px;
-}
-
-.search input {
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-}
-
-.search button {
-    padding: 8px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: 1px solid #4CAF50;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-}
-
-#weatherData {
+input {
+    padding: 1rem;
+    border-radius: 25px;
+    border: none;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
+    font-family: inherit;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    min-width: 300px;
+    font-size: 1rem;
 }
-
-.hidden {
-    display: none;
+input:focus {
+    outline: none;
 }
+.weather {
+    text-align: center;
+    font-size: 2rem;
+}
+.weather h2 {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+} /* .weather img{ transform: scale(2); } */
