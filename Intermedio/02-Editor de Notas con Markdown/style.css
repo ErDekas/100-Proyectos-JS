@@ -1,0 +1,22 @@
+:root{
+    --color-fondo-editor: #434963ea;
+    --color-texto-editor: #dad4d4ea;
+    --color-fondo-preview: #ffffffea;
+    --color-texto-preview: rgb(63, 60, 60);
+}
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background-size: cover;
+    height: 97.9vh;
+}
+.editor{ 
+    background: var(--color-fondo-editor);
+    text-align: justify;
+    color: var(--color-texto-editor);
+}
+.preview{
+    background: var(--color-fondo-preview);
+    text-align: justify;
+    color: var(--color-texto-preview);
+}
