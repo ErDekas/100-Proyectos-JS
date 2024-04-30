@@ -31,8 +31,8 @@
 
 ## **Nivel Intermedio**
 
-- **Buscador de Libros** (usando una API)
-- **Editor de Notas con Markdown**
+- **Buscador de Libros** (usando una API) ✅
+- **Editor de Notas con Markdown** ✅
 - **Juego de Memoria** (con cartas)
 - **Editor de Código Simple**
 - **Tablero de Ajedrez Interactivo**
