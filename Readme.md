@@ -33,7 +33,7 @@
 
 - **Buscador de Libros** (usando una API) ✅
 - **Editor de Notas con Markdown** ✅
-- **Juego de Memoria** (con cartas)
+- **Juego de Memoria** (con cartas) ✅
 - **Editor de Código Simple**
 - **Tablero de Ajedrez Interactivo**
 - **Generador de Gráficos** (usando Chart.js)
