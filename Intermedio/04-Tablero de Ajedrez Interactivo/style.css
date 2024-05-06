@@ -1,0 +1,61 @@
+body {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 100vh;
+
+    margin: 0;
+
+  }
+
+  .chessboard {
+
+    display: grid;
+
+    grid-template-columns: repeat(8, 50px);
+
+    grid-template-rows: repeat(8, 50px);
+
+  }
+
+  .square {
+
+    width: 50px;
+
+    height: 50px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 20px;
+
+    border: 1px solid #ccc;
+
+    cursor: pointer;
+
+  }
+
+  .even {
+
+    background-color: #eee;
+
+  }
+
+  .odd {
+
+    background-color: #ddd;
+
+  }
+
+  .piece {
+
+    user-select: none;
+
+  }
