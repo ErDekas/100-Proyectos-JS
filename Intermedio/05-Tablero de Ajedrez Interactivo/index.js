@@ -64,6 +64,7 @@ function isValidMoveForRook(row, col, targetRow, targetCol, piece) {
   }
 }
 // #endregion
+// #region Caballo
 function isValidMoveForKnight(row, col, targetRow, targetCol, piece) {
   // Array de posibles movimientos de caballo
   const knightMoves = [
@@ -82,6 +83,7 @@ function isValidMoveForKnight(row, col, targetRow, targetCol, piece) {
       console.log('Movimiento inválido para el caballo.');
   }
 }
+// #endregion
 //#region Alfil
 function isValidMoveForBishop(row, col, targetRow, targetCol, piece) {
   // Verificar si el movimiento es en una diagonal
