@@ -34,8 +34,8 @@
 - **Buscador de Libros** (usando una API) ✅
 - **Editor de Notas con Markdown** ✅
 - **Juego de Memoria** (con cartas) ✅
-- **Editor de Código Simple**
-- **Tablero de Ajedrez Interactivo**
+- **Editor de Código Simple** ✅
+- **Tablero de Ajedrez Interactivo** //En Pausa temporal
 - **Generador de Gráficos** (usando Chart.js)
 - **Simulador de Drawing** (lienzo para dibujar)
 - **Calculadora de Propinas**
