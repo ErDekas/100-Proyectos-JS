@@ -5,17 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Gráficos</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>Generador de Gráficos</h1>
-        <form id="formDatos">
-            <label for="datos">Introduce los valores (separados por comas):</label>
-            <input type="text" id="datos" name="datos">
-            <button type="submit">Generar Gráfico</button>
-        </form>
-        <canvas id="grafico"></canvas>
-    </div>
-    <script src="index.js"></script>
+    <form id="chartForm">
+        <label for="chartType">Selecciona el tipo de gráfico:</label>
+        <select id="chartType">
+          <option value="bar">Gráfico de Barras</option>
+          <option value="line">Gráfico de Líneas</option>
+          <option value="pie">Gráfico de Pastel</option>
+        </select>
+        <button type="submit">Generar Gráfico</button>
+        <div id="chartContainer">
+            <canvas id="myChart"></canvas>
+          </div>          
+      </form> 
+      <script src="index.js"></script>     
 </body>
 </html>
