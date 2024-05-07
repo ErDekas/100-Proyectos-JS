@@ -17,7 +17,7 @@ const pieces = [
   '♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖',
 
 ];
-
+//#region Peon
 function isValidMoveForPawn(row, col, targetRow, targetCol, piece) {
   // Determinar la dirección del movimiento dependiendo del color del peón
   const direction = (piece === '♟') ? 1 : -1;
@@ -45,8 +45,8 @@ function isValidMoveForPawn(row, col, targetRow, targetCol, piece) {
       }
   }
 }
-
-
+//#endregion
+//#region Torre
 function isValidMoveForRook(row, col, targetRow, targetCol, piece) {
   if (row === targetRow || col === targetCol) {
       const step = (row === targetRow) ? ((col < targetCol) ? 1 : -1) : ((row < targetRow) ? 8 : -8);
@@ -63,7 +63,7 @@ function isValidMoveForRook(row, col, targetRow, targetCol, piece) {
       console.log('Movimiento inválido para la torre.');
   }
 }
-
+// #endregion
 function isValidMoveForKnight(row, col, targetRow, targetCol, piece) {
   // Array de posibles movimientos de caballo
   const knightMoves = [
@@ -82,7 +82,7 @@ function isValidMoveForKnight(row, col, targetRow, targetCol, piece) {
       console.log('Movimiento inválido para el caballo.');
   }
 }
-
+//#region Alfil
 function isValidMoveForBishop(row, col, targetRow, targetCol, piece) {
   // Verificar si el movimiento es en una diagonal
   if (Math.abs(targetRow - row) === Math.abs(targetCol - col)) {
@@ -104,7 +104,8 @@ function isValidMoveForBishop(row, col, targetRow, targetCol, piece) {
       console.log('Movimiento inválido para el alfil.');
   }
 }
-
+// #endregion
+//#region Reina
 function isValidMoveForQueen(row, col, targetRow, targetCol, piece) {
   // Verificar si el movimiento es válido para una torre o un alfil
   if ((row === targetRow || col === targetCol) || (Math.abs(targetRow - row) === Math.abs(targetCol - col))) {
@@ -115,7 +116,7 @@ function isValidMoveForQueen(row, col, targetRow, targetCol, piece) {
       console.log('Movimiento inválido para la reina.');
   }
 }
-
+//#endregion
 
 // Evento de carga de DOM
 document.addEventListener('DOMContentLoaded', () => {
