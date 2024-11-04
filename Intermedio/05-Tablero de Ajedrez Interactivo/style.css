@@ -1,61 +1,74 @@
 body {
+  display: flex;
 
-    display: flex;
+  justify-content: center;
 
-    justify-content: center;
+  align-items: center;
 
-    align-items: center;
+  height: 100vh;
 
-    height: 100vh;
+  margin: 0;
+}
 
-    margin: 0;
+.chessboard {
+  display: grid;
 
-  }
+  grid-template-columns: repeat(8, 50px);
 
-  .chessboard {
+  grid-template-rows: repeat(8, 50px);
+}
 
-    display: grid;
+.square {
+  width: 50px;
 
-    grid-template-columns: repeat(8, 50px);
+  height: 50px;
 
-    grid-template-rows: repeat(8, 50px);
+  display: flex;
 
-  }
+  justify-content: center;
 
-  .square {
+  align-items: center;
 
-    width: 50px;
+  font-size: 20px;
 
-    height: 50px;
+  border: 1px solid #ccc;
 
-    display: flex;
+  cursor: pointer;
+}
 
-    justify-content: center;
+.even {
+  background-color: #eee;
+}
 
-    align-items: center;
+.odd {
+  background-color: #ddd;
+}
 
-    font-size: 20px;
+.piece {
+  user-select: none;
+}
 
-    border: 1px solid #ccc;
+.chess-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
 
-    cursor: pointer;
+.turn-display {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-  }
+.square.selected {
+  background-color: yellow;
+}
 
-  .even {
+.square.valid {
+  background-color: green;
+}
 
-    background-color: #eee;
-
-  }
-
-  .odd {
-
-    background-color: #ddd;
-
-  }
-
-  .piece {
-
-    user-select: none;
-
-  }
+.square.invalid {
+  background-color: red;
+}

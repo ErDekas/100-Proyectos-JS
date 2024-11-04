@@ -35,7 +35,7 @@
 - **Editor de Notas con Markdown** ✅
 - **Juego de Memoria** (con cartas) ✅
 - **Editor de Código Simple** ✅
-- **Tablero de Ajedrez Interactivo** //En Pausa temporal
+- **Tablero de Ajedrez Interactivo** ✅
 - **Generador de Gráficos** (usando Chart.js)
 - **Simulador de Drawing** (lienzo para dibujar)
 - **Calculadora de Propinas**

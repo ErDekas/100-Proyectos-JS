@@ -1,252 +1,236 @@
+// Configuración inicial de las piezas en el tablero
 const pieces = [
-
   '♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜',
-
   '♟', '♟', '♟', '♟', '♟', '♟', '♟', '♟',
-
   '', '', '', '', '', '', '', '',
-
   '', '', '', '', '', '', '', '',
-
   '', '', '', '', '', '', '', '',
-
   '', '', '', '', '', '', '', '',
-
   '♙', '♙', '♙', '♙', '♙', '♙', '♙', '♙',
-
   '♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖',
-
 ];
-//#region Peon
+
+// Variables de estado
+let selectedPiece = null;
+let selectedPosition = null;
+let isWhiteTurn = true;  // Empiezan las blancas
+
+// Crear contenedor para el tablero y el indicador de turno
+const chessContainer = document.createElement('div');
+chessContainer.classList.add('chess-container');
+
+// Crear y agregar el indicador de turno
+const turnDisplay = document.createElement('div');
+turnDisplay.classList.add('turn-display');  // Nueva clase para estilo
+turnDisplay.textContent = "Turno: Blancas";
+chessContainer.appendChild(turnDisplay);
+
+// Agregar el tablero dentro del contenedor
+const chessboard = document.querySelector('.chessboard');
+chessContainer.appendChild(chessboard);
+
+// Agregar el contenedor completo al cuerpo del documento
+document.body.appendChild(chessContainer);
+
+//#region Funciones de Validación de Movimientos para Cada Pieza
+
+function isWhitePiece(piece) {
+  return ['♔', '♕', '♖', '♗', '♘', '♙'].includes(piece);
+}
+
+function isBlackPiece(piece) {
+  return ['♚', '♛', '♜', '♝', '♞', '♟'].includes(piece);
+}
+
 function isValidMoveForPawn(row, col, targetRow, targetCol, piece) {
-  // Determinar la dirección del movimiento dependiendo del color del peón
   const direction = (piece === '♟') ? 1 : -1;
-
-  // Casillas adyacentes en diagonal que un peón puede capturar
   const captureSquares = [{ row: row + direction, col: col - 1 }, { row: row + direction, col: col + 1 }];
-
-  // Verificar si el movimiento es hacia adelante
   if (targetCol === col) {
-      // Mover una casilla hacia adelante
       if (targetRow === row + direction && pieces[targetRow * 8 + targetCol] === '') {
-          console.log('Movimiento válido para el peón.');
+          return true;
       } else if (targetRow === row + (2 * direction) && row === (piece === '♟' ? 1 : 6) && pieces[targetRow * 8 + targetCol] === '') {
-          console.log('Movimiento válido para el peón (primer movimiento).');
-      } else {
-          console.log('Movimiento inválido para el peón.');
+          return true;
       }
-  } else {
-      // Verificar si el movimiento es una captura diagonal
-      const isCapture = captureSquares.some(square => square.row === targetRow && square.col === targetCol);
-      if (isCapture && pieces[targetRow * 8 + targetCol] !== '') {
-          console.log('Movimiento válido para capturar con el peón.');
-      } else {
-          console.log('Movimiento inválido para el peón.');
-      }
+  } else if (captureSquares.some(square => square.row === targetRow && square.col === targetCol && pieces[targetRow * 8 + targetCol] !== '')) {
+      return true;
   }
+  return false;
 }
-//#endregion
-//#region Torre
-function isValidMoveForRook(row, col, targetRow, targetCol, piece) {
-  if (row === targetRow || col === targetCol) {
-      const step = (row === targetRow) ? ((col < targetCol) ? 1 : -1) : ((row < targetRow) ? 8 : -8);
-      let currentSquare = row * 8 + col + step;
-      while (currentSquare !== targetRow * 8 + targetCol) {
-          if (pieces[currentSquare] !== '') {
-              console.log('Movimiento inválido para la torre.');
-              return;
-          }
-          currentSquare += step;
-      }
-      console.log('Movimiento válido para la torre.');
-  } else {
-      console.log('Movimiento inválido para la torre.');
-  }
-}
-// #endregion
-// #region Caballo
-function isValidMoveForKnight(row, col, targetRow, targetCol, piece) {
-  // Array de posibles movimientos de caballo
-  const knightMoves = [
-      { row: row - 2, col: col - 1 }, { row: row - 2, col: col + 1 },
-      { row: row - 1, col: col - 2 }, { row: row - 1, col: col + 2 },
-      { row: row + 1, col: col - 2 }, { row: row + 1, col: col + 2 },
-      { row: row + 2, col: col - 1 }, { row: row + 2, col: col + 1 }
-  ];
 
-  // Verificar si el movimiento es uno de los movimientos válidos del caballo
-  const isValidKnightMove = knightMoves.some(move => move.row === targetRow && move.col === targetCol);
+function isValidMoveForRook(row, col, targetRow, targetCol) {
+  if (row !== targetRow && col !== targetCol) return false;
+  const stepRow = row === targetRow ? 0 : (targetRow > row ? 1 : -1);
+  const stepCol = col === targetCol ? 0 : (targetCol > col ? 1 : -1);
+  for (let i = row + stepRow, j = col + stepCol; i !== targetRow || j !== targetCol; i += stepRow, j += stepCol) {
+      if (pieces[i * 8 + j] !== '') return false;
+  }
+  return true;
+}
 
-  if (isValidKnightMove) {
-      console.log('Movimiento válido para el caballo.');
-  } else {
-      console.log('Movimiento inválido para el caballo.');
-  }
+function isValidMoveForKnight(row, col, targetRow, targetCol) {
+  const dRow = Math.abs(row - targetRow);
+  const dCol = Math.abs(col - targetCol);
+  return (dRow === 2 && dCol === 1) || (dRow === 1 && dCol === 2);
 }
-// #endregion
-//#region Alfil
-function isValidMoveForBishop(row, col, targetRow, targetCol, piece) {
-  // Verificar si el movimiento es en una diagonal
-  if (Math.abs(targetRow - row) === Math.abs(targetCol - col)) {
-      // Verificar si hay piezas bloqueando el camino
-      const rowIncrement = (targetRow > row) ? 1 : -1;
-      const colIncrement = (targetCol > col) ? 1 : -1;
-      let currentRow = row + rowIncrement;
-      let currentCol = col + colIncrement;
-      while (currentRow !== targetRow && currentCol !== targetCol) {
-          if (pieces[currentRow * 8 + currentCol] !== '') {
-              console.log('Movimiento inválido para el alfil.');
-              return;
-          }
-          currentRow += rowIncrement;
-          currentCol += colIncrement;
-      }
-      console.log('Movimiento válido para el alfil.');
-  } else {
-      console.log('Movimiento inválido para el alfil.');
+
+function isValidMoveForBishop(row, col, targetRow, targetCol) {
+  if (Math.abs(row - targetRow) !== Math.abs(col - targetCol)) return false;
+  const stepRow = targetRow > row ? 1 : -1;
+  const stepCol = targetCol > col ? 1 : -1;
+  for (let i = row + stepRow, j = col + stepCol; i !== targetRow; i += stepRow, j += stepCol) {
+      if (pieces[i * 8 + j] !== '') return false;
   }
+  return true;
 }
-// #endregion
-//#region Reina
-function isValidMoveForQueen(row, col, targetRow, targetCol, piece) {
-  // Verificar si el movimiento es válido para una torre o un alfil
-  if ((row === targetRow || col === targetCol) || (Math.abs(targetRow - row) === Math.abs(targetCol - col))) {
-      // Llamar a las funciones de validación de la torre o el alfil según corresponda
-      isValidMoveForRook(row, col, targetRow, targetCol, piece);
-      isValidMoveForBishop(row, col, targetRow, targetCol, piece);
-  } else {
-      console.log('Movimiento inválido para la reina.');
-  }
+
+function isValidMoveForQueen(row, col, targetRow, targetCol) {
+  return isValidMoveForRook(row, col, targetRow, targetCol) || isValidMoveForBishop(row, col, targetRow, targetCol);
 }
+
+function isValidMoveForKing(row, col, targetRow, targetCol) {
+  const dRow = Math.abs(row - targetRow);
+  const dCol = Math.abs(col - targetCol);
+  return dRow <= 1 && dCol <= 1;
+}
+
 //#endregion
 
-// Evento de carga de DOM
+// Evento de carga del DOM
 document.addEventListener('DOMContentLoaded', () => {
+  const chessboard = document.querySelector('.chessboard');
 
-    // Crear el tablero
-    const chessboard = document.querySelector('.chessboard');
-
-    for (let row = 0; row < 8; row++) {
-
+  for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
+          const square = document.createElement('div');
+          square.classList.add('square', (row + col) % 2 === 0 ? 'even' : 'odd');
+          square.dataset.row = row;
+          square.dataset.col = col;
 
-        const square = document.createElement('div');
+          const piece = document.createElement('div');
+          piece.classList.add('piece');
+          piece.textContent = pieces[row * 8 + col];
 
-        square.classList.add('square', (row + col) % 2 === 0 ? 'even' : 'odd');
-
-        square.dataset.row = row;
-
-        square.dataset.col = col;
-
-        const piece = document.createElement('div');
-
-        piece.classList.add('piece');
-
-        piece.textContent = pieces[row * 8 + col];
-
-        square.appendChild(piece);
-
-        chessboard.appendChild(square);
-
+          square.appendChild(piece);
+          chessboard.appendChild(square);
       }
+  }
 
-    }
-    // Obtener todas las casillas del tablero
-    const squares = document.querySelectorAll('.square');
-    
-    // Event listener para cada casilla del tablero
-    squares.forEach((square) => {
-      square.addEventListener('click', () => {
-          // Obtener la fila y columna de la casilla clickeada
-          const clickedRow = parseInt(square.dataset.row);
-          const clickedCol = parseInt(square.dataset.col);
-          const clickedPiece = pieces[clickedRow * 8 + clickedCol];
+  const squares = document.querySelectorAll('.square');
   
-          if (clickedPiece !== '') {
-              // Verificar el tipo de pieza clickeada
-              switch (clickedPiece) {
-                case '♟': // Peón negro
-                case '♙': // Peón blanco
-                    // Calcular la fila y columna objetivo para el movimiento del peón
-                    const targetRowForPawn = (clickedPiece === '♟') ? clickedRow + 1 : clickedRow - 1;
-                    const targetColForPawn = clickedCol; // Mismo columna que la casilla actual
-                    // Llamar a la función para verificar si el movimiento es válido para un peón
-                    isValidMoveForPawn(clickedRow, clickedCol, targetRowForPawn, targetColForPawn, clickedPiece);
-                    break;
-                case '♖': // Torre negra
-                case '♜': // Torre blanca
-                    // Llamar a la función para verificar si el movimiento es válido para una torre
-                    isValidMoveForRook(clickedRow, clickedCol, clickedRow, clickedCol, clickedPiece);
-                    break;
-                case '♘': // Caballo negro
-                case '♞': // Caballo blanco
-                    // Definimos las posiciones relativas a la casilla clickeada donde puede moverse el caballo
-                    const knightMoves = [
-                      { row: clickedRow - 2, col: clickedCol - 1 }, { row: clickedRow - 2, col: clickedCol + 1 },
-                      { row: clickedRow - 1, col: clickedCol - 2 }, { row: clickedRow - 1, col: clickedCol + 2 },
-                      { row: clickedRow + 1, col: clickedCol - 2 }, { row: clickedRow + 1, col: clickedCol + 2 },
-                      { row: clickedRow + 2, col: clickedCol - 1 }, { row: clickedRow + 2, col: clickedCol + 1 }
-                    ];
-                    // Luego, seleccionamos una de estas posiciones según el movimiento deseado del caballo.
-                    // Por ejemplo, si queremos mover el caballo dos casillas hacia arriba y una casilla hacia la izquierda, seleccionamos knightMoves[0].
-                    // Aquí es donde definiríamos targetRow y targetCol en función del movimiento deseado del caballo.
-                    const targetRowForKnight = knightMoves[0].row;
-                    const targetColForKnight = knightMoves[0].col;
-                    // Luego, podemos llamar a la función para verificar si el movimiento es válido para el caballo
-                    isValidMoveForKnight(clickedRow, clickedCol, targetRowForKnight, targetColForKnight, clickedPiece);
-                    break;                    
-                case '♗': // Alfil negro
-                case '♝': // Alfil blanco
-                    // Determinamos la dirección de movimiento
-                    const rowIncrement = (targetRow > clickedRow) ? 1 : -1;
-                    const colIncrement = (targetCol > clickedCol) ? 1 : -1;
+  squares.forEach((square) => {
+      square.addEventListener('click', () => {
+          const row = parseInt(square.dataset.row);
+          const col = parseInt(square.dataset.col);
+          const index = row * 8 + col;
+          const piece = pieces[index];
 
-                    // Iteramos a lo largo de la diagonal hasta que alcancemos la casilla objetivo o nos encontremos con una pieza
-                    let currentRow = clickedRow + rowIncrement;
-                    let currentCol = clickedCol + colIncrement;
-                    while (currentRow !== targetRow && currentCol !== targetCol) {
-                      // Aquí verificamos si la casilla está vacía o si contiene una pieza enemiga
-                      // Si encontramos una pieza enemiga, el movimiento es válido, de lo contrario, es inválido.
-                      currentRow += rowIncrement;
-                      currentCol += colIncrement;
-                    }
-                    // Definimos targetRow y targetCol basados en la última posición en la diagonal
-                    const targetRowForBishop = currentRow - rowIncrement;
-                    const targetColForBishop = currentCol - colIncrement;
-                    // Luego, podemos llamar a la función para verificar si el movimiento es válido para el alfil
-                    isValidMoveForBishop(clickedRow, clickedCol, targetRowForBishop, targetColForBishop, clickedPiece);
-                    break;
-                case '♕': // Reina negra
-                case '♛': // Reina blanca
-                    // Primero, intentamos validar el movimiento como una torre
-                    isValidMoveForRook(clickedRow, clickedCol, targetRow, targetCol, clickedPiece);
-
-                    // Si el movimiento como torre es inválido, intentamos validar el movimiento como un alfil
-                    if (console.log.includes('inválido')) {
-                      // Determinamos la dirección de movimiento
-                      const rowIncrement = (targetRow > clickedRow) ? 1 : -1;
-                      const colIncrement = (targetCol > clickedCol) ? 1 : -1;
-
-                      // Iteramos a lo largo de la diagonal hasta que alcancemos la casilla objetivo o nos encontremos con una pieza
-                      let currentRow = clickedRow + rowIncrement;
-                      let currentCol = clickedCol + colIncrement;
-                      while (currentRow !== targetRow && currentCol !== targetCol) {
-                        // Aquí verificamos si la casilla está vacía o si contiene una pieza enemiga
-                        // Si encontramos una pieza enemiga, el movimiento es válido, de lo contrario, es inválido.
-                        currentRow += rowIncrement;
-                        currentCol += colIncrement;
-                      }
-                      // Definimos targetRow y targetCol basados en la última posición en la diagonal
-                      const targetRowForQueen = currentRow;
-                      const targetColForQueen = currentCol;
-                      // Luego, podemos llamar a la función para verificar si el movimiento es válido para la reina
-                      isValidMoveForQueen(clickedRow, clickedCol, targetRowForQueen, targetColForQueen, clickedPiece);
-                    }
-                    break; 
-            }
-          } else {
-              console.log('No hay pieza en esta casilla.');
+          if (selectedPiece) {
+              handleMove(selectedPosition.row, selectedPosition.col, row, col, selectedPiece);
+              selectedPiece = null;
+          } else if (piece !== '') {
+              if ((isWhiteTurn && isWhitePiece(piece)) || (!isWhiteTurn && isBlackPiece(piece))) {
+                  selectedPiece = piece;
+                  selectedPosition = { row, col };
+                  clearSquareColors();
+                  square.classList.add('selected');
+                  console.log(`Pieza seleccionada: ${selectedPiece} en [${row}, ${col}]`);
+              }
           }
       });
   });
 });
+
+function handleMove(startRow, startCol, targetRow, targetCol, piece) {
+  const targetIndex = targetRow * 8 + targetCol;
+  const targetPiece = pieces[targetIndex];
+  let isValid = false;
+
+  // Validación de movimiento
+  switch (piece) {
+      case '♙':
+      case '♟':
+          isValid = isValidMoveForPawn(startRow, startCol, targetRow, targetCol, piece);
+          break;
+      case '♖':
+      case '♜':
+          isValid = isValidMoveForRook(startRow, startCol, targetRow, targetCol);
+          break;
+      case '♘':
+      case '♞':
+          isValid = isValidMoveForKnight(startRow, startCol, targetRow, targetCol);
+          break;
+      case '♗':
+      case '♝':
+          isValid = isValidMoveForBishop(startRow, startCol, targetRow, targetCol);
+          break;
+      case '♕':
+      case '♛':
+          isValid = isValidMoveForQueen(startRow, startCol, targetRow, targetCol);
+          break;
+      case '♔':
+      case '♚':
+          isValid = isValidMoveForKing(startRow, startCol, targetRow, targetCol);
+          break;
+  }
+
+  // Comprobar si es un ataque contra una pieza del mismo color
+  if ((isWhitePiece(piece) && isWhitePiece(targetPiece)) || (isBlackPiece(piece) && isBlackPiece(targetPiece))) {
+      isValid = false;
+  }
+
+  // Acción de acuerdo a la validez del movimiento
+  if (isValid) {
+      pieces[targetIndex] = piece;
+      pieces[startRow * 8 + startCol] = '';
+      updateBoard();
+      clearSquareColors();
+      document.querySelector(`[data-row='${targetRow}'][data-col='${targetCol}']`).classList.add('valid');
+
+      // Cambio de turno
+      isWhiteTurn = !isWhiteTurn;
+      turnDisplay.textContent = `Turno: ${isWhiteTurn ? "Blancas" : "Negras"}`;
+  } else {
+      clearSquareColors();
+      document.querySelector(`[data-row='${targetRow}'][data-col='${targetCol}']`).classList.add('invalid');
+      console.log('Movimiento inválido.');
+  }
+}
+
+// Función para actualizar visualmente el tablero después de un movimiento
+function updateBoard() {
+  const squares = document.querySelectorAll('.square');
+  squares.forEach(square => {
+      const row = parseInt(square.dataset.row);
+      const col = parseInt(square.dataset.col);
+      const piece = square.querySelector('.piece');
+      piece.textContent = pieces[row * 8 + col];
+  });
+}
+
+// Limpia colores de selección
+function clearSquareColors() {
+  document.querySelectorAll('.square').forEach(square => {
+      square.classList.remove('selected', 'valid', 'invalid');
+  });
+}
+
+function resetSquareColors() {
+  document.querySelectorAll('.square').forEach(square => {
+      square.classList.remove('selected', 'valid', 'invalid');
+  });
+}
+
+function selectSquare(row, col) {
+  resetSquareColors();
+  const square = document.querySelector(`.square[data-row="${row}"][data-col="${col}"]`);
+  square.classList.add('selected');
+}
+
+function colorSquare(row, col, isValid) {
+  const square = document.querySelector(`.square[data-row="${row}"][data-col="${col}"]`);
+  if (isValid) {
+      square.classList.add('valid');
+  } else {
+      square.classList.add('invalid');
+  }
+}
