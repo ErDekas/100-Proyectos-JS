@@ -1,47 +1,69 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('chartForm');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      
-      // Obtener el tipo de gráfico seleccionado por el usuario
-      const chartType = document.getElementById('chartType').value;
-  
-      // Generar datos y opciones del gráfico
-      const data = {
-        labels: ['A', 'B', 'C', 'D', 'E'],
-        datasets: [{
-          label: 'Ejemplo de Datos',
-          data: [12, 19, 3, 5, 2],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)'
-          ],
-          borderWidth: 1
-        }]
-      };
-  
-      const options = {
-        responsive: true,
-        maintainAspectRatio: false
-      };
-  
-      // Crear el gráfico
-      const ctx = document.getElementById('myChart').getContext('2d');
-      const myChart = new Chart(ctx, {
+let myChart; // Variable global para almacenar la instancia del gráfico
+
+const createInputs = () => {
+    const numDatos = document.getElementById('numDatos').value;
+    const dataInputs = document.getElementById('dataInputs');
+    dataInputs.innerHTML = ''; // Limpiar entradas previas
+
+    for (let i = 0; i < numDatos; i++) {
+        dataInputs.innerHTML += `
+            <div>
+                <label for="name${i}">Nombre ${i + 1}:</label>
+                <input type="text" id="name${i}" required>
+                <label for="value${i}">Valor ${i + 1}:</label>
+                <input type="number" id="value${i}" min="0" required>
+                <label for="color${i}">Color ${i + 1}:</label>
+                <input type="color" id="color${i}" value="#36a2eb">
+            </div>
+        `;
+    }
+};
+
+const generateChart = (event) => {
+    event.preventDefault(); // Evitar que se recargue la página
+
+    const numDatos = document.getElementById('numDatos').value;
+    const labels = [];
+    const data = [];
+    const backgroundColors = []; // Array para almacenar los colores
+
+    for (let i = 0; i < numDatos; i++) {
+        labels.push(document.getElementById(`name${i}`).value);
+        data.push(document.getElementById(`value${i}`).value);
+        backgroundColors.push(document.getElementById(`color${i}`).value); // Obtener color
+    }
+
+    const chartType = document.getElementById('chartType').value;
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    // Verificar si ya existe un gráfico y destruirlo
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    // Crear nuevo gráfico
+    myChart = new Chart(ctx, {
         type: chartType,
-        data: data,
-        options: options
-      });
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Datos del Gráfico',
+                data: data,
+                backgroundColor: backgroundColors, // Usar colores personalizados
+                borderColor: backgroundColors.map(color => color), // Usar el mismo color para la línea
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
     });
-  });
-  
+};
+
+// Asignar el evento al formulario
+document.getElementById('dataForm').addEventListener('submit', generateChart);

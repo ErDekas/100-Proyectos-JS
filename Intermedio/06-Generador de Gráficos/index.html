@@ -4,22 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Gráficos</title>
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <form id="chartForm">
-        <label for="chartType">Selecciona el tipo de gráfico:</label>
-        <select id="chartType">
-          <option value="bar">Gráfico de Barras</option>
-          <option value="line">Gráfico de Líneas</option>
-          <option value="pie">Gráfico de Pastel</option>
-        </select>
-        <button type="submit">Generar Gráfico</button>
-        <div id="chartContainer">
-            <canvas id="myChart"></canvas>
-          </div>          
-      </form> 
-      <script src="index.js"></script>     
+
+<h1>Generador de Gráficos</h1>
+<form id="dataForm">
+    <label for="numDatos">Número de Datos:</label>
+    <input type="number" id="numDatos" name="numDatos" min="1" required>
+    <button type="button" onclick="createInputs()">Crear Inputs</button>
+    <div id="dataInputs"></div>
+
+    <label for="chartType">Tipo de Gráfica:</label>
+    <select id="chartType" name="chartType">
+        <option value="bar">Barra</option>
+        <option value="line">Línea</option>
+        <option value="pie">Pastel</option>
+    </select>
+
+    <button type="submit">Generar Gráfico</button>
+</form>
+
+<div id="chartContainer">
+    <canvas id="myChart" width="400" height="300"></canvas> <!-- Ajustar tamaño aquí -->
+</div>
+
+<script src="index.js"></script>
 </body>
 </html>
