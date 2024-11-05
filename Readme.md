@@ -39,7 +39,7 @@
 - **Generador de Gráficos** (usando Chart.js) ✅
 - **Simulador de Drawing** (lienzo para dibujar) ✅
 - **Calculadora de Propinas** ✅
-- **Juego de Ahorcado**
+- **Juego de Ahorcado** ✅
 - **Mapa Interactivo** (usando Leaflet.js)
 - **Lista de Reproducción de Música**
 - **Creador de Currículum Vitae**
