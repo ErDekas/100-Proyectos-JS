@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Dibujo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        <div id="toolbar">
+            <input type="color" id="colorPicker" value="#000000">
+            <input type="number" id="brushSize" min="1" max="100" value="5" style="width: 60px;">
+            <button id="eraseBtn">Goma</button>
+            <button id="textBtn">T</button>
+            <input type="text" id="textInput" placeholder="Escribe tu texto" style="display: none;">
+            <button id="addTextBtn" style="display: none;">Agregar Texto</button>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>

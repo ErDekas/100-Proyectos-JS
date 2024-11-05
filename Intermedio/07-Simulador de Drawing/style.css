@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+#container {
+    position: relative;
+}
+
+canvas {
+    border: 1px solid #000;
+    background-color: #fff;
+}
+
+#toolbar {
+    margin-top: 10px;
+    position: absolute;
+}
+
+#textInput {
+    margin-left: 10px;
+}

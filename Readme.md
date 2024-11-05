@@ -131,6 +131,7 @@
 - **Plataforma de Recetas de Cocina Colaborativa**
 - **Simulador de Ecosistema** (interacciones entre especies)
 - **Aplicación de Realidad Aumentada para Navegación**
+- **Clon Web de MediBang Paint Pro**
 
 ---
 
