@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Propinas</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="calculator-container">
+      <h2>Calculadora de propinas</h2>
+
+      <div class="form-group">
+        <label for="billAmount">Monto de la cuenta:</label>
+        <input type="number" id="billAmount" placeholder="0.00" />
+      </div>
+
+      <div class="form-group">
+        <label for="tipPercentage">Porcentaje de la propina:</label>
+        <select id="tipPercentage">
+          <option value="10">10%</option>
+          <option value="15">15%</option>
+          <option value="20">20%</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="customTip">Otro porcentaje de la propina:</label>
+        <input type="checkbox" id="customTipCheck" />
+        <input type="number" id="customTip" placeholder="0" disabled /> %
+      </div>
+
+      <div class="form-group">
+        <label for="numPeople">Cantidad de personas:</label>
+        <input type="number" id="numPeople" value="1" min="1" />
+      </div>
+
+      <div class="form-group">
+        <label for="roundOption">Redondear:</label>
+        <select id="roundOption">
+          <option value="none">Ninguno</option>
+          <option value="top">Redondear hacia arriba</option>
+          <option value="down">Redondear hacia abajo</option>
+        </select>
+      </div>
+
+      <div class="buttons-container">
+        <button onclick="calculateTip()">Calculate</button>
+        <button onclick="resetCalculator()">Reset</button>
+      </div>
+
+      <div class="form-group">
+        <label for="tipAmount">Monto de la propina:</label>
+        <input type="text" id="tipAmount" readonly />
+      </div>
+
+      <div class="form-group">
+        <label for="totalAmount">Total a pagar:</label>
+        <input type="text" id="totalAmount" readonly />
+      </div>
+
+      <div class="form-group">
+        <label for="totalPerPerson">Total por persona:</label>
+        <input type="text" id="totalPerPerson" readonly />
+      </div>
+
+      <div class="buttons-container">
+        <button onclick="sendEmail()">Envía por correo electrónico</button>
+        <button onclick="printPage()">Imprime</button>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>

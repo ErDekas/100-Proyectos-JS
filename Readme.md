@@ -37,8 +37,8 @@
 - **Editor de Código Simple** ✅
 - **Tablero de Ajedrez Interactivo** ✅
 - **Generador de Gráficos** (usando Chart.js) ✅
-- **Simulador de Drawing** (lienzo para dibujar)
-- **Calculadora de Propinas**
+- **Simulador de Drawing** (lienzo para dibujar) ✅
+- **Calculadora de Propinas** ✅
 - **Juego de Ahorcado**
 - **Mapa Interactivo** (usando Leaflet.js)
 - **Lista de Reproducción de Música**
