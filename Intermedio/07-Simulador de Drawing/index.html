@@ -1,23 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Dibujo</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="container">
-        <canvas id="canvas"></canvas>
-        <div id="toolbar">
-            <input type="color" id="colorPicker" value="#000000">
-            <input type="number" id="brushSize" min="1" max="100" value="5" style="width: 60px;">
-            <button id="eraseBtn">Goma</button>
-            <button id="textBtn">T</button>
-            <input type="text" id="textInput" placeholder="Escribe tu texto" style="display: none;">
-            <button id="addTextBtn" style="display: none;">Agregar Texto</button>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Drawing</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="toolbar">
+      <button onclick="setTool('pencil')">Lápiz</button>
+      <button onclick="setTool('line')">Línea</button>
+      <button onclick="setTool('rectangle')">Rectángulo</button>
+      <button onclick="setTool('circle')">Círculo</button>
+      <button onclick="setTool('diamond')">Diamante</button>
+      <button onclick="setTool('eraser')">Goma</button>
+      <button onclick="toggleSettingsMenu()">Configuración</button>
+      <button onclick="clearCanvas()">Limpiar</button>
     </div>
+
+    <!-- Menú de configuración desplegable -->
+    <div id="settingsMenu" class="settings-menu" style="display: none">
+      <div>
+        <h4>Color de Fondo</h4>
+        <div>
+          <div class="color-group">
+            <button
+              onclick="setFillColor('#FF0000')"
+              style="background-color: #ff0000"
+            ></button>
+            <button
+              onclick="setFillColor('#00FF00')"
+              style="background-color: #00ff00"
+            ></button>
+            <button
+              onclick="setFillColor('#0000FF')"
+              style="background-color: #0000ff"
+            ></button>
+            <button
+              onclick="setFillColor('#000000')"
+              style="background-color: #000000"
+            ></button>
+            <!-- Agrega más colores según sea necesario -->
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4>Grosor del Trazo</h4>
+        <div class="number-group">
+          <button onclick="setStrokeWidth(1)">1</button>
+          <button onclick="setStrokeWidth(3)">3</button>
+          <button onclick="setStrokeWidth(5)">5</button>
+          <button onclick="setStrokeWidth(7)">7</button>
+        </div>
+      </div>
+      <div>
+        <h4>Estilo del Trazo</h4>
+        <div class="button-group">
+          <button onclick="setStrokeStyle('solid')">Línea</button>
+          <button onclick="setStrokeStyle('dashed')">Guión</button>
+          <button onclick="setStrokeStyle('dotted')">Punto</button>
+        </div>
+      </div>
+
+      <div>
+        <h4>Opacidad</h4>
+        <div class="opacity-group">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            onchange="setOpacity(this.value)"
+          />
+        </div>
+      </div>
+    </div>
+
+    <canvas id="drawingCanvas"></canvas>
+
     <script src="index.js"></script>
-</body>
+  </body>
 </html>

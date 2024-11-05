@@ -1,104 +1,142 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight - 60; // Ajustar para la barra de herramientas
+const canvas = document.getElementById("drawingCanvas");
+const ctx = canvas.getContext("2d");
 
-let painting = false;
-let erasing = false;
-let addingText = false; // Estado para añadir texto
-let color = document.getElementById('colorPicker').value;
-let brushSize = parseInt(document.getElementById('brushSize').value);
-let textPosition = { x: 0, y: 0 };
+// Configuraciones iniciales del lienzo y las herramientas
+canvas.width = window.innerWidth * 0.8;
+canvas.height = window.innerHeight * 0.8;
 
-// Comenzar a dibujar o borrar
-canvas.addEventListener('mousedown', (e) => {
-    if (!addingText) { // Solo dibuja o borra si no está en modo de añadir texto
-        painting = true;
-        ctx.beginPath();
-        ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
-    }
+let drawing = false;
+let currentTool = "pencil";
+let startX = 0;
+let startY = 0;
+let fillColor = "#000000";
+let strokeWidth = 2;
+let strokeStyle = "solid";
+let opacity = 1;
+
+// Función para establecer la herramienta actual
+function setTool(tool) {
+  currentTool = tool;
+}
+
+// Mostrar / Ocultar menú de configuración
+function toggleSettingsMenu() {
+  const menu = document.getElementById("settingsMenu");
+  menu.style.display = menu.style.display === "none" ? "block" : "none";
+}
+
+// Funciones para configurar las propiedades de estilo
+function setFillColor(color) {
+  fillColor = color;
+}
+
+function setStrokeWidth(width) {
+  strokeWidth = width;
+}
+
+function setStrokeStyle(style) {
+  strokeStyle = style;
+}
+
+function setOpacity(value) {
+  opacity = value;
+}
+
+// Limpiar el lienzo
+function clearCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+// Eventos de dibujo en el lienzo
+canvas.addEventListener("mousedown", (e) => {
+  startX = e.offsetX;
+  startY = e.offsetY;
+  drawing = true;
+
+  // Iniciar un trazo nuevo si la herramienta es lápiz o borrador
+  if (currentTool === "pencil" || currentTool === "eraser") {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+  }
 });
 
-// Dibujo y borrado siguiendo al ratón
-canvas.addEventListener('mousemove', (e) => {
-    if (painting) {
-        const x = e.clientX - canvas.offsetLeft;
-        const y = e.clientY - canvas.offsetTop;
+canvas.addEventListener("mousemove", (e) => {
+  if (!drawing) return;
 
-        if (erasing) {
-            ctx.globalCompositeOperation = 'destination-out'; // Modo de borrado
-            ctx.lineWidth = brushSize;
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        } else {
-            ctx.globalCompositeOperation = 'source-over'; // Modo normal
-            ctx.strokeStyle = color;
-            ctx.lineWidth = brushSize;
-            ctx.lineTo(x, y);
-            ctx.stroke();
-        }
-    }
+  const x = e.offsetX;
+  const y = e.offsetY;
+
+  // Configurar estilos para dibujo continuo
+  ctx.strokeStyle = fillColor;
+  ctx.lineWidth = strokeWidth;
+  ctx.globalAlpha = opacity;
+
+  // Estilos de trazo (línea continua, guiones, puntos)
+  if (strokeStyle === "dashed") {
+    ctx.setLineDash([10, 5]);
+  } else if (strokeStyle === "dotted") {
+    ctx.setLineDash([2, 2]);
+  } else {
+    ctx.setLineDash([]);
+  }
+
+  if (currentTool === "pencil") {
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  } else if (currentTool === "eraser") {
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 10;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
 });
 
-// Terminar de dibujar o borrar
-canvas.addEventListener('mouseup', () => {
-    painting = false;
+canvas.addEventListener("mouseup", (e) => {
+  if (!drawing) return;
+  drawing = false;
+
+  const x = e.offsetX;
+  const y = e.offsetY;
+
+  ctx.strokeStyle = fillColor;
+  ctx.lineWidth = strokeWidth;
+  ctx.globalAlpha = opacity;
+
+  // Configuración de estilo de trazo al finalizar
+  if (strokeStyle === "dashed") {
+    ctx.setLineDash([10, 5]);
+  } else if (strokeStyle === "dotted") {
+    ctx.setLineDash([2, 2]);
+  } else {
+    ctx.setLineDash([]);
+  }
+
+  if (currentTool === "line") {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  } else if (currentTool === "rectangle") {
+    const width = x - startX;
+    const height = y - startY;
+    ctx.strokeRect(startX, startY, width, height);
+  } else if (currentTool === "circle") {
+    const radius = Math.sqrt(Math.pow(x - startX, 2) + Math.pow(y - startY, 2));
+    ctx.beginPath();
+    ctx.arc(startX, startY, radius, 0, Math.PI * 2);
     ctx.closePath();
-});
+    ctx.stroke();
+  } else if (currentTool === "diamond") {
+    ctx.beginPath();
+    ctx.moveTo(startX, startY - (y - startY));
+    ctx.lineTo(x, startY);
+    ctx.lineTo(startX, startY + (y - startY));
+    ctx.lineTo(startX - (x - startX), startY);
+    ctx.closePath();
+    ctx.stroke();
+  }
 
-// Alternar entre goma y lápiz
-document.getElementById('eraseBtn').addEventListener('click', () => {
-    erasing = !erasing;
-    addingText = false; // Desactivar el modo de texto
-    document.getElementById('eraseBtn').innerText = erasing ? "Dibujo" : "Goma";
-});
-
-// Cambiar color
-document.getElementById('colorPicker').addEventListener('input', (e) => {
-    color = e.target.value;
-});
-
-// Cambiar tamaño del lápiz/goma
-document.getElementById('brushSize').addEventListener('input', (e) => {
-    brushSize = parseInt(e.target.value);
-});
-
-// Iniciar modo de añadir texto
-document.getElementById('textBtn').addEventListener('click', () => {
-    addingText = true;
-    erasing = false; // Desactivar goma si está activa
-    document.getElementById('eraseBtn').innerText = "Goma";
-});
-
-// Seleccionar posición de texto en el lienzo
-canvas.addEventListener('click', (e) => {
-    if (addingText) {
-        // Obtener la posición del clic en el lienzo
-        textPosition.x = e.clientX - canvas.offsetLeft;
-        textPosition.y = e.clientY - canvas.offsetTop;
-        
-        // Mostrar el cuadro de entrada de texto flotante en la posición seleccionada
-        const textInput = document.getElementById('textInput');
-        textInput.style.position = 'absolute';
-        textInput.style.left = `${e.clientX}px`;
-        textInput.style.top = `${e.clientY}px`;
-        textInput.style.display = 'inline';
-        textInput.focus(); // Enfocar para que el usuario pueda escribir directamente
-    }
-});
-
-// Colocar texto en el lienzo al presionar Enter
-document.getElementById('textInput').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { // Si se presiona Enter
-        const text = e.target.value;
-        if (text) {
-            // Dibujar el texto en el lienzo en la posición seleccionada
-            ctx.fillStyle = color; // Usar el color seleccionado
-            ctx.font = '20px Arial'; // Cambiar la fuente y tamaño si es necesario
-            ctx.fillText(text, textPosition.x, textPosition.y); // Colocar el texto en la posición seleccionada
-        }
-        e.target.value = ''; // Limpiar el input de texto
-        e.target.style.display = 'none'; // Ocultar el cuadro de texto flotante
-        addingText = false; // Salir del modo de añadir texto
-    }
+  // Restaura la opacidad y el estilo de trazo a los valores por defecto
+  ctx.globalAlpha = 1.0;
+  ctx.setLineDash([]);
 });
