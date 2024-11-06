@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reproductor de Música</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="player">
+        <div class="song-info">
+            <h2 id="song-name">Canción 1</h2>
+            <p id="song-artist">Artista 1</p>
+        </div>
+  <audio id="audio" src="cancion1.mp3"></audio>
+
+        <div class="controls">
+            <button id="prev-btn">&#9664;&#9664;</button>
+            <button id="play-btn">&#9654;</button>
+            <button id="next-btn">&#9654;&#9654;</button>
+        </div>
+        <div class="settings">
+            <label for="volume">Volumen:</label>
+            <input type="range" id="volume" min="0" max="1" step="0.01" value="1">
+            
+            <label for="loop">
+                <input type="checkbox" id="loop"> Bucle
+            </label>
+    
+            <label for="shuffle">
+                <input type="checkbox" id="shuffle"> Aleatorio
+            </label>
+        </div>
+        <input type="range" id="progress-bar" value="0" max="100">
+    </div>
+    
+
+  <script src="index.js"></script>
+</body>
+</html>

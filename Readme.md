@@ -40,7 +40,7 @@
 - **Simulador de Drawing** (lienzo para dibujar) ✅
 - **Calculadora de Propinas** ✅
 - **Juego de Ahorcado** ✅
-- **Mapa Interactivo** (usando Leaflet.js)
+- **Mapa Interactivo** (usando Leaflet.js) ✅
 - **Lista de Reproducción de Música**
 - **Creador de Currículum Vitae**
 - **Juego de Piedra, Papel o Tijera**
