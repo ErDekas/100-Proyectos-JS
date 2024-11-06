@@ -1,50 +1,159 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creador de Currículums Vitae</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <title>Generador de Currículum Vitae</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Generador de Currículums Vitae</h1>
-
+      <h1>Generador de Currículum Vitae</h1>
+      <div class="contenido">
+        <!-- Formulario -->
         <div class="formulario">
-            <form id="formCV">
-                <label for="nombre">Nombre Completo:</label>
-                <input type="text" name="nombre" id="nombre" placeholder="Ej. Juan Pérez Romero" required>
+          <form id="formCV">
+            <!-- Información personal -->
+            <h2>Detalles Personales</h2>
+            <label for="nombre">Nombre(s):</label>
+            <input type="text" id="nombre" oninput="actualizarVistaPrevia()" />
 
-                <label for="email">Correo Electrónico:</label>
-                <input type="email" name="email" id="email" placeholder="ejemplo@dominio.com" required>
+            <label for="apellido">Apellido(s):</label>
+            <input
+              type="text"
+              id="apellido"
+              oninput="actualizarVistaPrevia()"
+            />
 
-                <label for="telefono">Teléfono:</label>
-                <input type="tel" name="telefono" id="telefono" placeholder="123-456-789" required>
+            <label for="foto">Foto:</label>
+            <input
+              type="file"
+              id="foto"
+              accept="image/*"
+              onchange="mostrarImagen(event)"
+            />
 
-                <label for="direccion">Dirección:</label>
-                <input type="text" name="direccion" id="direccion" placeholder="Ej. Calle Ficticia 12" required>
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" oninput="actualizarVistaPrevia()" />
 
-                <label for="experiencia">Experiencia:</label>
-                <textarea name="experiencia" id="experiencia" rows="5" placeholder="Ej. Desarrollador en XYZ..."></textarea>
-                
-                <label for="educacion">Educación:</label>
-                <textarea name="educacion" id="educacion" rows="5" placeholder="Ej. Licenciatura en Ingenieria..."></textarea>
+            <label for="puesto">Puesto:</label>
+            <input type="text" id="puesto" oninput="actualizarVistaPrevia()" />
 
-                <label for="habilidades">Habilidades:</label>
-                <textarea name="habilidades" id="habilidades" rows="5" placeholder="Ej. HTML, CSS, JavaScript..."></textarea>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" oninput="actualizarVistaPrevia()" />
 
-                <button type="button" id="generarCV">Generar CV</button>
-            </form>
-        </div>
+            <label for="direccion">Dirección:</label>
+            <input
+              type="text"
+              id="direccion"
+              oninput="actualizarVistaPrevia()"
+            />
 
-        <div class="vista-previa" id="vista-previa">
-            <h2>Mi curriculum</h2>
-            <div id="cv-contenido">
+            <label for="ciudad">Ciudad:</label>
+            <input type="text" id="ciudad" oninput="actualizarVistaPrevia()" />
 
+            <label for="codigoPostal">Código Postal:</label>
+            <input
+              type="text"
+              id="codigoPostal"
+              oninput="actualizarVistaPrevia()"
+            />
+
+            <!-- Experiencia Laboral -->
+            <h2>Experiencia Laboral</h2>
+            <div id="experiencia">
+              <label>Puesto:</label>
+              <input type="text" id="puestoExp" />
+              <label>Compañía:</label>
+              <input type="text" id="companiaExp" />
+              <label>Ubicación:</label>
+              <input type="text" id="ubicacionExp" />
+              <label>Fecha de Inicio:</label>
+              <input type="date" id="inicioExp" />
+              <label>Fecha de Finalización:</label>
+              <input type="date" id="finExp" />
             </div>
+            <button type="button" onclick="agregarExperiencia()">
+              Agregar Experiencia
+            </button>
+
+            <!-- Habilidades -->
+            <h2>Habilidades</h2>
+            <div id="habilidades">
+              <label>Habilidad:</label>
+              <input type="text" id="nombreHabilidad" />
+              <label>Nivel:</label>
+              <input
+                type="range"
+                id="nivelHabilidad"
+                min="1"
+                max="5"
+                step="1"
+              />
+            </div>
+            <button type="button" onclick="agregarHabilidad()">
+              Agregar Habilidad
+            </button>
+
+            <!-- Educación -->
+            <h2>Educación</h2>
+            <div id="educacion">
+              <label>Institución:</label>
+              <input type="text" id="institucion" />
+              <label>Grado:</label>
+              <input type="text" id="grado" />
+              <label>Ubicación:</label>
+              <input type="text" id="ubicacionEdu" />
+              <label>Fecha de Inicio:</label>
+              <input type="date" id="inicioEdu" />
+              <label>Fecha de Finalización:</label>
+              <input type="date" id="finEdu" />
+            </div>
+            <button type="button" onclick="agregarEducacion()">
+              Agregar Educación
+            </button>
+
+            <!-- Extras -->
+            <h2>Extras</h2>
+            <label for="pasatiempos">Pasatiempos:</label>
+            <textarea
+              id="pasatiempos"
+              oninput="actualizarVistaPrevia()"
+            ></textarea>
+
+            <label for="idiomas">Idiomas:</label>
+            <textarea id="idiomas" oninput="actualizarVistaPrevia()"></textarea>
+          </form>
         </div>
+
+        <!-- Vista previa del CV -->
+        <div class="vista-previa" id="vista-previa">
+          <div class="cv">
+            <div id="cv-foto"></div>
+            <h2 id="cv-nombre"></h2>
+            <h3 id="cv-puesto"></h3>
+            <p id="cv-contacto"></p>
+
+            <h4>Experiencia Laboral</h4>
+            <div id="cv-experiencia"></div>
+
+            <h4>Habilidades</h4>
+            <div id="cv-habilidades"></div>
+
+            <h4>Educación</h4>
+            <div id="cv-educacion"></div>
+
+            <h4>Extras</h4>
+            <p id="cv-pasatiempos"></p>
+            <p id="cv-idiomas"></p>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="generarPDF" id="generarPDF" onclick="generarPDF()">Generar PDF</button>
     </div>
 
     <script src="index.js"></script>
-</body>
+  </body>
 </html>
