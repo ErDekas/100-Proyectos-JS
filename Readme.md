@@ -42,7 +42,7 @@
 - **Juego de Ahorcado** ✅
 - **Mapa Interactivo** (usando Leaflet.js) ✅
 - **Lista de Reproducción de Música** ✅
-- **Creador de Currículum Vitae**
+- **Creador de Currículum Vitae** ✅
 - **Juego de Piedra, Papel o Tijera**
 - **Calculadora de IMC** (Índice de Masa Corporal)
 - **Galería de Fotos con Lightbox**
