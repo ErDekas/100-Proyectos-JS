@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creador de Currículums Vitae</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Generador de Currículums Vitae</h1>
+
+        <div class="formulario">
+            <form id="formCV">
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" name="nombre" id="nombre" placeholder="Ej. Juan Pérez Romero" required>
+
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" name="email" id="email" placeholder="ejemplo@dominio.com" required>
+
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" name="telefono" id="telefono" placeholder="123-456-789" required>
+
+                <label for="direccion">Dirección:</label>
+                <input type="text" name="direccion" id="direccion" placeholder="Ej. Calle Ficticia 12" required>
+
+                <label for="experiencia">Experiencia:</label>
+                <textarea name="experiencia" id="experiencia" rows="5" placeholder="Ej. Desarrollador en XYZ..."></textarea>
+                
+                <label for="educacion">Educación:</label>
+                <textarea name="educacion" id="educacion" rows="5" placeholder="Ej. Licenciatura en Ingenieria..."></textarea>
+
+                <label for="habilidades">Habilidades:</label>
+                <textarea name="habilidades" id="habilidades" rows="5" placeholder="Ej. HTML, CSS, JavaScript..."></textarea>
+
+                <button type="button" id="generarCV">Generar CV</button>
+            </form>
+        </div>
+
+        <div class="vista-previa" id="vista-previa">
+            <h2>Mi curriculum</h2>
+            <div id="cv-contenido">
+
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
