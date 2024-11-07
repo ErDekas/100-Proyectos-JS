@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galería de Fotos con Lightbox</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="gallery">
+      <a href="#" class="gallery-item">
+        <img src="assets/java.jpg" alt="Imagen 1" />
+      </a>
+      <a href="#" class="gallery-item">
+        <img src="assets/JS.jpg" alt="Imagen 2" />
+      </a>
+      <a href="#" class="gallery-item">
+        <img src="assets/react.jpg" alt="Imagen 3" />
+      </a>
+    </div>
+
+    <!-- Lightbox modal -->
+    <div id="lightbox" class="lightbox">
+      <span class="close">&times;</span>
+      <img class="lightbox-content" id="lightbox-img" />
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>

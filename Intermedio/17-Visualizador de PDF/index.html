@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visualizador de PDF</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Visor de PDF</h1>
+      <label for="file-input">Cargar PDF</label>
+      <input type="file" id="file-input" accept="application/pdf" />
+
+      <canvas id="pdf-canvas"></canvas>
+
+      <div class="controls">
+        <button id="prev-page" disabled>&lt;</button>
+        <button id="next-page" disabled>&gt;</button>
+      </div>
+
+      <div class="page-info">
+        Página <span id="current-page">1</span> de
+        <span id="total-pages">0</span>
+      </div>
+
+      <input
+        type="number"
+        class="page-input"
+        id="go-to-page"
+        placeholder="Página"
+      />
+
+      <button class="fullscreen-btn" id="fullscreen-toggle">
+        Pantalla Completa
+      </button>
+      <button class="exit-fullscreen" id="exit-fullscreen">
+        Salir de Pantalla Completa
+      </button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+.container {
+  width: 80%;
+  max-width: 900px;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+canvas {
+  width: 100%;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.controls {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.controls button {
+  padding: 20px;
+  background-color: rgba(0, 123, 255, 0.7);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: background-color 0.3s;
+  opacity: 0; /* Inicialmente invisibles */
+}
+.controls button:disabled {
+  background-color: rgba(0, 123, 255, 0.3);
+}
+.controls button:hover {
+  background-color: rgba(0, 123, 255, 1);
+  opacity: 1; /* Muestran las flechas en hover */
+}
+.page-info {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+input[type="file"] {
+  display: none;
+}
+label {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+.fullscreen-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.fullscreen-btn:active {
+  background-color: #218838;
+}
+.exit-fullscreen {
+  display: none;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.page-input {
+  width: 50px;
+  padding: 5px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+/* Estilos para el modo presentación */
+body.fullscreen .container {
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+}
+body.fullscreen canvas {
+  height: 100%;
+}
+body.fullscreen .controls {
+  opacity: 0; /* Botones invisibles en pantalla completa */
+}
+body.fullscreen .exit-fullscreen {
+  display: block; /* Muestra el botón para salir de pantalla completa */
+}

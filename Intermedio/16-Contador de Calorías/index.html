@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contador de Calorías</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contador de Calorías</h1>
+
+      <form id="caloriesForm">
+        <label for="food">Alimento:</label>
+        <input type="text" name="food" id="food" required />
+
+        <label for="calories">Calorías:</label>
+        <input type="number" name="calories" id="calories" required />
+
+        <button type="submit">Añadir</button>
+      </form>
+
+      <h2>Lista de Alimentos Consumidos</h2>
+      <ul id="foodList"></ul>
+
+      <h3>Total de Calorías:<span id="totalCalories">0</span></h3>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>

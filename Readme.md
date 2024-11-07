@@ -45,9 +45,9 @@
 - **Creador de Currículum Vitae** ✅
 - **Juego de Piedra, Papel o Tijera** ✅
 - **Calculadora de IMC** (Índice de Masa Corporal) ✅
-- **Galería de Fotos con Lightbox**
-- **Contador de Calorías**
-- **Visualizador de PDF**
+- **Galería de Fotos con Lightbox** ✅
+- **Contador de Calorías** ✅
+- **Visualizador de PDF** ✅
 - **Lista de Contactos**
 - **Juego de Sudoku**
 - **Conversor de Tiempo** (segundos a minutos, horas, días)
