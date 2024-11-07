@@ -1,49 +1,49 @@
-:root{
+:root {
     --color-texto: #49454567;
 }
 
 *,
 ::before,
-::after{
+::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
-    font-family: 'Roboto' monospace;
-    background: #4568Dc;
-    background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
+body {
+    font-family: 'Roboto', monospace;
     background: linear-gradient(to right, #B06AB3, #4568DC);
-    height: 650px;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-h1{
+h1 {
     text-align: center;
     font-weight: 700;
 }
 
-form{
+form {
     background: #fff;
-    padding: 40px 0;
+    padding: 40px;
     box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.8);
     border-radius: 10px;
+    display: grid;
+    gap: 20px;
 }
 
-.form{
+.form {
     width: 100%;
     margin: auto;
 }
 
-form .grupo{
+form .grupo {
     position: relative;
-    margin: 45px;
+    margin: 10px;
 }
 
-input{
+input {
     background: none;
     color: #c6c6c6;
     font-size: 18px;
@@ -54,12 +54,12 @@ input{
     border-bottom: 1px solid var(--color-texto);
 }
 
-input:focus{
+input:focus {
     outline: none;
     color: #5e5d5d;
 }
 
-label{
+label {
     color: var(--color-texto);
     font-size: 16px;
     position: absolute;
@@ -70,19 +70,19 @@ label{
 }
 
 input:focus ~ label,
-input:valid ~ label{
+input:valid ~ label {
     top: -14px;
     font-size: 12px;
     color: #2196f3;
 }
 
-.barra{
+.barra {
     position: relative;
     display: block;
-    width: 100%;
+    width: 200%;
 }
 
-.barra::before{
+.barra::before {
     content: '';
     height: 2px;
     width: 0%;
@@ -93,18 +93,16 @@ input:valid ~ label{
     left: 0;
 }
 
-input:focus ~ .barra::before{
+input:focus ~ .barra::before {
     width: 100%;
 }
 
-button{
-    background: #4568DC;
-    background: -webkit-linear-gradient(to right, #B06AB3, #4568DC);
+button {
     background: linear-gradient(to right, #B06AB3, #4568DC);
     border: none;
     display: block;
     width: 80%;
-    margin: 10px auto;
+    margin: 20px auto 0;
     height: 40px;
     color: #fff;
     font-size: 16px;
@@ -112,7 +110,7 @@ button{
     cursor: pointer;
 }
 
-p{
+p {
     text-align: center;
     color: rgba(154, 102, 228, 0.999);
     font-size: 14px;
@@ -120,8 +118,23 @@ p{
     font-family: 'Courier New', Courier, monospace;
 }
 
-@media screen and (max-width: 500px){
-    form{
-        width: 80%;
+/* Ajustes de grid para pantallas medianas y grandes */
+@media screen and (min-width: 768px) {
+    form {
+        width: 29%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+    }
+    /* Para que el botón y el párrafo de advertencias ocupen el ancho completo */
+    button, p {
+        grid-column: span 2;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    form {
+        width: 90%;
+        display: block;
     }
 }
