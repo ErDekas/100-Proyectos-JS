@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sudoku Extremo</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/icono.png">
+</head>
+<body>
+  <div class="game-container">
+    <h1>Sudoku Extremo</h1>
+    <div class="controls">
+      <label for="difficulty">Nivel de dificultad:</label>
+      <select id="difficulty" onchange="startGame()">
+        <option value="1">Nivel 1</option>
+        <option value="2">Nivel 2</option>
+        <option value="3">Nivel 3</option>
+        <option value="4">Nivel 4</option>
+        <option value="5">Nivel 5</option>
+        <option value="6">Nivel 6</option>
+        <option value="7">Nivel 7</option>
+      </select>
+    </div>
+    <div class="score-lives">
+      <p>Puntuación: <span id="score">0</span></p>
+      <p>Vidas: <span id="lives">3</span></p>
+    </div>
+    <div class="board" id="board"></div>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>

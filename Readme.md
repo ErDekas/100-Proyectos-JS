@@ -49,7 +49,7 @@
 - **Contador de Calorías** ✅
 - **Visualizador de PDF** ✅
 - **Lista de Contactos** ✅
-- **Juego de Sudoku**
+- **Juego de Sudoku** ✅
 - **Conversor de Tiempo** (segundos a minutos, horas, días)
 
 ---
