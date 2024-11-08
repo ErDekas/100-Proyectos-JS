@@ -48,7 +48,7 @@
 - **Galería de Fotos con Lightbox** ✅
 - **Contador de Calorías** ✅
 - **Visualizador de PDF** ✅
-- **Lista de Contactos**
+- **Lista de Contactos** ✅
 - **Juego de Sudoku**
 - **Conversor de Tiempo** (segundos a minutos, horas, días)
 
