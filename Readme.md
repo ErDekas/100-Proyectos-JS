@@ -50,7 +50,7 @@
 - **Visualizador de PDF** ✅
 - **Lista de Contactos** ✅
 - **Juego de Sudoku** ✅
-- **Conversor de Tiempo** (segundos a minutos, horas, días)
+- **Conversor de Tiempo** (segundos a minutos, horas, días) ✅
 
 ---
 
