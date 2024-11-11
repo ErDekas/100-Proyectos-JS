@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Autenticación</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido</h1>
+
+        <!-- Pantalla de Inicio -->
+        <div id="startScreen">
+            <button onclick="showRegisterForm()">Registrarse</button>
+            <button onclick="showLoginForm()">Iniciar Sesión</button>
+        </div>
+
+        <!-- Formulario de Registro -->
+        <div id="registerForm" class="hidden">
+            <h2>Registro</h2>
+            <input type="text" id="registerUsername" placeholder="Nombre de usuario" required>
+            <input type="email" id="registerEmail" placeholder="Correo electrónico" required>
+            <input type="password" id="registerPassword" placeholder="Contraseña" required>
+            <input type="password" id="confirmPassword" placeholder="Repetir contraseña" required>
+            <button onclick="register()">Registrarse</button>
+            <button onclick="backToStart()">Volver</button>
+        </div>
+
+        <!-- Formulario de Inicio de Sesión -->
+        <div id="loginForm" class="hidden">
+            <h2>Iniciar Sesión</h2>
+            <input type="text" id="loginUser" placeholder="Usuario o Correo" required>
+            <input type="password" id="loginPassword" placeholder="Contraseña" required>
+            <button onclick="login()">Iniciar Sesión</button>
+            <button onclick="backToStart()">Volver</button>
+        </div>
+
+        <!-- Mensaje de Bienvenida -->
+        <div id="welcomeMessage" class="hidden">
+            <h2>Bienvenido, <span id="user"></span>!</h2>
+            <button onclick="logout()">Cerrar Sesión</button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

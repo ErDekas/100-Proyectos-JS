@@ -1,0 +1,157 @@
+/* Base del diseño */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+  background-color: #f4f4f4;
+  margin: 0; /* Eliminado margen para evitar recortes */
+  font-family: Arial, sans-serif;
+}
+
+.calculadora {
+  width: 90%; /* Ajustado a un 90% del ancho de la pantalla */
+  max-width: 800px;
+  height: 70vh; /* Ajustado para que ocupe un 70% de la altura de la ventana */
+  border: 2px solid #333;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column; /* Para apilar pantalla y botones verticalmente */
+}
+
+.pantalla {
+  background-color: #222;
+  color: #fff;
+  font-size: 2em; /* Aumentar el tamaño de la fuente */
+  padding: 10px; /* Ajuste de padding */
+  text-align: right;
+  border-bottom: 2px solid #333;
+  border-radius: 10px 10px 0 0;
+  height: 20%; /* Ajustar altura a un 20% del contenedor */
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.botonera {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  flex-grow: 1; /* Permitir que la botonera ocupe el espacio restante */
+}
+
+/* Estilos de los botones */
+button {
+  padding: 5px; /* Ajustado para evitar desbordamiento */
+  font-size: 1.5em; /* Mantener un tamaño adecuado */
+  border: none;
+  background-color: #444;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 100%; /* Hacer que los botones llenen su celda */
+}
+
+button.operator {
+  background-color: #ff9500;
+}
+
+button.clear {
+  background-color: #d9534f;
+}
+
+button.equals {
+  background-color: #5cb85c;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+button.backspace {
+  background-color: #ffcc00;
+}
+
+button.asin,
+button.acos,
+button.atan,
+button.sin,
+button.cos,
+button.tan {
+  background-color: #007bff;
+}
+
+button.modeToggle {
+  background-color: #6c757d;
+  color: #fff;
+  font-weight: bold;
+}
+
+button.scientific {
+  display: none; /* Inicialmente ocultar */
+}
+
+.modo-cientifico button.scientific {
+  display: block; /* Mostrar solo en modo científico */
+}
+
+/* Responsividad para pantallas medianas */
+@media (max-width: 768px) {
+  .calculadora {
+    width: 90%;
+    height: 75vh; /* Ajuste ligero de la altura */
+  }
+
+  .pantalla {
+    font-size: 1.5em;
+    padding: 10px;
+    height: 20%; /* Mantener altura ajustada */
+  }
+
+  button {
+    font-size: 1.2em;
+  }
+
+  .botonera {
+    gap: 1px;
+  }
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 480px) {
+  .calculadora {
+    width: 95%;
+    height: 80vh; /* Aumentar la altura en pantallas pequeñas */
+  }
+
+  .pantalla {
+    font-size: 1.3em;
+    padding: 8px;
+    height: 20%; /* Mantener proporcionalidad */
+  }
+
+  .botonera {
+    gap: 2px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  button {
+    font-size: 1em;
+    padding: 5px; /* Reducir padding para que no desborde */
+  }
+}
+
+/* Ajustes en modo científico */
+.modo-cientifico .pantalla {
+  height: 20%; /* Ajustar altura de la pantalla en modo científico */
+}
+
+.modo-cientifico .botonera {
+  grid-template-columns: repeat(4, 1fr); /* Asegurarse de que los botones se alineen bien */
+}
+
+.modo-cientifico button {
+  font-size: 1em; /* Ajustar tamaño de fuente para botones científicos */
+  padding: 5px; /* Ajuste de padding para botones científicos */
+}

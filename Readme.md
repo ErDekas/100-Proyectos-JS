@@ -57,13 +57,13 @@
 ## **Nivel Avanzado**
 
 - **Juego de Tetris**
-- **Sistema de Autenticación** (registro, inicio de sesión)
+- **Sistema de Autenticación** (registro, inicio de sesión) ✅
 - **Tablero Kanban** (estilo Trello)
 - **Chat en Tiempo Real** (usando WebSocket)
 - **Editor de Diagramas de Flujo**
 - **Simulador de Vuelo** (usando Three.js)
 - **Red Social Simple** (publicar, comentar, seguir)
-- **Calculadora Científica**
+- **Calculadora Científica** ✅
 - **Juego de Laberinto**
 - **Tienda en Línea Básica**
 - **Sistema de Reservas** (para hoteles, restaurantes)
