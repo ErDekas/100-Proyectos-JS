@@ -64,7 +64,7 @@
 - **Simulador de Vuelo** (usando Three.js)
 - **Red Social Simple** (publicar, comentar, seguir)
 - **Calculadora Científica** ✅
-- **Juego de Laberinto**
+- **Juego de Laberinto** ✅
 - **Tienda en Línea Básica**
 - **Sistema de Reservas** (para hoteles, restaurantes)
 - **Mapa de Calor** (usando D3.js)
