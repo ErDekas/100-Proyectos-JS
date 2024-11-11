@@ -59,7 +59,7 @@
 - **Juego de Tetris**
 - **Sistema de Autenticación** (registro, inicio de sesión) ✅
 - **Tablero Kanban** (estilo Trello)
-- **Chat en Tiempo Real** (usando WebSocket)
+- **Chat en Tiempo Real** (usando WebSocket) ✅
 - **Editor de Diagramas de Flujo**
 - **Simulador de Vuelo** (usando Three.js)
 - **Red Social Simple** (publicar, comentar, seguir)
