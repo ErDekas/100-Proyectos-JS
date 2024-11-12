@@ -1,10 +1,10 @@
 // server.js
 const express = require("express");
-const http = require("http");
+const https = require("https");
 const { Server } = require("socket.io");
 
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(app);
 const io = new Server(server);
 const PORT = 3000;
 
