@@ -10,9 +10,19 @@
       "use": "@vercel/static"
     }
   ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
   "routes": [
-    { "src": "/socket.io/(.*)", "dest": "/server.js" },
-    { "src": "/api/(.*)", "dest": "/server.js" },
-    { "src": "/(.*)", "dest": "/public/$1" }
-  ]
+    {
+      "src": "/socket.io/(.*)",
+      "dest": "/socket.io/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
