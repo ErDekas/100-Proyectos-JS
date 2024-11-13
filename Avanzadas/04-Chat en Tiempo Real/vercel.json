@@ -1,22 +1,8 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "chat-server.js", 
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/*",
-      "use": "@vercel/static"
-    }
-  ],
   "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
