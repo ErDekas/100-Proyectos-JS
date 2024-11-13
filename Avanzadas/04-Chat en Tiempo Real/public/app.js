@@ -1,12 +1,5 @@
 // Conectar al servidor de Socket.IO
-const socket = io(window.location.origin, {
-  secure: true, // Asegura que estás usando HTTPS
-  transports: ["websocket"], // Forzar WebSocket para evitar problemas con polling
-  reconnection: true,
-  reconnectionAttempts: 10,
-  reconnectionDelay: 2000,
-});
-
+const socket = io();
 
 // Elementos del DOM
 const messagesDiv = document.getElementById("messages");
