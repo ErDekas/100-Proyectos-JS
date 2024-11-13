@@ -1,3 +1,6 @@
+// Cargar las variables de entorno desde el archivo .env
+require('dotenv').config();
+
 // server.js
 const express = require("express");
 const http = require("http");
@@ -12,6 +15,7 @@ const io = new Server(server, {
     },
 });
 const PORT = process.env.PORT || 3000;
+const SECRET_KEY = process.env.SECRET_KEY || 'defaultSecret';
 
 // Servir archivos estáticos
 app.use(express.static("public"));
