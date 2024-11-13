@@ -16,12 +16,6 @@
       "destination": "/"
     }
   ],
-  "routes": [
-    {
-      "src": "/socket.io/(.*)",
-      "dest": "/socket.io/$1"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
   }
