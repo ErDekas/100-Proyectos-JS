@@ -1,6 +1,7 @@
 // Conectar al servidor de Socket.IO
 const socket = io("https://whateka.vercel.app", {
   transports: ["polling"],
+  path: "/socket.io",
 });
 
 // Elementos del DOM
