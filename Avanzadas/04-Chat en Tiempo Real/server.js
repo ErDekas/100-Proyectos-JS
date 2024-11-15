@@ -4,7 +4,9 @@ const { Server } = require("socket.io");
 const serverless = require("serverless-http");
 require('dotenv').config();
 
+// Crear el servidor de Express
 const app = express();
+app.use(express.static("public"));
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
