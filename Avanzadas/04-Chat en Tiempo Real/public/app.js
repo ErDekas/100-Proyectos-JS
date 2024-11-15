@@ -1,5 +1,5 @@
 // Conectar al servidor de Socket.IO
-const socket = io("https://tu-dominio.vercel.app", {
+const socket = io("https://whateka.vercel.app", {
   transports: ["websocket", "polling"],
 });
 
