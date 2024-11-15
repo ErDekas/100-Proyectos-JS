@@ -12,6 +12,8 @@ const io = new Server(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"],
+        allowedHeaders: ["Content-Type"],
+        credentials: true,
     },
 });
 const PORT = process.env.PORT || 3000;
