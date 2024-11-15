@@ -15,6 +15,7 @@ const io = new Server(server, {
         allowedHeaders: ["Content-Type"],
         credentials: true,
     },
+    transports: ["websocket", "polling"],
 });
 const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.SECRET_KEY || 'defaultSecret';
