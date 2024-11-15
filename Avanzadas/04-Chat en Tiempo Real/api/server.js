@@ -14,6 +14,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"],
     },
 });
+const PORT = process.env.PORT || 3000;
 const SECRET_KEY = process.env.SECRET_KEY || 'defaultSecret';
 
 // Servir archivos estáticos
@@ -37,5 +38,6 @@ io.on("connection", (socket) => {
 });
 
 // Iniciar el servidor
-server.listen();
-
+server.listen(PORT, () => {
+    console.log(`Servidor escuchando en http://localhost:${PORT}`);
+});
