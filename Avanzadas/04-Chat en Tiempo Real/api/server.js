@@ -38,6 +38,5 @@ io.on("connection", (socket) => {
 });
 
 // Iniciar el servidor
-server.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
-});
+server.listen();
+
