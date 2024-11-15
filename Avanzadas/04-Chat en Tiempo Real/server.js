@@ -1,43 +1,43 @@
-// Cargar las variables de entorno desde el archivo .env
-require('dotenv').config();
-
-// server.js
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
+const serverless = require("serverless-http");
+require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-    },
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
+
 const PORT = process.env.PORT || 3000;
-const SECRET_KEY = process.env.SECRET_KEY || 'defaultSecret';
 
 // Servir archivos estáticos
 app.use(express.static("public"));
 
 // Manejar conexiones de Socket.IO
 io.on("connection", (socket) => {
-    console.log("Nuevo cliente conectado:", socket.id);
+  console.log("Nuevo cliente conectado:", socket.id);
 
-    // Escuchar mensajes del cliente
-    socket.on("chatMessage", ({ message, sender }) => {
-        console.log(`Mensaje de ${sender}: ${message}`);
-        // Retransmitir el mensaje a todos los clientes, incluyendo al remitente
-        io.emit("chatMessage", { message, sender });
-    });
+  socket.on("chatMessage", ({ message, sender }) => {
+    console.log(`Mensaje de ${sender}: ${message}`);
+    io.emit("chatMessage", { message, sender });
+  });
 
-    // Manejar desconexión del cliente
-    socket.on("disconnect", () => {
-        console.log("Cliente desconectado:", socket.id);
-    });
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado:", socket.id);
+  });
 });
 
-// Iniciar el servidor
-server.listen(PORT, () => {
+// Exportar la función serverless
+module.exports.handler = serverless(app);
+
+// Para pruebas locales puedes iniciar el servidor de forma tradicional
+if (require.main === module) {
+  server.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
-});
+  });
+}
