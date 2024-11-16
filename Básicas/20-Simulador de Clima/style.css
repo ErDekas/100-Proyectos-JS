@@ -3,9 +3,9 @@
     box-sizing: border-box;
 }
 body {
+    background-color: #333;
     margin: 0;
     font-family: "Poppins", sans-serif;
-    background-color: linear-gradiet(300deg, #757b87, #909d9d);
     display: flex;
     justify-content: center;
     align-items: center;
