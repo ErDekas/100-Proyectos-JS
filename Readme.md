@@ -69,7 +69,7 @@
 - **Sistema de Reservas** (para hoteles, restaurantes)
 - **Mapa de Calor** (usando D3.js)
 - **Editor de GIFs**
-- **Carrera de Pájaros** (juego tipo Flappy Bird)
+- **Carrera de Pájaros** (juego tipo Flappy Bird) ✅
 - **Calculadora de Rutas** (usando Google Maps API)
 - **Sistema de Notificaciones en Tiempo Real**
 - **Pizarra Colaborativa** (varios usuarios pueden dibujar)
