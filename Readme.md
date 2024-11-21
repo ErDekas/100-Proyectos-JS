@@ -56,7 +56,7 @@
 
 ## **Nivel Avanzado**
 
-- **Juego de Tetris**
+- **Juego de Tetris** ✅
 - **Sistema de Autenticación** (registro, inicio de sesión) ✅
 - **Tablero Kanban** (estilo Trello)
 - **Chat en Tiempo Real** ✅
