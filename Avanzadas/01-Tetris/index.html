@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vanilla JS Tetris</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="tetris-board" width="300" height="600"></canvas>
+        <div id="sidebar">
+            <h2>Tetris</h2>
+            <div>Score: <span id="score">0</span></div>
+            <div>High Score: <span id="high-score">0</span></div>
+            <div>Level: <span id="level">1</span></div>
+            <div>Next Piece:</div>
+            <canvas id="next-piece-canvas" width="120" height="120"></canvas>
+        </div>
+        <div id="pause-overlay">PAUSED</div>
+    </div>
+
+    <div id="mobile-controls">
+        <button class="mobile-btn" id="left-btn">←</button>
+        <button class="mobile-btn" id="rotate-btn">↻</button>
+        <button class="mobile-btn" id="right-btn">→</button>
+        <button class="mobile-btn" id="drop-btn">↓</button>
+    </div>
+
+    <script type="module" src="index.js"></script>
+</body>
+</html>
