@@ -420,50 +420,81 @@ class TetrisGame {
     const board = document.getElementById("tetris-board");
     const hammertime = new Hammer(board);
   
-    hammertime.get("pan").set({ direction: Hammer.DIRECTION_ALL });
-    hammertime.get("swipe").set({ direction: Hammer.DIRECTION_VERTICAL });
-    hammertime.get("press").set({ time: 50 }); // Shorter press time for responsiveness
+    // Configure recognizers
+    hammertime.get('pan').set({ 
+      direction: Hammer.DIRECTION_HORIZONTAL,
+      threshold: 30,    // Minimum distance before moving
+      pointers: 1
+    });
+    hammertime.get('swipe').set({ 
+      direction: Hammer.DIRECTION_ALL,
+      threshold: 30,    // Minimum distance required before recognizing swipe
+      velocity: 0.3     // Minimum velocity required
+    });
+    hammertime.get('press').set({ time: 50 });
   
     let lastX = 0;
     let pressTimer = null;
+    const originalDropSpeed = this.dropSpeed;
   
-    // Horizontal movement
+    // Horizontal movement with pan
+    let panStartX = 0;
     hammertime.on("panstart", (e) => {
+      panStartX = e.center.x;
       lastX = this.currentPiece.x;
     });
   
     hammertime.on("pan", (e) => {
-      const deltaX = Math.round(e.deltaX / 50);
-      const newX = lastX + deltaX;
-  
-      // Move piece horizontally
-      if (newX > this.currentPiece.x) {
-        this.movePiece(1, 0);
-      } else if (newX < this.currentPiece.x) {
-        this.movePiece(-1, 0);
+      const deltaX = e.center.x - panStartX;
+      
+      if (Math.abs(deltaX) >= 30) {  // Only move if delta is significant
+        const direction = deltaX > 0 ? 1 : -1;
+        this.movePiece(direction, 0);
+        panStartX = e.center.x;  // Reset start point after each move
+        lastX = this.currentPiece.x;
       }
     });
   
-    // Soft drop (accelerated downward movement)
-    hammertime.on("press", (e) => {
-      // Start continuous downward movement
+    // Soft drop (press and hold)
+    hammertime.on("press", () => {
+      this.dropSpeed = 100; // Accelerate drop speed
       pressTimer = setInterval(() => {
         this.movePiece(0, 1);
-      }, 100); // Move down every 100ms
+      }, 100);
     });
   
-    hammertime.on("pressup", () => {
-      // Stop continuous downward movement
+    const resetDropSpeed = () => {
+      this.dropSpeed = originalDropSpeed;
       if (pressTimer) {
         clearInterval(pressTimer);
         pressTimer = 0;
       }
+    };
+  
+    // Handle swipes
+    hammertime.on("swipe", (e) => {
+      switch(e.direction) {
+        case Hammer.DIRECTION_DOWN:
+          this.hardDrop();
+          resetDropSpeed();
+          break;
+        case Hammer.DIRECTION_LEFT:
+          this.movePiece(-1, 0);
+          resetDropSpeed();
+          break;
+        case Hammer.DIRECTION_RIGHT:
+          this.movePiece(1, 0);
+          resetDropSpeed();
+          break;
+        case Hammer.DIRECTION_UP:
+          this.rotatePiece();
+          resetDropSpeed();
+          break;
+      }
     });
   
-    // Hard drop via swipe
-    hammertime.on("swipedown", () => {
-      this.hardDrop();
-    });
+    // Reset on pressup
+    hammertime.on("pressup", resetDropSpeed);
   
     // Rotation with tap
     hammertime.on("tap", () => this.rotatePiece());
@@ -476,7 +507,10 @@ class TetrisGame {
     document.getElementById("rotate-btn")
       .addEventListener("click", () => this.rotatePiece());
     document.getElementById("drop-btn")
-      .addEventListener("click", () => this.hardDrop());
+      .addEventListener("click", () => {
+        this.hardDrop();
+        resetDropSpeed();
+      });
   }
 
   drawBoard() {
