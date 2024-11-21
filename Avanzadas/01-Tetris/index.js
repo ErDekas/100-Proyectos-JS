@@ -3,9 +3,9 @@ class Particle {
     this.x = x;
     this.y = y;
     this.color = color;
-    this.radius = Math.random() * 5 + 1;
+    this.radius = Math.random() * 5 + 2;
     this.speedX = (Math.random() - 0.5) * 5;
-    this.speedY = (Math.random() - 0.5) * 5;
+    this.speedY = (Math.random() - 0.5) * 10;
     this.alpha = 1;
   }
 
@@ -419,98 +419,56 @@ class TetrisGame {
     // Touch controls with Hammer.js
     const board = document.getElementById("tetris-board");
     const hammertime = new Hammer(board);
-  
-    // Configure recognizers
-    hammertime.get('pan').set({ 
-      direction: Hammer.DIRECTION_HORIZONTAL,
-      threshold: 30,    // Minimum distance before moving
-      pointers: 1
-    });
-    hammertime.get('swipe').set({ 
-      direction: Hammer.DIRECTION_ALL,
-      threshold: 30,    // Minimum distance required before recognizing swipe
-      velocity: 0.3     // Minimum velocity required
-    });
-    hammertime.get('press').set({ time: 50 });
-  
+
+    hammertime.get("pan").set({ direction: Hammer.DIRECTION_ALL });
+    hammertime.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
+    hammertime.get("doubletap").set({ taps: 2 });
+
     let lastX = 0;
-    let pressTimer = null;
-    const originalDropSpeed = this.dropSpeed;
-  
-    // Horizontal movement with pan
-    let panStartX = 0;
     hammertime.on("panstart", (e) => {
-      panStartX = e.center.x;
       lastX = this.currentPiece.x;
     });
-  
+
     hammertime.on("pan", (e) => {
-      const deltaX = e.center.x - panStartX;
-      
-      if (Math.abs(deltaX) >= 30) {  // Only move if delta is significant
-        const direction = deltaX > 0 ? 1 : -1;
-        this.movePiece(direction, 0);
-        panStartX = e.center.x;  // Reset start point after each move
-        lastX = this.currentPiece.x;
+      const deltaX = Math.round(e.deltaX / 50);
+      const newX = lastX + deltaX;
+
+      // Move piece horizontally
+      if (newX > this.currentPiece.x) {
+        this.movePiece(1, 0);
+      } else if (newX < this.currentPiece.x) {
+        this.movePiece(-1, 0);
       }
     });
-  
-    // Soft drop (press and hold)
-    hammertime.on("press", () => {
-      this.dropSpeed = 100; // Accelerate drop speed
-      pressTimer = setInterval(() => {
-        this.movePiece(0, 1);
-      }, 100);
-    });
-  
-    const resetDropSpeed = () => {
-      this.dropSpeed = originalDropSpeed;
-      if (pressTimer) {
-        clearInterval(pressTimer);
-        pressTimer = 0;
-      }
-    };
-  
-    // Handle swipes
-    hammertime.on("swipe", (e) => {
-      switch(e.direction) {
-        case Hammer.DIRECTION_DOWN:
-          this.hardDrop();
-          resetDropSpeed();
-          break;
-        case Hammer.DIRECTION_LEFT:
-          this.movePiece(-1, 0);
-          resetDropSpeed();
-          break;
-        case Hammer.DIRECTION_RIGHT:
-          this.movePiece(1, 0);
-          resetDropSpeed();
-          break;
-        case Hammer.DIRECTION_UP:
-          this.rotatePiece();
-          resetDropSpeed();
-          break;
-      }
-    });
-  
-    // Reset on pressup
-    hammertime.on("pressup", resetDropSpeed);
-  
-    // Rotation with tap
-    hammertime.on("tap", () => this.rotatePiece());
-  
+
+    hammertime.on("swipedown", () => this.hardDrop());
+    hammertime.on("swipeup", () => this.rotatePiece());
+    
+    // Add down with tap
+    hammertime.on("tap", () => this.movePiece(0, 1));
+
     // Mobile buttons
-    document.getElementById("left-btn")
+    document
+      .getElementById("left-btn")
       .addEventListener("click", () => this.movePiece(-1, 0));
-    document.getElementById("right-btn")
+    document
+      .getElementById("right-btn")
       .addEventListener("click", () => this.movePiece(1, 0));
-    document.getElementById("rotate-btn")
+    document
+      .getElementById("rotate-btn")
       .addEventListener("click", () => this.rotatePiece());
-    document.getElementById("drop-btn")
-      .addEventListener("click", () => {
-        this.hardDrop();
-        resetDropSpeed();
-      });
+    document
+      .getElementById("drop-btn")
+      .addEventListener("click", () => this.hardDrop());
+  }
+  togglePause() {
+    this.isPaused = !this.isPaused;
+    const pauseOverlay = document.getElementById("pause-overlay");
+    if (this.isPaused) {
+      pauseOverlay.style.display = "flex";
+    } else {
+      pauseOverlay.style.display = "none";
+    }
   }
 
   drawBoard() {
