@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="boards-list">
+            <h2>Boards</h2>
+            <div id="boards-container"></div>
+            <div class="board-creator">
+                <input type="text" id="new-board-input" placeholder="New Board Name">
+                <button onclick="createBoard()">+</button>
+            </div>
+        </div>
+        <div class="kanban-board" id="current-board"></div>
+    </div>
+
+    <!-- Modal for task details -->
+    <div id="task-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h3>Task Details</h3>
+            <label for="task-title">Task Title</label>
+            <input type="text" id="task-title" style="width: 100%; margin-bottom: 10px;" placeholder="Task Title"/>
+            
+            <label for="task-description">Task Description</label>
+            <textarea id="task-description" rows="4" style="width: 100%; margin-bottom: 10px;"></textarea>
+            
+            <button onclick="kanbanApp.saveTaskDetails()">Save</button>
+            <button onclick="kanbanApp.closeTaskModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

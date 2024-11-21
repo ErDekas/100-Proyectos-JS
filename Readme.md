@@ -58,7 +58,7 @@
 
 - **Juego de Tetris** ✅
 - **Sistema de Autenticación** (registro, inicio de sesión) ✅
-- **Tablero Kanban** (estilo Trello)
+- **Tablero Kanban** (estilo Trello) ✅
 - **Chat en Tiempo Real** ✅
 - **Editor de Diagramas de Flujo**
 - **Simulador de Vuelo** (usando Three.js)
