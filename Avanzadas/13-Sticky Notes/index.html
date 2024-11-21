@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Post-It Notes Manager</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div id="app-container">
+        <div id="controls">
+            <div>
+                <button id="new-note-btn">Nueva Nota</button>
+                <select id="view-selector">
+                    <option value="grid">Vista Cuadrícula</option>
+                    <option value="list">Vista Lista</option>
+                </select>
+            </div>
+        </div>
+        <div id="notes-container"></div>
+    </div>
+
+    <div id="new-note-modal" style="display:none;">
+        <h2>Crear Nueva Nota</h2>
+        <input type="text" id="note-title" placeholder="Título">
+        <textarea id="note-content" placeholder="Contenido"></textarea>
+        <button id="save-note-btn">Guardar</button>
+    </div>
+
+    <script type="module">
+        import { NotesController } from './controller/NotesController.js';
+        new NotesController();
+    </script>
+</body>
+</html>
