@@ -1,0 +1,86 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  margin: 0;
+  height: 100vh;
+}
+#sidebar {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+#shapeSelector {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.shape-option {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #2196f3;
+}
+#trashBin {
+  background-color: #ff6347;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#trashBin.drag-over {
+  background-color: #ff4500;
+}
+#canvas {
+  flex-grow: 1;
+  position: relative;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+.node {
+  position: absolute;
+  width: 100px;
+  height: 50px;
+  background-color: #4caf50;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  user-select: none;
+}
+.node-rectangle {
+  border-radius: 0;
+}
+.node-circle {
+  border-radius: 50%;
+}
+.node-diamond {
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.node-triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.node.selected {
+  border: 3px solid blue;
+}
+.connector {
+  position: absolute;
+  stroke: #333;
+  stroke-width: 2;
+  pointer-events: none;
+}
+button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}

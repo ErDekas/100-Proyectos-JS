@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editor de Diagramas de Flujo</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="sidebar">
+      <div id="shapeSelector">
+        <div class="shape-option" data-shape="rectangle">□</div>
+        <div class="shape-option" data-shape="circle">○</div>
+        <div class="shape-option" data-shape="diamond">♦</div>
+        <div class="shape-option" data-shape="triangle">△</div>
+      </div>
+      <button id="addNodeBtn">Añadir Nodo</button>
+      <button id="connectNodesBtn">Conectar Nodos</button>
+      <div id="trashBin">Papelera</div>
+    </div>
+    <div id="canvas"></div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
