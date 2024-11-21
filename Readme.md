@@ -68,7 +68,7 @@
 - **Tienda en Línea Básica**
 - **Sistema de Reservas** (para hoteles, restaurantes)
 - **Mapa de Calor** (usando D3.js)
-- **Editor de GIFs**
+- **Sticky Notes** ✅
 - **Carrera de Pájaros** (juego tipo Flappy Bird) ✅
 - **Calculadora de Rutas** (usando Google Maps API)
 - **Sistema de Notificaciones en Tiempo Real**
