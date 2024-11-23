@@ -17,6 +17,8 @@
           "user-select"
         ]
       }
-    ]
+    ],
+    "meta-viewport": "off",
+    "no-inline-styles": "off"
   }
 }
