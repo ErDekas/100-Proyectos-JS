@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>07-Red Social Simple</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    <!-- Contenedor de Autenticación -->
+    <div id="authContainer" class="auth-container">
+        <div class="auth-box">
+            <h1>Bienvenido</h1>
+
+            <!-- Pantalla de Inicio -->
+            <div id="startScreen">
+                <button class="button" onclick="showRegisterForm()">Registrarse</button>
+                <button class="button" onclick="showLoginForm()">Iniciar Sesión</button>
+            </div>
+
+            <!-- Formulario de Registro -->
+            <div id="registerForm" class="hidden">
+                <h2>Registro</h2>
+                <input type="text" id="registerUsername" class="auth-input" placeholder="Nombre de usuario" required>
+                <input type="email" id="registerEmail" class="auth-input" placeholder="Correo electrónico" required>
+                <input type="password" id="registerPassword" class="auth-input" placeholder="Contraseña" required>
+                <input type="password" id="confirmPassword" class="auth-input" placeholder="Repetir contraseña" required>
+                <button class="button" onclick="register()">Registrarse</button>
+                <button class="button" onclick="backToStart()">Volver</button>
+            </div>
+
+            <!-- Formulario de Inicio de Sesión -->
+            <div id="loginForm" class="hidden">
+                <h2>Iniciar Sesión</h2>
+                <input type="text" id="loginUser" class="auth-input" placeholder="Usuario o Correo" required>
+                <input type="password" id="loginPassword" class="auth-input" placeholder="Contraseña" required>
+                <button class="button" onclick="login()">Iniciar Sesión</button>
+                <button class="button" onclick="backToStart()">Volver</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor Principal de la Red Social -->
+    <div id="mainContainer" class="hidden">
+        <div class="nav-bar">
+            <h2>Bienvenido, <span id="userDisplay"></span></h2>
+            <button class="button" style="width: auto;" onclick="logout()">Cerrar Sesión</button>
+        </div>
+        
+        <div class="container">
+            <div class="post-form">
+                <textarea class="post-input" placeholder="¿Qué estás pensando?"></textarea>
+                <input type="file" id="media-input" accept="image/*,video/*">
+                <div id="media-preview"></div>
+                <button class="button" onclick="createPost()">Publicar</button>
+            </div>
+            <div id="posts-container"></div>
+        </div>
+    </div>
+
+   <script src="app.js"></script>
 </body>
 </html>
