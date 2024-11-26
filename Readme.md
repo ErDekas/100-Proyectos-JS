@@ -62,10 +62,10 @@
 - **Chat en Tiempo Real** ✅
 - **Editor de Diagramas de Flujo** ✅
 - **Simulador de Vuelo** (usando Three.js) ✅
-- **Red Social Simple** (publicar, comentar, seguir)
+- **Red Social Simple** (publicar, comentar, seguir) ✅
 - **Calculadora Científica** ✅
 - **Juego de Laberinto** ✅
-- **Tienda en Línea Básica**
+- **Tienda en Línea Básica** ✅
 - **Sistema de Reservas** (para hoteles, restaurantes)
 - **Mapa de Calor** (usando D3.js)
 - **Sticky Notes** ✅

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tienda Online Avanzada</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Mi Tienda Online</h1>
+        <div class="header-controles">
+          <label class="modo-oscuro-label">
+            Modo Oscuro
+            <input type="checkbox" id="modo-oscuro" />
+          </label>
+          <div id="cart-icon">🛒 <span id="cart-count">0</span></div>
+        </div>
+      </header>
+
+      <!-- Modales -->
+      <div id="login-modal" class="modal hidden">
+        <form id="login-form">
+          <h2>Iniciar Sesión</h2>
+          <input type="text" id="login-correo" placeholder="Correo" required />
+          <input
+            type="password"
+            id="login-contrasena"
+            placeholder="Contraseña"
+            required
+          />
+          <button type="submit">Iniciar Sesión</button>
+          <p>
+            ¿No tienes cuenta? <a href="#" id="mostrar-registro">Regístrate</a>
+          </p>
+        </form>
+      </div>
+
+      <div id="registro-modal" class="modal hidden">
+        <form id="registro-form">
+          <h2>Registro de Usuario</h2>
+          <input
+            type="email"
+            id="registro-correo"
+            placeholder="Correo electrónico"
+            required
+          />
+          <input
+            type="password"
+            id="registro-contrasena"
+            placeholder="Contraseña"
+            required
+          />
+          <input
+            type="password"
+            id="registro-repetir-contrasena"
+            placeholder="Repetir Contraseña"
+            required
+          />
+          <button type="submit">Registrarse</button>
+          <p>
+            ¿Ya tienes cuenta? <a href="#" id="mostrar-login">Inicia Sesión</a>
+          </p>
+        </form>
+      </div>
+
+      <div id="pago-modal" class="modal hidden">
+        <form id="pago-form">
+          <h2>Pagar</h2>
+          <input
+            type="text"
+            id="numero-tarjeta"
+            placeholder="Número de Tarjeta"
+            required
+          />
+          <div class="fila-pago">
+            <input
+              type="text"
+              id="fecha-expiracion"
+              placeholder="MM/AA"
+              required
+            />
+            <input type="text" id="cvv" placeholder="CVV" required />
+          </div>
+          <input
+            type="text"
+            id="nombre-titular"
+            placeholder="Nombre del Titular"
+            required
+          />
+          <div id="total-pago"></div>
+          <button type="submit">Pagar</button>
+        </form>
+      </div>
+
+      <main>
+        <section id="products-container"></section>
+
+        <section id="cart-container" class="hidden">
+          <h2>Carrito de Compras</h2>
+          <div id="cart-items"></div>
+          <div id="cart-total">Total: $0</div>
+          <button id="checkout-btn">Finalizar Compra</button>
+        </section>
+      </main>
+    </div>
+
+    <script src="services/api.js"></script>
+    <script src="services/auth.js"></script>
+    <script src="services/storage.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
