@@ -138,3 +138,50 @@ body {
     justify-content: space-between;
     align-items: center;
 }
+
+/* Estilos para el modo oscuro */
+body.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+.dark-mode .auth-container,
+.dark-mode .nav-bar{
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+.dark-mode .button {
+    background-color: #4a4a4a;
+    border: 1px solid #666;
+}
+
+.dark-mode .auth-input,
+.dark-mode .post-input {
+    background-color: #2c2c2c;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.dark-mode .post {
+    background-color: #2c2c2c;
+    border: 1px solid #555;
+}
+
+.dark-mode .post-form {
+    background-color: #2c2c2c;
+    border: 1px solid #555;
+}
+
+.dark-mode .auth-box,
+.dark-mode .container {
+    background-color: #1e1e1e;
+    color: #fff;
+    box-shadow: #979797 0 0 7px;
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.dark-mode .button:hover {
+    background-color: #4d4d4d;
+}

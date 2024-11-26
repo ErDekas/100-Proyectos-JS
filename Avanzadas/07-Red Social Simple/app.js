@@ -2,6 +2,7 @@
 const state = {
     posts: [],
     following: new Set(),
+    likedPost: new Set(),
     currentUser: null
 };
 
@@ -64,7 +65,6 @@ function login() {
 
     let userFound = null;
 
-    // Buscar usuario por nombre o email
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         try {
@@ -81,12 +81,14 @@ function login() {
     if (userFound && userFound.password === password) {
         state.currentUser = userFound.username;
         state.following = new Set(userFound.following || []);
+        state.likedPosts = new Set(userFound.likedPosts || []); // Restaurar "me gusta"
         loadPosts();
         showMainContainer();
     } else {
         alert("Usuario o contraseña incorrectos.");
     }
 }
+
 
 function showMainContainer() {
     document.getElementById("authContainer").classList.add("hidden");
@@ -276,18 +278,79 @@ function renderPosts() {
 
 // Función complementaria para manejar los "Me gusta"
 function toggleLike(postId) {
+    if (!state.currentUser) {
+        alert("Debes iniciar sesión para dar 'Me gusta'.");
+        return;
+    }
+
     const post = state.posts.find(p => p.id === postId);
-    if (post) {
+    if (!post) return;
+
+    const currentUserData = JSON.parse(localStorage.getItem(state.currentUser));
+    if (!currentUserData) {
+        alert("Error al cargar los datos del usuario actual.");
+        return;
+    }
+
+    // Inicializamos el conjunto de "me gusta" del usuario si no existe
+    currentUserData.likedPosts = currentUserData.likedPosts || [];
+
+    if (state.likedPosts.has(postId)) {
+        // Si el usuario ya le dio "me gusta", lo quita
+        post.likes -= 1;
+        state.likedPosts.delete(postId);
+        currentUserData.likedPosts = currentUserData.likedPosts.filter(id => id !== postId);
+    } else {
+        // Si el usuario no le ha dado "me gusta", lo agrega
         post.likes += 1;
-        
-        // Actualizar en localStorage
-        const userData = JSON.parse(localStorage.getItem(post.author));
-        const userPost = userData.posts.find(p => p.id === postId);
-        if (userPost) {
-            userPost.likes = post.likes;
-            localStorage.setItem(post.author, JSON.stringify(userData));
-        }
-        
-        renderPosts();
+        state.likedPosts.add(postId);
+        currentUserData.likedPosts.push(postId);
+    }
+
+    // Actualizamos los "me gusta" en el autor del post en localStorage
+    const postAuthorData = JSON.parse(localStorage.getItem(post.author));
+    if (!postAuthorData) {
+        alert("Error al cargar los datos del autor del post.");
+        return;
+    }
+
+    const postInAuthorData = postAuthorData.posts.find(p => p.id === postId);
+    if (postInAuthorData) {
+        postInAuthorData.likes = post.likes;
+        localStorage.setItem(post.author, JSON.stringify(postAuthorData));
+    }
+
+    // Actualizamos los datos del usuario actual en localStorage
+    localStorage.setItem(state.currentUser, JSON.stringify(currentUserData));
+
+    // Refrescamos los posts en la vista
+    renderPosts();
+}
+
+// Función para modo oscuro
+function toggleDarkMode() {
+    const body = document.body;
+    const mainContainer = document.getElementById('mainContainer');
+    const authContainer = document.getElementById('authContainer');
+
+    body.classList.toggle('dark-mode');
+    mainContainer.classList.toggle('dark-mode');
+    authContainer.classList.toggle('dark-mode');
+
+    // Guardar preferencia de modo oscuro en localStorage
+    const isDarkMode = body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+}
+
+// Función para cargar el modo oscuro al iniciar la página
+function loadDarkMode() {
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('mainContainer').classList.add('dark-mode');
+        document.getElementById('authContainer').classList.add('dark-mode');
     }
 }
+
+// Llamar a loadDarkMode cuando se carga la página
+window.addEventListener('DOMContentLoaded', loadDarkMode);
