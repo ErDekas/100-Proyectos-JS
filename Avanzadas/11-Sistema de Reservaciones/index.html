@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Reservas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Sistema de Reservas</h1>
+            <p>Selecciona una fecha y horario disponible para tu reserva</p>
+        </div>
+
+        <div class="auth-section">
+            <button class="btn btn-primary" id="btnLogin">Iniciar Sesión</button>
+            <button class="btn btn-primary" id="btnRegistro">Registrarse</button>
+        </div>
+
+        <div class="reserva-section">
+            <div class="calendario-container">
+                <div id="calendario"></div>
+                <div id="horarios-disponibles"></div>
+            </div>
+
+            <div class="resumen">
+                <div id="resumen-detalles">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="modalLogin" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <div class="form-group">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Contraseña:</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <button class="btn btn-primary">Entrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div id="modalRegistro" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Registro</h2>
+            <div class="form-group">
+                <label for="registroEmail">Email:</label>
+                <input type="email" id="registroEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="registroPassword">Contraseña:</label>
+                <input type="password" id="registroPassword" required>
+            </div>
+            <button class="btn btn-primary">Registrarse</button>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="index.js"></script>
+</body>
+</html>

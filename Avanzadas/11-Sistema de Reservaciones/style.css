@@ -1,0 +1,318 @@
+:root {
+    --primary-color: #4caf50;
+    --primary-hover: #45a049;
+    --bg-color: #f5f5f5;
+    --border-color: #ddd;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Estilos del calendario */
+#calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.calendario-header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: white;
+    margin-bottom: 1px;
+}
+
+.calendario-header button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px 10px;
+    color: var(--primary-color);
+}
+
+.calendario-header span {
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.dia-semana {
+    background-color: white;
+    padding: 15px 5px;
+    text-align: center;
+    font-weight: bold;
+    color: #666;
+}
+
+.dia {
+    background-color: white;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.dia[data-disponible="true"] {
+    background-color: green;
+}
+
+.dia[data-parcial="true"] {
+    background-color: yellow;
+}
+
+.dia[data-ocupado="true"] {
+    background-color: red;
+}
+
+
+.dia:hover {
+    background-color: #f8f9fa;
+}
+
+.dia.disponible {
+    background-color: #90EE90; /* Verde claro para días disponibles */
+    cursor: pointer;
+    color: #333;
+}
+
+.dia.disponible:hover {
+    background-color: #7FDB7F; /* Verde un poco más oscuro al hover */
+}
+
+.dia.parcial {
+    background-color: #FFFFE0; /* Amarillo claro para días parcialmente reservados */
+    cursor: pointer;
+    color: #333;
+}
+
+.dia.parcial:hover {
+    background-color: #F0F0D0; /* Amarillo un poco más oscuro al hover */
+}
+
+.dia.no-disponible {
+    background-color: #FFB6C1; /* Rojo claro para días no disponibles */
+    color: #666;
+    cursor: not-allowed;
+}
+
+.dia.pasado {
+    background-color: #f0f0f0; /* Gris claro para días pasados */
+    color: #999;
+    cursor: not-allowed;
+}
+
+.dia.fin-semana {
+    background-color: #f0f0f0; /* Gris claro para fines de semana */
+    color: #999;
+    cursor: not-allowed;
+}
+
+.dia.vacio {
+    background-color: #f8f9fa;
+}
+
+.dia.hoy {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.dia.hoy::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+}
+
+/* Estilos para la lista de reservas */
+.lista-reservas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-reservas li {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.lista-reservas li span {
+    flex: 1;
+    min-width: 200px;
+}
+
+.lista-reservas .btn-danger {
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.lista-reservas .btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Estilos para los horarios disponibles */
+#horarios-disponibles {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#horarios-disponibles h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+#horarios-disponibles button {
+    margin: 5px;
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#horarios-disponibles button:hover {
+    background-color: var(--primary-hover);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-section {
+    margin-bottom: 30px;
+    text-align: right;
+}
+
+.auth-section button {
+    margin-left: 10px;
+}
+
+.reserva-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .reserva-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.resumen {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+}
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 24px;
+}
