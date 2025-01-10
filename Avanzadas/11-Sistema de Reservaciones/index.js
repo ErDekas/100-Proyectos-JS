@@ -226,35 +226,45 @@ class SistemaReservas {
     aplicarColorDia(diaElement, fecha) {
         const fechaStr = fecha.toISOString().split('T')[0];
         const reservasDia = this.reservas[fechaStr] || [];
-        const horasDisponibles = config.horarioAtencion.fin - config.horarioAtencion.inicio;
-        
-        // Remover todas las clases de estado
-        diaElement.classList.remove('disponible', 'parcial', 'no-disponible', 'pasado', 'fin-semana');
-    
-        // Verificar si es un día pasado
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
         
+        // Limpiar clases previas de estado
+        diaElement.classList.remove('disponible', 'parcial', 'no-disponible', 'pasado', 'fin-semana', 'seleccionado');
+        
+        // Verificar si es un día pasado
         if (fecha < hoy) {
             diaElement.classList.add('pasado');
             return;
         }
     
         // Verificar si es fin de semana
-        if (fecha.getDay() === 0 || fecha.getDay() === 6) {
+        if ([0, 6].includes(fecha.getDay())) {
             diaElement.classList.add('fin-semana');
             return;
         }
     
-        // Aplicar estado según reservas
-        if (!reservasDia || reservasDia.length === 0) {
+        // Marcar como seleccionado si corresponde
+        if (fechaStr === hoy.toISOString().split('T')[0]) {
+            diaElement.classList.add('seleccionado');
+        }
+    
+        // Calcular horas reservadas al día siguiente
+        const fechaSiguiente = new Date(fecha);
+        fechaSiguiente.setDate(fechaSiguiente.getDate() + 1);
+        const reservasDiaSiguiente = this.reservas[fechaSiguiente.toISOString().split('T')[0]] || [];
+        const horasTotales = config.horarioAtencion.fin - config.horarioAtencion.inicio;
+        const horasReservadas = reservasDiaSiguiente.length;
+    
+        // Asignar clase en función del estado de reservas del día siguiente
+        if (horasReservadas === 0) {
             diaElement.classList.add('disponible');
-        } else if (reservasDia.length >= config.capacidadMaxima.porDia) {
+        } else if (horasReservadas >= config.capacidadMaxima.porDia) {
             diaElement.classList.add('no-disponible');
         } else {
             diaElement.classList.add('parcial');
         }
-    }
+    }    
 
     cambiarMes(delta) {
         const calendario = document.getElementById('calendario');
@@ -294,21 +304,25 @@ class SistemaReservas {
         const horariosContainer = document.getElementById('horarios-disponibles');
         horariosContainer.innerHTML = '<h3>Horarios Disponibles</h3>';
     
+        // Convertir la fecha seleccionada a formato YYYY-MM-DD
         const fechaStr = fecha.toISOString().split('T')[0];
+    
+        // Obtener reservas específicas del día seleccionado
         const reservasDia = this.reservas[fechaStr] || [];
     
+        // Iterar sobre las horas dentro del horario de atención
         for (let hora = config.horarioAtencion.inicio; hora < config.horarioAtencion.fin; hora++) {
-            const horaDate = new Date(fecha);
-            horaDate.setHours(hora, 0, 0, 0);
-            
-            const horaStr = horaDate.toISOString();
-    
-            const yaReservada = reservasDia.some(reserva => {
-                const reservaHora = new Date(reserva.hora).getHours();
-                return reservaHora === hora;
+            // Comprobar si la hora está reservada en el día seleccionado
+            const horaReservada = reservasDia.some(reserva => {
+                const reservaFechaHora = new Date(reserva.hora);
+                return (
+                    reservaFechaHora.toISOString().split('T')[0] === fechaStr && // Fecha coincide
+                    reservaFechaHora.getHours() === hora // Hora coincide
+                );
             });
     
-            if (!yaReservada) {
+            // Si la hora no está reservada, crear un botón para seleccionarla
+            if (!horaReservada) {
                 const boton = document.createElement('button');
                 boton.className = 'btn btn-primary';
                 boton.textContent = `${hora}:00`;
@@ -317,6 +331,8 @@ class SistemaReservas {
             }
         }
     }
+    
+    
     
     actualizarColoresDias() {
         const dias = document.querySelectorAll('.dia');
@@ -457,7 +473,7 @@ class SistemaReservas {
                 throw new Error('Se ha alcanzado el límite de reservas para este día');
             }
     
-            // Verificar si la hora ya está reservada
+            // Verificar si la hora ya está reservada para este día específico
             const horaYaReservada = this.reservas[fechaStr].some(reserva => {
                 const reservaHora = new Date(reserva.hora).getHours();
                 return reservaHora === hora;
@@ -477,10 +493,15 @@ class SistemaReservas {
             this.guardarReservas();
             await this.enviarConfirmacionEmail(this.usuarioManager.usuarioActual, fechaHora);
     
+            // Actualizar solo el día específico
             this.mostrarMensaje('Reserva realizada con éxito', 'success');
             this.mostrarHorariosDisponibles(fecha);
             this.actualizarResumen();
-            this.renderizarCalendario(fecha.getMonth(), fecha.getFullYear());
+            
+            // Renderizar el calendario solo para actualizar los colores
+            const mesActual = fecha.getMonth();
+            const añoActual = fecha.getFullYear();
+            this.renderizarCalendario(mesActual, añoActual);
         } catch (error) {
             this.mostrarMensaje(error.message, 'error');
         }

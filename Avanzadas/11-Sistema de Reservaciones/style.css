@@ -1,15 +1,35 @@
 :root {
-    --primary-color: #4caf50;
-    --primary-hover: #45a049;
-    --bg-color: #f5f5f5;
-    --border-color: #ddd;
+    --color-primary: #4caf50;
+    --color-primary-hover: #45a049;
+    --color-background: #f5f5f5;
+    --color-border: #ddd;
+    
+    /* Estados del calendario */
+    --color-disponible: #e8f5e9;
+    --color-disponible-hover: #c8e6c9;
+    --color-disponible-border: #c8e6c9;
+    
+    --color-parcial: #fff3e0;
+    --color-parcial-hover: #ffe0b2;
+    --color-parcial-border: #ffe0b2;
+    
+    --color-no-disponible: #ffebee;
+    --color-no-disponible-border: #ffcdd2;
+    
+    --color-pasado: #f5f5f5;
+    --color-text-disabled: #9e9e9e;
+    
+    /* Colores para reservas */
+    --color-reserva-propia: #e3f2fd;
+    --color-reserva-propia-border: #bbdefb;
 }
 
+/* Layout Base */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: var(--bg-color);
+    background-color: var(--color-background);
 }
 
 .container {
@@ -21,13 +41,36 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Estilos del calendario */
+/* Componentes del Header */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-section {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+/* Grid Principal */
+.reserva-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+/* Calendario */
 #calendario {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
-    background-color: var(--border-color);
-    border: 1px solid var(--border-color);
+    background-color: var(--color-border);
+    border: 1px solid var(--color-border);
     max-width: 800px;
     margin: 20px auto;
 }
@@ -48,7 +91,7 @@ body {
     font-size: 18px;
     cursor: pointer;
     padding: 5px 10px;
-    color: var(--primary-color);
+    color: var(--color-primary);
 }
 
 .calendario-header span {
@@ -64,6 +107,7 @@ body {
     color: #666;
 }
 
+/* Estados de los días */
 .dia {
     background-color: white;
     aspect-ratio: 1;
@@ -72,71 +116,43 @@ body {
     justify-content: center;
     padding: 5px;
     position: relative;
-    transition: background-color 0.3s ease;
-}
-
-.dia[data-disponible="true"] {
-    background-color: green;
-}
-
-.dia[data-parcial="true"] {
-    background-color: yellow;
-}
-
-.dia[data-ocupado="true"] {
-    background-color: red;
-}
-
-
-.dia:hover {
-    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .dia.disponible {
-    background-color: #90EE90; /* Verde claro para días disponibles */
-    cursor: pointer;
-    color: #333;
+    background-color: var(--color-disponible);
+    border: 1px solid var(--color-disponible-border);
 }
 
 .dia.disponible:hover {
-    background-color: #7FDB7F; /* Verde un poco más oscuro al hover */
+    background-color: var(--color-disponible-hover);
 }
 
 .dia.parcial {
-    background-color: #FFFFE0; /* Amarillo claro para días parcialmente reservados */
-    cursor: pointer;
-    color: #333;
+    background-color: var(--color-parcial);
+    border: 1px solid var(--color-parcial-border);
 }
 
 .dia.parcial:hover {
-    background-color: #F0F0D0; /* Amarillo un poco más oscuro al hover */
+    background-color: var(--color-parcial-hover);
 }
 
 .dia.no-disponible {
-    background-color: #FFB6C1; /* Rojo claro para días no disponibles */
-    color: #666;
+    background-color: var(--color-no-disponible);
+    border: 1px solid var(--color-no-disponible-border);
     cursor: not-allowed;
 }
 
-.dia.pasado {
-    background-color: #f0f0f0; /* Gris claro para días pasados */
-    color: #999;
+.dia.pasado, .dia.fin-semana {
+    background-color: var(--color-pasado);
+    color: var(--color-text-disabled);
     cursor: not-allowed;
-}
-
-.dia.fin-semana {
-    background-color: #f0f0f0; /* Gris claro para fines de semana */
-    color: #999;
-    cursor: not-allowed;
-}
-
-.dia.vacio {
-    background-color: #f8f9fa;
 }
 
 .dia.hoy {
     font-weight: bold;
-    color: var(--primary-color);
+    color: var(--color-primary);
 }
 
 .dia.hoy::after {
@@ -148,10 +164,78 @@ body {
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background-color: var(--primary-color);
+    background-color: var(--color-primary);
 }
 
-/* Estilos para la lista de reservas */
+/* Horarios Disponibles */
+#horarios-disponibles {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.horarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.horario-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.horario-btn.disponible {
+    background-color: var(--color-disponible);
+    border-color: var(--color-disponible-border);
+}
+
+.horario-btn.disponible:hover {
+    background-color: var(--color-disponible-hover);
+    transform: translateY(-2px);
+}
+
+.horario-btn.no-disponible {
+    background-color: var(--color-no-disponible);
+    border-color: var(--color-no-disponible-border);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.horario-btn.reserva-propia {
+    background-color: var(--color-reserva-propia);
+    border-color: var(--color-reserva-propia-border);
+    cursor: default;
+}
+
+.horario-btn .hora {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.horario-btn .estado {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* Resumen de Reservas */
+.resumen {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
 .lista-reservas {
     list-style: none;
     padding: 0;
@@ -163,7 +247,7 @@ body {
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid var(--color-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -171,86 +255,65 @@ body {
     gap: 10px;
 }
 
-.lista-reservas li span {
-    flex: 1;
-    min-width: 200px;
-}
-
-.lista-reservas .btn-danger {
-    background-color: #dc3545;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
+/* Botones y Formularios */
+.btn {
+    padding: 10px 20px;
     border: none;
+    border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
     transition: background-color 0.3s;
 }
 
-.lista-reservas .btn-danger:hover {
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
     background-color: #c82333;
 }
 
-/* Estilos para los horarios disponibles */
-#horarios-disponibles {
-    margin-top: 20px;
-    padding: 15px;
+/* Modales */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-content {
     background-color: white;
-    border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    position: relative;
 }
 
-#horarios-disponibles h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-#horarios-disponibles button {
-    margin: 5px;
-    padding: 8px 16px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 4px;
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 24px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    color: #666;
 }
 
-#horarios-disponibles button:hover {
-    background-color: var(--primary-hover);
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.header h1 {
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.auth-section {
-    margin-bottom: 30px;
-    text-align: right;
-}
-
-.auth-section button {
-    margin-left: 10px;
-}
-
-.reserva-section {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 20px;
-}
-
-@media (max-width: 768px) {
-    .reserva-section {
-        grid-template-columns: 1fr;
-    }
-}
-
+/* Formularios */
 .form-group {
     margin-bottom: 15px;
 }
@@ -264,55 +327,22 @@ body {
 .form-group input {
     width: 100%;
     padding: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--color-border);
     border-radius: 4px;
 }
 
-.btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-hover);
-}
-
-.resumen {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 4px;
-    margin-top: 20px;
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
-}
-
-.close {
-    float: right;
-    cursor: pointer;
-    font-size: 24px;
+/* Responsive */
+@media (max-width: 768px) {
+    .reserva-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    .lista-reservas li {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }
