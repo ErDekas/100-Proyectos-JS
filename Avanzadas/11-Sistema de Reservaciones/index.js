@@ -304,33 +304,67 @@ class SistemaReservas {
         const horariosContainer = document.getElementById('horarios-disponibles');
         horariosContainer.innerHTML = '<h3>Horarios Disponibles</h3>';
     
-        // Convertir la fecha seleccionada a formato YYYY-MM-DD
         const fechaStr = fecha.toISOString().split('T')[0];
+        const reservasDia = this.obtenerReservasDelDia(fechaStr);
     
-        // Obtener reservas específicas del día seleccionado
-        const reservasDia = this.reservas[fechaStr] || [];
-    
-        // Iterar sobre las horas dentro del horario de atención
         for (let hora = config.horarioAtencion.inicio; hora < config.horarioAtencion.fin; hora++) {
-            // Comprobar si la hora está reservada en el día seleccionado
-            const horaReservada = reservasDia.some(reserva => {
-                const reservaFechaHora = new Date(reserva.hora);
-                return (
-                    reservaFechaHora.toISOString().split('T')[0] === fechaStr && // Fecha coincide
-                    reservaFechaHora.getHours() === hora // Hora coincide
-                );
-            });
+            const horaEstaReservada = this.verificarHoraReservada(hora, reservasDia);
     
-            // Si la hora no está reservada, crear un botón para seleccionarla
-            if (!horaReservada) {
-                const boton = document.createElement('button');
-                boton.className = 'btn btn-primary';
-                boton.textContent = `${hora}:00`;
-                boton.onclick = () => this.realizarReserva(fecha, hora);
-                horariosContainer.appendChild(boton);
+            if (!horaEstaReservada) {
+                this.crearBotonHoraDisponible(horariosContainer, fecha, hora);
+            } else {
+                this.crearBotonHoraReservada(horariosContainer, hora);
             }
         }
     }
+    
+    obtenerReservasDelDia(fechaStr) {
+        const reservasDia = this.reservas[fechaStr] || [];
+    
+        // Consultar reservas adicionales almacenadas en localStorage
+        const reservasLocalStorage = JSON.parse(localStorage.getItem('reservas') || '{}');
+        return [...reservasDia, ...(reservasLocalStorage[fechaStr] || [])];
+    }
+    
+    verificarHoraReservada(hora, reservasDia) {
+        return reservasDia.some(reserva => reserva.hora === hora);
+    }
+    
+    crearBotonHoraDisponible(container, fecha, hora) {
+        const boton = document.createElement('button');
+        boton.className = 'btn btn-primary';
+        boton.textContent = `${hora}:00`;
+        boton.setAttribute('data-hora', hora);
+        boton.onclick = () => {
+            this.realizarReserva(fecha, hora);
+            this.actualizarEstadoReserva(fecha, hora, boton);
+        };
+        container.appendChild(boton);
+    }
+    
+    crearBotonHoraReservada(container, hora) {
+        const botonDeshabilitado = document.createElement('button');
+        botonDeshabilitado.className = 'btn btn-secondary';
+        botonDeshabilitado.disabled = true;
+        botonDeshabilitado.textContent = `${hora}:00 - Reservado`;
+        container.appendChild(botonDeshabilitado);
+    }
+    
+    actualizarEstadoReserva(fecha, hora, boton) {
+        boton.disabled = true;
+        boton.className = 'btn btn-secondary';
+        boton.textContent = `${hora}:00 - Reservado`;
+    
+        // Guardar la reserva en localStorage
+        const fechaStr = fecha.toISOString().split('T')[0];
+        const reservasLocalStorage = JSON.parse(localStorage.getItem('reservas') || '{}');
+        if (!reservasLocalStorage[fechaStr]) {
+            reservasLocalStorage[fechaStr] = [];
+        }
+        reservasLocalStorage[fechaStr].push({ hora });
+        localStorage.setItem('reservas', JSON.stringify(reservasLocalStorage));
+    }
+    
     
     
     
