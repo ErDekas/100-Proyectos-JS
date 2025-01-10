@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora de Rutas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Calculadora de Rutas</h1>
+            <p>Encuentra la mejor ruta para tu viaje</p>
+        </div>
+
+        <div class="route-container">
+            <div class="inputs-container">
+                <div class="input-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="origin" placeholder="Punto de partida">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-flag-checkered"></i>
+                    <input type="text" id="destination" placeholder="Destino">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-route"></i>
+                    <select id="travelMode">
+                        <option value="DRIVING">En coche</option>
+                        <option value="WALKING">Caminando</option>
+                        <option value="BICYCLING">En bicicleta</option>
+                        <option value="TRANSIT">Transporte público</option>
+                    </select>
+                </div>
+                <button onclick="calculateRoute()">
+                    <i class="fas fa-calculator"></i>
+                    Calcular Ruta
+                </button>
+            </div>
+        </div>
+
+        <div id="map"></div>
+        <div id="results" class="results-container"></div>
+    </div>
+    <script src="index.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap">
+    </script>
+</body>
+</html>
