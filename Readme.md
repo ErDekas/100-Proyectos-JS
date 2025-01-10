@@ -67,7 +67,7 @@
 - **Juego de Laberinto** ✅
 - **Tienda en Línea Básica** ✅
 - **Sistema de Reservas** (para hoteles, restaurantes)
-- **Mapa de Calor** (usando D3.js)
+- **Mapa de Calor** (usando D3.js) ✅
 - **Sticky Notes** ✅
 - **Carrera de Pájaros** (juego tipo Flappy Bird) ✅
 - **Calculadora de Rutas** (usando Google Maps API)
