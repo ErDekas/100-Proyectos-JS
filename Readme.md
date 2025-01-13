@@ -71,7 +71,7 @@
 - **Sticky Notes** ✅
 - **Carrera de Pájaros** (juego tipo Flappy Bird) ✅
 - **Calculadora de Rutas** (usando Google Maps API) ✅
-- **Sistema de Notificaciones en Tiempo Real**
+- **Sistema de Notificaciones en Tiempo Real** ✅
 - **Pizarra Colaborativa** (varios usuarios pueden dibujar)
 - **Sistema de Gestión de Tareas** ✅
 - **Simulador de Física** (caída libre, colisiones) ✅
