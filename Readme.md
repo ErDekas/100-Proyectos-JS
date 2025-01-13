@@ -74,7 +74,7 @@
 - **Sistema de Notificaciones en Tiempo Real**
 - **Pizarra Colaborativa** (varios usuarios pueden dibujar)
 - **Sistema de Gestión de Tareas**
-- **Simulador de Física** (caída libre, colisiones)
+- **Simulador de Física** (caída libre, colisiones) ✅
 - **Juego de Ajedrez en Línea**
 
 ---
