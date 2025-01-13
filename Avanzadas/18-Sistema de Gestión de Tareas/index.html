@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Tareas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Tareas</h1>
+        
+        <form class="task-form" id="taskForm">
+            <input type="text" class="task-input" id="taskInput" placeholder="Nueva tarea..." required>
+            <select class="priority-select" id="prioritySelect">
+                <option value="low">Baja</option>
+                <option value="medium">Media</option>
+                <option value="high">Alta</option>
+            </select>
+            <button type="submit" class="task-button">Agregar</button>
+        </form>
+
+        <div class="filters">
+            <button class="filter-button active" data-filter="all">Todas</button>
+            <button class="filter-button" data-filter="active">Activas</button>
+            <button class="filter-button" data-filter="completed">Completadas</button>
+        </div>
+
+        <ul class="task-list" id="taskList"></ul>
+    </div>
+
+    <div id="priorityPopup" class="priority-popup">
+        <div class="priority-option" data-priority="high">Alta</div>
+        <div class="priority-option" data-priority="medium">Media</div>
+        <div class="priority-option" data-priority="low">Baja</div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

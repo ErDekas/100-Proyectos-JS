@@ -73,7 +73,7 @@
 - **Calculadora de Rutas** (usando Google Maps API) ✅
 - **Sistema de Notificaciones en Tiempo Real**
 - **Pizarra Colaborativa** (varios usuarios pueden dibujar)
-- **Sistema de Gestión de Tareas**
+- **Sistema de Gestión de Tareas** ✅
 - **Simulador de Física** (caída libre, colisiones) ✅
 - **Juego de Ajedrez en Línea**
 
