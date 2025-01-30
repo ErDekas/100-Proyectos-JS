@@ -8,12 +8,11 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-import { initializeApp } from "firebase/app";
-import { firebaseConfig } from 'firebase.js';
+import { app } from "../firebase";
+
 class AuthService {
   constructor() {
-    this.app = initializeApp(firebaseConfig);
-    this.auth = getAuth(this.app);
+    this.auth = getAuth(app);
     this.googleProvider = new GoogleAuthProvider();
     this.currentUser = null;
 
