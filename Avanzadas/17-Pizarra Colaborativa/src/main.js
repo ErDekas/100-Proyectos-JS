@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { authService } from "./auth.js";
+import { io } from "socket.io-client";
 
 import {
   getFirestore,
@@ -25,6 +26,110 @@ const state = {
   undoStack: [],
   redoStack: [],
 };
+
+let socket;
+let currentRoomId = null;
+
+function initSocketConnection() {
+  socket = io("http://localhost:3000");
+
+  // Eventos de socket
+  socket.on("connect", () => {
+    console.log("Conectado al servidor");
+    joinRoom(currentRoomId || "default");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Desconectado del servidor");
+  });
+
+  socket.on("init-canvas", (drawings) => {
+    // Inicializar el canvas con los dibujos existentes
+    state.drawings = drawings;
+    canvasManager.redrawCanvas();
+  });
+
+  socket.on("draw-object", (drawingObject) => {
+    // Recibir un nuevo objeto de dibujo
+    const existingIndex = state.drawings.findIndex(
+      (obj) => obj.id === drawingObject.id
+    );
+
+    if (existingIndex !== -1) {
+      state.drawings[existingIndex] = drawingObject;
+    } else {
+      state.drawings.push(drawingObject);
+    }
+
+    canvasManager.redrawCanvas();
+  });
+
+  socket.on("update-object", (objectId, updates) => {
+    // Actualizar un objeto existente
+    const objectIndex = state.drawings.findIndex((obj) => obj.id === objectId);
+
+    if (objectIndex !== -1) {
+      state.drawings[objectIndex] = {
+        ...state.drawings[objectIndex],
+        ...updates,
+      };
+      canvasManager.redrawCanvas();
+    }
+  });
+
+  socket.on("delete-object", (objectId) => {
+    // Eliminar un objeto
+    state.drawings = state.drawings.filter((obj) => obj.id !== objectId);
+    canvasManager.redrawCanvas();
+  });
+
+  socket.on("clear-canvas", () => {
+    // Limpiar todo el canvas
+    state.drawings = [];
+    canvasManager.redrawCanvas();
+  });
+
+  socket.on("draw-path", (pathData) => {
+    // Dibujar un trazo de lápiz en tiempo real
+    if (pathData.type === "start") {
+      canvasManager.ctx.beginPath();
+      canvasManager.ctx.moveTo(pathData.x, pathData.y);
+      canvasManager.ctx.strokeStyle = pathData.color;
+      canvasManager.ctx.lineWidth = pathData.width;
+      
+      // Store the active remote path ID for tracking
+      state.activeRemotePaths = state.activeRemotePaths || {};
+      state.activeRemotePaths[pathData.pathId] = {
+        color: pathData.color,
+        width: pathData.width,
+        points: [{x: pathData.x, y: pathData.y}]
+      };
+      
+    } else if (pathData.type === "move") {
+      canvasManager.ctx.lineTo(pathData.x, pathData.y);
+      canvasManager.ctx.stroke();
+      
+      // Add to the tracked remote path if we have it
+      if (state.activeRemotePaths && state.activeRemotePaths[pathData.pathId]) {
+        state.activeRemotePaths[pathData.pathId].points.push({x: pathData.x, y: pathData.y});
+      }
+    }
+  });
+
+  socket.on("user-count", (count) => {
+    // Actualizar contador de usuarios
+    document.querySelector(
+      "#user-count"
+    ).textContent = `Usuarios en línea: ${count}`;
+  });
+}
+
+function joinRoom(roomId) {
+  currentRoomId = roomId || "default";
+  if (socket && socket.connected) {
+    socket.emit("join-room", currentRoomId);
+  }
+}
 
 // Canvas setup
 class CanvasManager {
@@ -139,12 +244,20 @@ class CanvasManager {
 
     switch (action) {
       case "delete":
+        // Obtener ID antes de eliminar
+        const objectId = this.selectedObject.id;
+
         // Eliminar el objeto seleccionado
         state.drawings = state.drawings.filter(
           (obj) => obj !== this.selectedObject
         );
         this.selectedObject = null;
         this.redrawCanvas();
+
+        // Sincronizar la eliminación
+        if (socket && socket.connected && objectId) {
+          socket.emit("delete-object", objectId);
+        }
         break;
       case "duplicate":
         // Duplicar el objeto seleccionado
@@ -179,6 +292,18 @@ class CanvasManager {
         // Abrir panel de propiedades (puedes implementar esto más adelante)
         alert("Funcionalidad de propiedades en desarrollo");
         break;
+    }
+  }
+
+  clearCanvas() {
+    state.drawings = [];
+    state.undoStack = [];
+    state.redoStack = [];
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Sincronizar limpieza
+    if (socket && socket.connected) {
+      socket.emit("clear-canvas");
     }
   }
 
@@ -225,27 +350,48 @@ class CanvasManager {
         this.ctx.fillStyle = state.currentColor;
         this.ctx.fillText(text, state.startX, state.startY);
 
-        // Guardar el objeto de texto en state.drawings
-        state.drawings.push({
+        // Crear un objeto de texto con ID único
+        const textObj = {
+          id: Date.now().toString(),
           type: "text",
           x: state.startX,
           y: state.startY,
           text: text,
           color: state.currentColor,
           font: "16px Arial",
-        });
+        };
+
+        // Guardar y sincronizar
+        state.drawings.push(textObj);
+        if (socket && socket.connected) {
+          socket.emit("draw-object", textObj);
+        }
       }
     } else if (state.currentTool === "pen") {
       this.ctx.beginPath();
       this.ctx.moveTo(state.startX, state.startY);
-
+    
       // Iniciar un nuevo objeto de dibujo
+      const pathId = Date.now().toString();
       state.currentPath = {
+        id: pathId,
         type: "path",
         color: state.currentColor,
         width: state.lineWidth,
         points: [{ x: state.startX, y: state.startY }],
       };
+    
+      // Emitir inicio del trazo con ID incluido
+      if (socket && socket.connected) {
+        socket.emit("draw-path", {
+          type: "start",
+          pathId: pathId,  // Include the path ID
+          x: state.startX,
+          y: state.startY,
+          color: state.currentColor,
+          width: state.lineWidth,
+        });
+      }
     }
   }
 
@@ -267,6 +413,12 @@ class CanvasManager {
       state.startY = currentY;
 
       this.redrawCanvas();
+      if (socket && socket.connected) {
+        socket.emit("update-object", this.selectedObject.id, {
+          x: this.selectedObject.x,
+          y: this.selectedObject.y,
+        });
+      }
     } else if (state.currentTool === "eraser") {
       // Dibujar el trazo del borrador
       this.ctx.lineTo(currentX, currentY);
@@ -297,9 +449,19 @@ class CanvasManager {
     } else if (state.currentTool === "pen") {
       this.ctx.lineTo(currentX, currentY);
       this.ctx.stroke();
-
-      // Añadir punto al camino actual
+    
+      // Add path data
       state.currentPath.points.push({ x: currentX, y: currentY });
+    
+      // Enhance the emission with more context information
+      if (socket && socket.connected) {
+        socket.emit("draw-path", {
+          type: "move",
+          x: currentX,
+          y: currentY,
+          pathId: state.currentPath.id  // Include the path ID
+        });
+      }
     }
   }
 
@@ -314,14 +476,24 @@ class CanvasManager {
       this.ctx.lineWidth = this.savedWidth;
     } else if (state.currentTool === "pen") {
       // Finalizar y guardar el camino
-      state.drawings.push(state.currentPath);
-      state.currentPath = null;
+      if (state.currentPath) {
+        state.drawings.push(state.currentPath);
+
+        // Sincronizar el trazo completo
+        if (socket && socket.connected) {
+          socket.emit("draw-object", state.currentPath);
+        }
+
+        state.currentPath = null;
+      }
     } else if (["square", "circle", "arrow"].includes(state.currentTool)) {
       const endX = e.offsetX;
       const endY = e.offsetY;
+      const shapeId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
 
-      // Guardar la forma en state.drawings
-      state.drawings.push({
+      // Crear objeto con ID único
+      const shapeObj = {
+        id: shapeId,
         type: state.currentTool,
         x1: state.startX,
         y1: state.startY,
@@ -329,7 +501,18 @@ class CanvasManager {
         y2: endY,
         color: state.currentColor,
         width: state.lineWidth,
-      });
+      };
+
+      // Guardar la forma en state.drawings
+      state.drawings.push(shapeObj);
+
+      // Save the shape and sync
+      state.drawings.push(shapeObj);
+
+      if (socket && socket.connected) {
+        console.log("Emitting draw-object:", shapeObj);
+        socket.emit("draw-object", shapeObj);
+      }
 
       this.drawShape(
         this.ctx,
@@ -668,7 +851,6 @@ class UIManager {
     this.setupColorPicker();
     this.setupLineWidth();
     this.setupAuthUI();
-    this.setupFileOperations();
   }
 
   setupToolbar() {
@@ -739,7 +921,6 @@ class UIManager {
         userInfo.textContent = `Logged in as ${user.email}`;
         loginButton.style.display = "none";
         logoutButton.style.display = "block";
-        this.loadUserDrawings();
       } else {
         userInfo.textContent = "Not logged in";
         loginButton.style.display = "block";
@@ -755,10 +936,60 @@ class UIManager {
       authService.logout();
     });
   }
+  setupRoomControls() {
+    const createRoomButton = document.querySelector("#create-room");
+    const joinRoomButton = document.querySelector("#join-room");
+    const roomIdInput = document.querySelector("#room-id-input");
+
+    if (createRoomButton) {
+      createRoomButton.addEventListener("click", async () => {
+        try {
+          const response = await fetch("/api/create-room");
+          const data = await response.json();
+
+          if (data.roomId) {
+            alert(`Nueva sala creada. ID: ${data.roomId}`);
+            joinRoom(data.roomId);
+
+            // Actualizar UI
+            if (roomIdInput) {
+              roomIdInput.value = data.roomId;
+            }
+
+            // Limpiar canvas para la nueva sala
+            this.canvasManager.clearCanvas();
+          }
+        } catch (error) {
+          console.error("Error al crear sala:", error);
+        }
+      });
+    }
+
+    if (joinRoomButton && roomIdInput) {
+      joinRoomButton.addEventListener("click", () => {
+        const roomId = roomIdInput.value.trim();
+        if (roomId) {
+          joinRoom(roomId);
+        } else {
+          alert("Por favor ingresa un ID de sala válido");
+        }
+      });
+    }
+  }
 }
+
+let canvasManager;
 
 // Initialize application
 document.addEventListener("DOMContentLoaded", () => {
-  const canvasManager = new CanvasManager();
+  canvasManager = new CanvasManager();
   const uiManager = new UIManager(canvasManager);
+
+  // Inicializar conexión Socket.IO
+  initSocketConnection();
+
+  // Configurar controles de sala si existen en el HTML
+  if (uiManager.setupRoomControls) {
+    uiManager.setupRoomControls();
+  }
 });

@@ -2,7 +2,6 @@
   "name": "17-pizarra-colaborativa",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -13,6 +12,10 @@
   },
   "dependencies": {
     "dotenv": "^16.4.7",
-    "firebase": "^11.1.0"
+    "express": "^4.21.2",
+    "firebase": "^11.1.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "uuid": "^11.1.0"
   }
 }

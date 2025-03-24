@@ -47,6 +47,15 @@
                     <i class="fas fa-redo"></i> Rehacer
                 </button>
             </div>
+            <div class="collaboration-controls">
+                <h3>Colaboración en tiempo real</h3>
+                <div id="user-count">Usuarios en línea: 1</div>
+                
+                <div class="current-room-info">
+                  <span>Sala actual: </span>
+                  <span id="current-room-id">default</span>
+                </div>
+              </div>
             <div class="d-flex align-items-center">
                 <button id="login-button" class="btn btn-primary btn-sm">Iniciar sesión</button>
                 <button id="logout-button" class="btn btn-danger btn-sm d-none">Cerrar sesión</button>
@@ -122,6 +131,7 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="src/main.js" type="module"></script>
 </body>
 </html>

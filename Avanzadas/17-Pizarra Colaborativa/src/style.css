@@ -25,3 +25,78 @@
 .tool-button:hover {
   background-color: #e9ecef;
 }
+
+.collaboration-controls {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 15px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.collaboration-controls h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+#user-count {
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.room-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.join-room-container {
+  display: flex;
+  gap: 8px;
+}
+
+#room-id-input {
+  flex-grow: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.action-button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #2980b9;
+}
+
+.action-button.small {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.current-room-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+#current-room-id {
+  font-weight: bold;
+  font-family: monospace;
+  padding: 2px 6px;
+  background-color: #eee;
+  border-radius: 3px;
+}
