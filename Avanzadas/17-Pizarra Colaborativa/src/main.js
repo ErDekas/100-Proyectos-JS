@@ -32,8 +32,15 @@ class CanvasManager {
     this.canvasArea = document.querySelector(".canvas-area");
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d");
+
+    // Propiedades para la selección
+    this.selectedObject = null;
+    this.selectionBox = null;
+    this.contextMenu = null;
+
     this.setupCanvas();
     this.bindEvents();
+    this.createContextMenu();
   }
 
   setupCanvas() {
@@ -95,43 +102,186 @@ class CanvasManager {
     window.addEventListener("resize", this.handleResize.bind(this));
   }
 
+  createContextMenu() {
+    this.contextMenu = document.createElement("div");
+    this.contextMenu.className = "context-menu";
+    this.contextMenu.style.display = "none";
+    this.contextMenu.innerHTML = `
+      <div class="context-menu-item" data-action="delete">Eliminar</div>
+      <div class="context-menu-item" data-action="duplicate">Duplicar</div>
+      <div class="context-menu-item" data-action="bringToFront">Traer al frente</div>
+      <div class="context-menu-item" data-action="sendToBack">Enviar atrás</div>
+      <div class="context-menu-item" data-action="properties">Propiedades</div>
+    `;
+
+    document.body.appendChild(this.contextMenu);
+
+    // Agregar eventos a los elementos del menú
+    const menuItems = this.contextMenu.querySelectorAll(".context-menu-item");
+    menuItems.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        const action = e.target.dataset.action;
+        this.handleContextMenuAction(action);
+        this.contextMenu.style.display = "none";
+      });
+    });
+
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener("click", (e) => {
+      if (!this.contextMenu.contains(e.target)) {
+        this.contextMenu.style.display = "none";
+      }
+    });
+  }
+  // Método para manejar las acciones del menú contextual
+  handleContextMenuAction(action) {
+    if (!this.selectedObject) return;
+
+    switch (action) {
+      case "delete":
+        // Eliminar el objeto seleccionado
+        state.drawings = state.drawings.filter(
+          (obj) => obj !== this.selectedObject
+        );
+        this.selectedObject = null;
+        this.redrawCanvas();
+        break;
+      case "duplicate":
+        // Duplicar el objeto seleccionado
+        const duplicate = {
+          ...this.selectedObject,
+          x: this.selectedObject.x + 20,
+          y: this.selectedObject.y + 20,
+        };
+        state.drawings.push(duplicate);
+        this.selectedObject = duplicate;
+        this.redrawCanvas();
+        break;
+      case "bringToFront":
+        // Traer al frente
+        const index = state.drawings.indexOf(this.selectedObject);
+        if (index !== -1) {
+          state.drawings.splice(index, 1);
+          state.drawings.push(this.selectedObject);
+          this.redrawCanvas();
+        }
+        break;
+      case "sendToBack":
+        // Enviar atrás
+        const idx = state.drawings.indexOf(this.selectedObject);
+        if (idx !== -1) {
+          state.drawings.splice(idx, 1);
+          state.drawings.unshift(this.selectedObject);
+          this.redrawCanvas();
+        }
+        break;
+      case "properties":
+        // Abrir panel de propiedades (puedes implementar esto más adelante)
+        alert("Funcionalidad de propiedades en desarrollo");
+        break;
+    }
+  }
+
   // Event handlers
   handleMouseDown(e) {
     state.isDrawing = true;
     state.startX = e.offsetX;
     state.startY = e.offsetY;
+
     this.saveState();
 
-    if (state.currentTool === "text") {
+    if (state.currentTool === "select") {
+      // Comprobar si se hizo clic en algún objeto existente
+      for (let i = state.drawings.length - 1; i >= 0; i--) {
+        const obj = state.drawings[i];
+        if (this.isPointInObject(state.startX, state.startY, obj)) {
+          this.selectedObject = obj;
+          // Mostrar el menú contextual
+          this.contextMenu.style.display = "block";
+          this.contextMenu.style.top = e.clientY + "px";
+          this.contextMenu.style.left = e.clientX + "px";
+          this.redrawCanvas();
+          return;
+        }
+      }
+
+      // Si no se hizo clic en ningún objeto, deseleccionar
+      this.selectedObject = null;
+      this.redrawCanvas();
+    } else if (state.currentTool === "eraser") {
+      // Iniciar el borrado
+      this.ctx.beginPath();
+      this.ctx.moveTo(state.startX, state.startY);
+      // Guardamos temporalmente el color y ancho originales
+      this.savedColor = this.ctx.strokeStyle;
+      this.savedWidth = this.ctx.lineWidth;
+      // Configuramos el borrador como un trazo blanco grueso
+      this.ctx.strokeStyle = "#FFFFFF";
+      this.ctx.lineWidth = 20; // Ancho del borrador, ajustable
+    } else if (state.currentTool === "text") {
       const text = prompt("Enter text:");
       if (text) {
         this.ctx.font = "16px Arial";
         this.ctx.fillStyle = state.currentColor;
         this.ctx.fillText(text, state.startX, state.startY);
+
+        // Guardar el objeto de texto en state.drawings
+        state.drawings.push({
+          type: "text",
+          x: state.startX,
+          y: state.startY,
+          text: text,
+          color: state.currentColor,
+          font: "16px Arial",
+        });
       }
     } else if (state.currentTool === "pen") {
       this.ctx.beginPath();
       this.ctx.moveTo(state.startX, state.startY);
+
+      // Iniciar un nuevo objeto de dibujo
+      state.currentPath = {
+        type: "path",
+        color: state.currentColor,
+        width: state.lineWidth,
+        points: [{ x: state.startX, y: state.startY }],
+      };
     }
   }
 
   handleMouseMove(e) {
-    if (!state.isDrawing || state.currentTool === "select") return;
+    if (!state.isDrawing) return;
 
     const currentX = e.offsetX;
     const currentY = e.offsetY;
 
-    if (["square", "circle", "arrow"].includes(state.currentTool)) {
-      // Create temporary canvas for preview
+    if (state.currentTool === "select" && this.selectedObject) {
+      // Mover el objeto seleccionado
+      const dx = currentX - state.startX;
+      const dy = currentY - state.startY;
+
+      this.selectedObject.x += dx;
+      this.selectedObject.y += dy;
+
+      state.startX = currentX;
+      state.startY = currentY;
+
+      this.redrawCanvas();
+    } else if (state.currentTool === "eraser") {
+      // Dibujar el trazo del borrador
+      this.ctx.lineTo(currentX, currentY);
+      this.ctx.stroke();
+    } else if (["square", "circle", "arrow"].includes(state.currentTool)) {
+      // Crear un canvas temporal para la vista previa
       const tempCanvas = document.createElement("canvas");
       tempCanvas.width = this.canvas.width;
       tempCanvas.height = this.canvas.height;
       const tempCtx = tempCanvas.getContext("2d");
 
-      // Copy current canvas state
+      // Copiar el estado actual del canvas
       tempCtx.putImageData(state.undoStack[state.undoStack.length - 1], 0, 0);
 
-      // Draw new shape
+      // Dibujar la nueva forma
       this.drawShape(
         tempCtx,
         state.currentTool,
@@ -141,12 +291,15 @@ class CanvasManager {
         currentY
       );
 
-      // Clear main canvas and draw temporary canvas
+      // Limpiar el canvas principal y dibujar el canvas temporal
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.drawImage(tempCanvas, 0, 0);
     } else if (state.currentTool === "pen") {
       this.ctx.lineTo(currentX, currentY);
       this.ctx.stroke();
+
+      // Añadir punto al camino actual
+      state.currentPath.points.push({ x: currentX, y: currentY });
     }
   }
 
@@ -154,9 +307,30 @@ class CanvasManager {
     if (!state.isDrawing) return;
 
     state.isDrawing = false;
-    if (state.currentTool !== "pen" && state.currentTool !== "text") {
+
+    if (state.currentTool === "eraser") {
+      // Restaurar el color y ancho original después de borrar
+      this.ctx.strokeStyle = this.savedColor;
+      this.ctx.lineWidth = this.savedWidth;
+    } else if (state.currentTool === "pen") {
+      // Finalizar y guardar el camino
+      state.drawings.push(state.currentPath);
+      state.currentPath = null;
+    } else if (["square", "circle", "arrow"].includes(state.currentTool)) {
       const endX = e.offsetX;
       const endY = e.offsetY;
+
+      // Guardar la forma en state.drawings
+      state.drawings.push({
+        type: state.currentTool,
+        x1: state.startX,
+        y1: state.startY,
+        x2: endX,
+        y2: endY,
+        color: state.currentColor,
+        width: state.lineWidth,
+      });
+
       this.drawShape(
         this.ctx,
         state.currentTool,
@@ -166,6 +340,7 @@ class CanvasManager {
         endY
       );
     }
+
     this.ctx.beginPath();
   }
 
@@ -243,6 +418,246 @@ class CanvasManager {
         break;
     }
   }
+  // Método para comprobar si un punto está dentro de un objeto
+  isPointInObject(x, y, obj) {
+    switch (obj.type) {
+      case "square":
+        const minX = Math.min(obj.x1, obj.x2);
+        const maxX = Math.max(obj.x1, obj.x2);
+        const minY = Math.min(obj.y1, obj.y2);
+        const maxY = Math.max(obj.y1, obj.y2);
+        return x >= minX && x <= maxX && y >= minY && y <= maxY;
+
+      case "circle":
+        const distance = Math.sqrt(
+          Math.pow(x - obj.x1, 2) + Math.pow(y - obj.y1, 2)
+        );
+        const radius = Math.sqrt(
+          Math.pow(obj.x2 - obj.x1, 2) + Math.pow(obj.y2 - obj.y1, 2)
+        );
+        return distance <= radius;
+
+      case "arrow":
+        // Simplificación: comprobar si está cerca de la línea de la flecha
+        // Este es un enfoque simplificado, podrías mejorarlo
+        const distToLine = this.distanceToLine(
+          x,
+          y,
+          obj.x1,
+          obj.y1,
+          obj.x2,
+          obj.y2
+        );
+        return distToLine < 10; // 10 píxeles de tolerancia
+
+      case "text":
+        // Simplificación: comprobar si está en un área rectangular alrededor del texto
+        return (
+          x >= obj.x - 5 &&
+          x <= obj.x + 100 &&
+          y >= obj.y - 20 &&
+          y <= obj.y + 5
+        );
+
+      case "path":
+        // Simplificación: comprobar si está cerca de cualquier punto del camino
+        for (const point of obj.points) {
+          const dist = Math.sqrt(
+            Math.pow(x - point.x, 2) + Math.pow(y - point.y, 2)
+          );
+          if (dist < 10) return true;
+        }
+        return false;
+
+      default:
+        return false;
+    }
+  }
+
+  // Función auxiliar para calcular la distancia de un punto a una línea
+  distanceToLine(x, y, x1, y1, x2, y2) {
+    const A = x - x1;
+    const B = y - y1;
+    const C = x2 - x1;
+    const D = y2 - y1;
+
+    const dot = A * C + B * D;
+    const len_sq = C * C + D * D;
+    let param = -1;
+
+    if (len_sq !== 0) {
+      param = dot / len_sq;
+    }
+
+    let xx, yy;
+
+    if (param < 0) {
+      xx = x1;
+      yy = y1;
+    } else if (param > 1) {
+      xx = x2;
+      yy = y2;
+    } else {
+      xx = x1 + param * C;
+      yy = y1 + param * D;
+    }
+
+    const dx = x - xx;
+    const dy = y - yy;
+
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  // Método para redibujar el canvas completo
+  redrawCanvas() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // Dibujar todos los objetos
+    for (const obj of state.drawings) {
+      this.drawObject(obj);
+    }
+
+    // Dibujar borde de selección si hay un objeto seleccionado
+    if (this.selectedObject) {
+      this.drawSelectionBorder(this.selectedObject);
+    }
+  }
+
+  // Método para dibujar un objeto en el canvas
+  drawObject(obj) {
+    switch (obj.type) {
+      case "square":
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = obj.color;
+        this.ctx.lineWidth = obj.width;
+        const width = obj.x2 - obj.x1;
+        const height = obj.y2 - obj.y1;
+        this.ctx.strokeRect(obj.x1, obj.y1, width, height);
+        break;
+
+      case "circle":
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = obj.color;
+        this.ctx.lineWidth = obj.width;
+        const radius = Math.sqrt(
+          Math.pow(obj.x2 - obj.x1, 2) + Math.pow(obj.y2 - obj.y1, 2)
+        );
+        this.ctx.arc(obj.x1, obj.y1, radius, 0, 2 * Math.PI);
+        this.ctx.stroke();
+        break;
+
+      case "arrow":
+        this.ctx.beginPath();
+        this.ctx.strokeStyle = obj.color;
+        this.ctx.lineWidth = obj.width;
+
+        // Dibujar línea
+        this.ctx.moveTo(obj.x1, obj.y1);
+        this.ctx.lineTo(obj.x2, obj.y2);
+
+        // Calcular punta de flecha
+        const angle = Math.atan2(obj.y2 - obj.y1, obj.x2 - obj.x1);
+        const headLength = 15;
+
+        this.ctx.lineTo(
+          obj.x2 - headLength * Math.cos(angle - Math.PI / 6),
+          obj.y2 - headLength * Math.sin(angle - Math.PI / 6)
+        );
+        this.ctx.moveTo(obj.x2, obj.y2);
+        this.ctx.lineTo(
+          obj.x2 - headLength * Math.cos(angle + Math.PI / 6),
+          obj.y2 - headLength * Math.sin(angle + Math.PI / 6)
+        );
+        this.ctx.stroke();
+        break;
+
+      case "text":
+        this.ctx.font = obj.font;
+        this.ctx.fillStyle = obj.color;
+        this.ctx.fillText(obj.text, obj.x, obj.y);
+        break;
+
+      case "path":
+        if (obj.points && obj.points.length > 0) {
+          this.ctx.beginPath();
+          this.ctx.strokeStyle = obj.color;
+          this.ctx.lineWidth = obj.width;
+          this.ctx.moveTo(obj.points[0].x, obj.points[0].y);
+
+          for (let i = 1; i < obj.points.length; i++) {
+            this.ctx.lineTo(obj.points[i].x, obj.points[i].y);
+          }
+
+          this.ctx.stroke();
+        }
+        break;
+    }
+  }
+
+  // Método para dibujar el borde de selección
+  drawSelectionBorder(obj) {
+    this.ctx.setLineDash([5, 3]);
+    this.ctx.strokeStyle = "#1E90FF"; // Azul para el borde de selección
+    this.ctx.lineWidth = 2;
+
+    switch (obj.type) {
+      case "square":
+        const width = obj.x2 - obj.x1;
+        const height = obj.y2 - obj.y1;
+        // Dibujar el rectángulo con un margen de 5px
+        this.ctx.strokeRect(obj.x1 - 5, obj.y1 - 5, width + 10, height + 10);
+        break;
+
+      case "circle":
+        const radius = Math.sqrt(
+          Math.pow(obj.x2 - obj.x1, 2) + Math.pow(obj.y2 - obj.y1, 2)
+        );
+        this.ctx.beginPath();
+        this.ctx.arc(obj.x1, obj.y1, radius + 5, 0, 2 * Math.PI);
+        this.ctx.stroke();
+        break;
+
+      case "arrow":
+        // Dibujar un rectángulo que encierre la flecha
+        const minX = Math.min(obj.x1, obj.x2) - 5;
+        const minY = Math.min(obj.y1, obj.y2) - 5;
+        const maxX = Math.max(obj.x1, obj.x2) + 5;
+        const maxY = Math.max(obj.y1, obj.y2) + 5;
+        this.ctx.strokeRect(minX, minY, maxX - minX, maxY - minY);
+        break;
+
+      case "text":
+        // Rectángulo alrededor del texto
+        this.ctx.strokeRect(obj.x - 5, obj.y - 20, 110, 25);
+        break;
+
+      case "path":
+        // Dibujar un rectángulo que encierre todos los puntos del camino
+        if (obj.points && obj.points.length > 0) {
+          let minX = obj.points[0].x;
+          let minY = obj.points[0].y;
+          let maxX = obj.points[0].x;
+          let maxY = obj.points[0].y;
+
+          for (const point of obj.points) {
+            minX = Math.min(minX, point.x);
+            minY = Math.min(minY, point.y);
+            maxX = Math.max(maxX, point.x);
+            maxY = Math.max(maxY, point.y);
+          }
+
+          this.ctx.strokeRect(
+            minX - 5,
+            minY - 5,
+            maxX - minX + 10,
+            maxY - minY + 10
+          );
+        }
+        break;
+    }
+
+    this.ctx.setLineDash([]); // Restaurar el estilo de línea
+  }
 }
 
 // UI Manager
@@ -263,16 +678,28 @@ class UIManager {
         tools.forEach((t) => t.classList.remove("selected"));
         tool.classList.add("selected");
 
+        // Actualizar array de iconos para incluir el borrador
         const icons = [
-          "pointer",
+          "select",
           "square",
           "circle",
           "arrow",
           "pen",
+          "eraser",
           "text",
           "image",
         ];
         state.currentTool = icons[index];
+
+        // Actualizar el cursor según la herramienta seleccionada
+        if (state.currentTool === "select") {
+          this.canvasManager.canvas.style.cursor = "default";
+        } else if (state.currentTool === "eraser") {
+          this.canvasManager.canvas.style.cursor =
+            'url(\'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="white" stroke="black" stroke-width="1"/></svg>\'), auto';
+        } else {
+          this.canvasManager.canvas.style.cursor = "crosshair";
+        }
       });
     });
 
@@ -303,116 +730,29 @@ class UIManager {
   }
 
   setupAuthUI() {
-    const loginButton = document.querySelector('#login-button');
-    const logoutButton = document.querySelector('#logout-button');
-    const userInfo = document.querySelector('#user-info');
+    const loginButton = document.querySelector("#login-button");
+    const logoutButton = document.querySelector("#logout-button");
+    const userInfo = document.querySelector("#user-info");
 
     authService.setAuthStateChangeCallback((isAuthenticated, user) => {
       if (isAuthenticated) {
         userInfo.textContent = `Logged in as ${user.email}`;
-        loginButton.style.display = 'none';
-        logoutButton.style.display = 'block';
+        loginButton.style.display = "none";
+        logoutButton.style.display = "block";
         this.loadUserDrawings();
       } else {
-        userInfo.textContent = 'Not logged in';
-        loginButton.style.display = 'block';
-        logoutButton.style.display = 'none';
+        userInfo.textContent = "Not logged in";
+        loginButton.style.display = "block";
+        logoutButton.style.display = "none";
       }
     });
 
-    loginButton.addEventListener('click', () => {
+    loginButton.addEventListener("click", () => {
       authService.loginWithGoogle();
     });
 
-    logoutButton.addEventListener('click', () => {
+    logoutButton.addEventListener("click", () => {
       authService.logout();
-    });
-  }
-
-  setupFileOperations() {
-    // Save drawing
-    document
-      .querySelector("#save-button")
-      .addEventListener("click", async () => {
-        if (!state.currentUser) {
-          alert("Please log in to save drawings");
-          return;
-        }
-
-        const name = prompt("Enter drawing name:");
-        if (!name) return;
-
-        try {
-          const drawing = {
-            name,
-            userId: state.currentUser.uid,
-            data: this.canvasManager.canvas.toDataURL(),
-            createdAt: new Date(),
-          };
-
-          await addDoc(collection(db, "drawings"), drawing);
-          alert("Drawing saved successfully!");
-        } catch (error) {
-          console.error("Error saving drawing:", error);
-          alert("Error saving drawing");
-        }
-      });
-
-    // Load drawings
-    document
-      .querySelector("#load-button")
-      .addEventListener("click", async () => {
-        if (!state.currentUser) {
-          alert("Please log in to load drawings");
-          return;
-        }
-
-        await this.loadUserDrawings();
-      });
-  }
-
-  async loadUserDrawings() {
-    if (!state.currentUser) return;
-
-    try {
-      const q = query(
-        collection(db, 'drawings'),
-        where('userId', '==', state.currentUser.uid),
-        orderBy('createdAt', 'desc')
-      );
-
-      const querySnapshot = await getDocs(q);
-      state.drawings = [];
-      querySnapshot.forEach((doc) => {
-        state.drawings.push({ id: doc.id, ...doc.data() });
-      });
-
-      this.displayDrawingsList();
-    } catch (error) {
-      console.error('Error loading drawings:', error);
-      alert('Error loading drawings');
-    }
-  }
-
-  displayDrawingsList() {
-    const list = document.querySelector('#drawings-list');
-    list.innerHTML = '';
-
-    state.drawings.forEach(drawing => {
-      const item = document.createElement('div');
-      item.className = 'drawing-item';
-      item.textContent = `${drawing.name} (${new Date(drawing.createdAt.toDate()).toLocaleDateString()})`;
-
-      item.addEventListener('click', () => {
-        const img = new Image();
-        img.onload = () => {
-          this.canvasManager.ctx.clearRect(0, 0, this.canvasManager.canvas.width, this.canvasManager.canvas.height);
-          this.canvasManager.ctx.drawImage(img, 0, 0);
-        };
-        img.src = drawing.data;
-      });
-
-      list.appendChild(item);
     });
   }
 }

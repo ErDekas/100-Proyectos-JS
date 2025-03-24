@@ -6,6 +6,34 @@
     <title>Pizarra Colaborativa</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="src/style.css">
+    <style>
+        /* Estilos para el menú contextual */
+        .context-menu {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            padding: 5px 0;
+            z-index: 1000;
+            min-width: 150px;
+        }
+        
+        .context-menu-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .context-menu-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Estilos para el objeto seleccionado */
+        .selected-object {
+            outline: 2px dashed #1E90FF;
+        }
+    </style>
 </head>
 <body>
     <div class="container-fluid vh-100 d-flex flex-column p-0">
@@ -31,7 +59,7 @@
             <!-- Barra de herramientas lateral -->
             <div class="side-toolbar p-2">
                 <div class="d-flex flex-column">
-                    <button class="tool-button btn btn-light mb-2" title="Seleccionar">
+                    <button class="tool-button btn btn-light mb-2 selected" title="Seleccionar">
                         <i class="fas fa-mouse-pointer"></i>
                     </button>
                     <button class="tool-button btn btn-light mb-2" title="Cuadrado">
@@ -45,6 +73,9 @@
                     </button>
                     <button class="tool-button btn btn-light mb-2" title="Lápiz">
                         <i class="fas fa-pen"></i>
+                    </button>
+                    <button class="tool-button btn btn-light mb-2" title="Goma de borrar">
+                        <i class="fas fa-eraser"></i>
                     </button>
                     <button class="tool-button btn btn-light mb-2" title="Texto">
                         <i class="fas fa-text-height"></i>
@@ -68,8 +99,7 @@
                 <input id="line-width" type="number" class="form-control form-control-sm" value="2" min="1" max="20">
             </div>
             <div>
-                <button id="save-button" class="btn btn-success btn-sm me-2">Guardar</button>
-                <button id="load-button" class="btn btn-secondary btn-sm">Cargar</button>
+                <span class="badge bg-secondary" id="coordinates">X: 0, Y: 0</span>
             </div>
         </div>
 

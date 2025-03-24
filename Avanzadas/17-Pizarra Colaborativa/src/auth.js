@@ -8,7 +8,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 
-import { app } from "../firebase";
+import {app} from '../firebase'
 
 class AuthService {
   constructor() {
