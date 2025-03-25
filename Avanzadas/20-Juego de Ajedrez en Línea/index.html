@@ -1,13 +1,26 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Ajedrez Avanzado</title>
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+    <div id="game-info">
+        <div id="game-status">Turno de las Blancas</div>
+        <div>
+            <strong>Piezas Capturadas:</strong>
+            <div id="captured-pieces">
+                <div id="white-captured"></div>
+                <div id="black-captured"></div>
+            </div>
+        </div>
+    </div>
+    <div id="chessboard"></div>
+    <div id="game-controls">
+        <button id="reset-btn">Reiniciar Juego</button>
+    </div>
+
+    <script src="src/main.js"></script>
+</body>
 </html>
