@@ -149,28 +149,40 @@ class ChessGame {
     const moves = [];
     const direction = color === "white" ? -1 : 1;
     const startRow = color === "white" ? 6 : 1;
-
-    // Movimiento básico
-    if (this.isValidMove(row + direction, col, color)) {
+  
+    // Movimiento básico solo si la casilla está vacía
+    if (this.board[row + direction] && this.board[row + direction][col] === null) {
       moves.push({ row: row + direction, col, isCapture: false });
-    }
-
-    // Primer movimiento doble
-    if (row === startRow && this.isValidMove(row + 2 * direction, col, color)) {
-      moves.push({ row: row + 2 * direction, col, isCapture: false });
-    }
-
-    // Captura diagonal
-    const captureColumns = [col - 1, col + 1];
-    captureColumns.forEach((captureCol) => {
-      if (this.isValidCapture(row + direction, captureCol, color)) {
-        moves.push({ row: row + direction, col: captureCol, isCapture: true });
+  
+      // Primer movimiento doble si la casilla intermedia y final están vacías
+      if (row === startRow && this.board[row + 2 * direction][col] === null) {
+        moves.push({ row: row + 2 * direction, col, isCapture: false });
       }
-    });
-
+    }
+  
+    // Captura diagonal izquierda
+    if (
+      col > 0 &&
+      this.board[row + direction] &&
+      this.board[row + direction][col - 1] !== null &&
+      this.getPieceColor(this.board[row + direction][col - 1]) !== color
+    ) {
+      moves.push({ row: row + direction, col: col - 1, isCapture: true });
+    }
+  
+    // Captura diagonal derecha
+    if (
+      col < 7 &&
+      this.board[row + direction] &&
+      this.board[row + direction][col + 1] !== null &&
+      this.getPieceColor(this.board[row + direction][col + 1]) !== color
+    ) {
+      moves.push({ row: row + direction, col: col + 1, isCapture: true });
+    }
+  
     return moves;
   }
-
+  
   getKnightMoves(row, col, color) {
     const moves = [];
     const knightOffsets = [
