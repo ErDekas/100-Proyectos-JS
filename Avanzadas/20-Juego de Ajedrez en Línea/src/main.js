@@ -328,20 +328,6 @@ class ChessGame {
     );
   }
 
-  wouldBeInCheck(fromRow, fromCol, toRow, toCol) {
-    // Create a deep copy of the board
-    const tempBoard = this.board.map(row => [...row]);
-    const tempPiece = tempBoard[fromRow][fromCol];
-    const color = this.getPieceColor(tempPiece);
-
-    // Simulate the move
-    tempBoard[toRow][toCol] = tempPiece;
-    tempBoard[fromRow][fromCol] = null;
-
-    // Check if the king would be in check after this move
-    return this.isKingInCheck(color, tempBoard);
-  }
-
   // Method to check if a king is in check
   isKingInCheck(color, board = this.board) {
     // Find the king's position
@@ -350,7 +336,7 @@ class ChessGame {
       for (let col = 0; col < 8; col++) {
         const piece = board[row][col];
         if (piece && this.getPieceColor(piece) === color && 
-            (piece.toLowerCase() === '♚')) {
+            (piece.toLowerCase() === '♚' || piece.toLowerCase() === '♔')) {
           kingRow = row;
           kingCol = col;
           break;
@@ -377,7 +363,7 @@ class ChessGame {
     this.inCheck[color] = false;
     return false;
   }
-
+  
   movePiece(row, col) {
     const possibleMoves = this.getPossibleMoves(
       this.selectedPiece.row,
