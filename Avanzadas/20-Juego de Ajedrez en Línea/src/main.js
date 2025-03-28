@@ -5,8 +5,11 @@ class ChessGame {
     this.selectedPiece = null;
     this.capturedPieces = { white: [], black: [] };
     this.inCheck = { white: false, black: false };
+    this.gameOver = false;
+    this.moveHistory = [];
     this.renderBoard();
     this.setupEventListeners();
+    this.setupMoveHistoryDisplay();
   }
 
   initializeBoard() {
@@ -37,9 +40,8 @@ class ChessGame {
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
         const square = document.createElement("div");
-        square.className = `square ${
-          (row + col) % 2 === 0 ? "white" : "black"
-        }`;
+        square.className = `square ${(row + col) % 2 === 0 ? "white" : "black"
+          }`;
         square.dataset.row = row;
         square.dataset.col = col;
 
@@ -61,16 +63,95 @@ class ChessGame {
     resetBtn.addEventListener("click", () => this.resetGame());
   }
 
+  // Método para configurar la visualización del historial de movimientos
+  setupMoveHistoryDisplay() {
+    const moveHistoryElement = document.getElementById("move-history");
+    if (!moveHistoryElement) {
+      const historyContainer = document.createElement("div");
+      historyContainer.id = "move-history-container";
+      historyContainer.innerHTML = `
+      <h3>Historial de Movimientos</h3>
+      <ol id="move-history" class="move-history-list"></ol>
+    `;
+      document.body.appendChild(historyContainer);
+    }
+  }
+
+  // Método para registrar un movimiento en el historial
+  recordMove(piece, fromSquare, toSquare, isCapture = false) {
+    const moveNotation = this.generateMoveNotation(piece, fromSquare, toSquare, isCapture);
+    this.moveHistory.push({
+      piece,
+      from: fromSquare,
+      to: toSquare,
+      player: this.currentPlayer,
+      notation: moveNotation
+    });
+
+    // Actualizar la visualización del historial
+    this.updateMoveHistoryDisplay();
+  }
+  // Método para generar notación algebraica del movimiento
+  generateMoveNotation(piece, fromSquare, toSquare, isCapture) {
+    const columns = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+    const rows = ['8', '7', '6', '5', '4', '3', '2', '1'];
+
+    const fromCol = columns[fromSquare.col];
+    const fromRow = rows[fromSquare.row];
+    const toCol = columns[toSquare.col];
+    const toRow = rows[toSquare.row];
+
+    // Determinar el tipo de pieza
+    const pieceNotation = {
+      '♔': 'K', '♚': 'K',   // Rey
+      '♕': 'Q', '♛': 'Q',   // Reina
+      '♖': 'R', '♜': 'R',   // Torre
+      '♗': 'B', '♝': 'B',   // Alfil
+      '♘': 'N', '♞': 'N',   // Caballo
+      '♙': '', '♟': ''      // Peón (sin notación)
+    }[piece] || '';
+
+    // Construir notación
+    return `${pieceNotation}${isCapture ? 'x' : ''}${toCol}${toRow}`;
+  }
+
+  // Actualizar la visualización del historial de movimientos
+  updateMoveHistoryDisplay() {
+    const moveHistoryElement = document.getElementById("move-history");
+    if (moveHistoryElement) {
+      moveHistoryElement.innerHTML = this.moveHistory.map((move, index) => `
+      <li class="${move.player}">
+        ${index + 1}. ${move.notation}
+      </li>
+    `).join('');
+    }
+  }
+
   resetGame() {
     this.board = this.initializeBoard();
     this.currentPlayer = "white";
     this.selectedPiece = null;
     this.capturedPieces = { white: [], black: [] };
+    this.gameOver = false;
+    this.moveHistory = []; // Limpiar historial de movimientos
     document.getElementById("game-status").textContent = "Turno de las Blancas";
+
+    // Re-enable board interactions
+    const boardElement = document.getElementById("chessboard");
+    boardElement.style.pointerEvents = "auto";
+
+    // Limpiar historial de movimientos en la interfaz
+    const moveHistoryElement = document.getElementById("move-history");
+    if (moveHistoryElement) {
+      moveHistoryElement.innerHTML = '';
+    }
+
     this.renderBoard();
   }
 
   handleSquareClick(e) {
+    if (this.gameOver) return;
+
     const square = e.target.closest(".square");
     if (!square) return;
 
@@ -149,17 +230,17 @@ class ChessGame {
     const moves = [];
     const direction = color === "white" ? -1 : 1;
     const startRow = color === "white" ? 6 : 1;
-  
+
     // Movimiento básico solo si la casilla está vacía
     if (this.board[row + direction] && this.board[row + direction][col] === null) {
       moves.push({ row: row + direction, col, isCapture: false });
-  
+
       // Primer movimiento doble si la casilla intermedia y final están vacías
       if (row === startRow && this.board[row + 2 * direction][col] === null) {
         moves.push({ row: row + 2 * direction, col, isCapture: false });
       }
     }
-  
+
     // Captura diagonal izquierda
     if (
       col > 0 &&
@@ -169,7 +250,7 @@ class ChessGame {
     ) {
       moves.push({ row: row + direction, col: col - 1, isCapture: true });
     }
-  
+
     // Captura diagonal derecha
     if (
       col < 7 &&
@@ -179,10 +260,10 @@ class ChessGame {
     ) {
       moves.push({ row: row + direction, col: col + 1, isCapture: true });
     }
-  
+
     return moves;
   }
-  
+
   getKnightMoves(row, col, color) {
     const moves = [];
     const knightOffsets = [
@@ -335,8 +416,8 @@ class ChessGame {
     for (let row = 0; row < 8; row++) {
       for (let col = 0; col < 8; col++) {
         const piece = board[row][col];
-        if (piece && this.getPieceColor(piece) === color && 
-            (piece.toLowerCase() === '♚' || piece.toLowerCase() === '♔')) {
+        if (piece && this.getPieceColor(piece) === color &&
+          (piece.toLowerCase() === '♚' || piece.toLowerCase() === '♔')) {
           kingRow = row;
           kingCol = col;
           break;
@@ -351,8 +432,8 @@ class ChessGame {
         const piece = board[row][col];
         if (piece && this.getPieceColor(piece) !== color) {
           const possibleMoves = this.getPossibleMoves(row, col);
-          if (possibleMoves.some(move => 
-              move.row === kingRow && move.col === kingCol)) {
+          if (possibleMoves.some(move =>
+            move.row === kingRow && move.col === kingCol)) {
             this.inCheck[color] = true;
             return true;
           }
@@ -363,8 +444,10 @@ class ChessGame {
     this.inCheck[color] = false;
     return false;
   }
-  
+
   movePiece(row, col) {
+    if (this.gameOver) return;
+
     const possibleMoves = this.getPossibleMoves(
       this.selectedPiece.row,
       this.selectedPiece.col
@@ -375,18 +458,33 @@ class ChessGame {
     );
 
     if (moveDetails) {
+      const piece = this.board[this.selectedPiece.row][this.selectedPiece.col];
+      const fromSquare = { row: this.selectedPiece.row, col: this.selectedPiece.col };
+      const toSquare = { row, col };
+
+      // Check if captured piece is a king
+      const capturedPiece = this.board[row][col];
+      const capturedColor = capturedPiece ? this.getPieceColor(capturedPiece) : null;
+
       // Capture piece if necessary
-      if (this.board[row][col] !== null) {
-        const capturedPiece = this.board[row][col];
-        const capturedColor = this.getPieceColor(capturedPiece);
+      if (capturedPiece !== null) {
+        // Check if captured piece is a king (game-ending condition)
+        if (capturedPiece.toLowerCase() === '♔' || capturedPiece.toLowerCase() === '♚') {
+          this.recordMove(piece, fromSquare, toSquare, true);
+          this.endGame(this.currentPlayer);
+          return;
+        }
+
         this.capturedPieces[capturedColor === "white" ? "black" : "white"].push(
           capturedPiece
         );
       }
 
+      // Record the move in history
+      this.recordMove(piece, fromSquare, toSquare, capturedPiece !== null);
+
       // Move piece
-      this.board[row][col] =
-        this.board[this.selectedPiece.row][this.selectedPiece.col];
+      this.board[row][col] = piece;
       this.board[this.selectedPiece.row][this.selectedPiece.col] = null;
 
       // Check for check state
@@ -395,10 +493,9 @@ class ChessGame {
       this.isKingInCheck(opponentColor);
 
       // Update game status with check information
-      let statusText = `Turno de las ${
-        opponentColor === "white" ? "Blancas" : "Negras"
-      }`;
-      
+      let statusText = `Turno de las ${opponentColor === "white" ? "Blancas" : "Negras"
+        }`;
+
       if (this.inCheck[opponentColor]) {
         statusText += " - ¡JAQUE!";
       }
@@ -411,6 +508,16 @@ class ChessGame {
       this.renderBoard();
       this.selectedPiece = null;
     }
+  }
+
+  endGame(winningColor) {
+    this.gameOver = true;
+    const gameStatus = document.getElementById("game-status");
+    gameStatus.textContent = `¡Juego Terminado! Ganan las ${winningColor === "white" ? "Blancas" : "Negras"}`;
+
+    // Optionally, disable further moves
+    const boardElement = document.getElementById("chessboard");
+    boardElement.style.pointerEvents = "none";
   }
 
   getPieceColor(piece) {
