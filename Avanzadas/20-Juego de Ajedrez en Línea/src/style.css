@@ -1,19 +1,60 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #f0f0f0;
+  background-color: #282828c5;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
+
+#game-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 480px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+#game-status {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+#captured-pieces {
+  display: flex;
+  gap: 10px;
+}
+
+#white-captured, 
+#black-captured {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 20px;
+}
+
 #chessboard {
   display: grid;
   grid-template-columns: repeat(8, 60px);
   grid-template-rows: repeat(8, 60px);
   width: 480px;
-  border: 2px solid #333;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  height: 480px;
+  border: 3px solid #5d4037;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  background-color: #d7ccc8;
 }
+
 .square {
   width: 60px;
   height: 60px;
@@ -22,32 +63,117 @@ body {
   align-items: center;
   font-size: 40px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  position: relative;
 }
+
+.square::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,0.1);
+  transform: translate(-50%, -50%);
+  transition: all 0.2s ease;
+}
+
 .white {
   background-color: #f0d9b5;
 }
+
 .black {
   background-color: #b58863;
 }
-.selected {
-  background-color: rgba(0, 255, 0, 0.5);
+
+.square.selected {
+  background-color: rgba(0, 255, 0, 0.3);
 }
-.possible-move {
+
+.square.possible-move {
+  background-color: rgba(0, 0, 255, 0.2);
+}
+
+.square.possible-move::before {
+  width: 20px;
+  height: 20px;
   background-color: rgba(0, 0, 255, 0.3);
 }
-.capture-move {
+
+.square.capture-move {
   background-color: rgba(255, 0, 0, 0.3);
 }
-#game-info {
-  display: flex;
-  justify-content: space-between;
-  width: 480px;
-  margin-top: 10px;
+
+.square.capture-move::before {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 0, 0, 0.3);
 }
-#captured-pieces {
-  display: flex;
+
+#game-controls {
+  margin-top: 15px;
 }
-#captured-pieces div {
-  margin: 0 5px;
+
+#reset-btn {
+  background-color: #5d4037;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+#reset-btn:hover {
+  background-color: #4e342e;
+}
+
+/* Piece color styles */
+.square .white {
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.square .black {
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+}
+
+/* Move History (Optional, pero recomendado) */
+#move-history-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 250px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  padding: 15px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.move-history-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.move-history-list li {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+
+.move-history-list li.white {
+  background-color: #f9f9f9;
+  color: #060606;
+}
+
+.move-history-list li.black {
+  color: #f9f9f9;
+  background-color: #060606;
 }
