@@ -1,3 +1,5 @@
+import io from 'socket.io-client';
+
 class ChessGame {
   constructor() {
     this.board = this.initializeBoard();
