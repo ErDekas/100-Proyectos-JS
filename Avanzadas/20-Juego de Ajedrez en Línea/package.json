@@ -2,7 +2,7 @@
   "name": "20-juego-de-ajedrez-en-l-nea",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,6 +12,7 @@
     "vite": "^6.2.0"
   },
   "dependencies": {
-    "firebase": "^11.5.0"
+    "firebase": "^11.5.0",
+    "socket.io-client": "^4.8.1"
   }
 }

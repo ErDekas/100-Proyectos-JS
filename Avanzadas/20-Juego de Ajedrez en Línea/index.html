@@ -2,25 +2,122 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego de Ajedrez Avanzado</title>
-    <link rel="stylesheet" href="src/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juega Ajedrez Online</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="firebase.js"></script>
 </head>
 <body>
-    <div id="game-info">
-        <div id="game-status">Turno de las Blancas</div>
-        <div>
-            <strong>Piezas Capturadas:</strong>
-            <div id="captured-pieces">
-                <div id="white-captured"></div>
-                <div id="black-captured"></div>
-            </div>
+    <header>
+        <h1>Juega Ajedrez Online</h1>
+        <p>Conéctate con jugadores de todo el mundo y mejora tu estrategia.</p>
+        <a href="#" class="btn" onclick="showModal()">Jugar Ahora</a>
+    </header>
+    <section id="features">
+        <div class="feature">
+            <h2>Juego en Tiempo Real</h2>
+            <p>Desafía a jugadores en partidas en vivo.</p>
+        </div>
+        <div class="feature">
+            <h2>Torneos Diarios</h2>
+            <p>Participa en torneos y gana premios.</p>
+        </div>
+        <div class="feature">
+            <h2>Lecciones Interactivas</h2>
+            <p>Mejora tus habilidades con entrenamientos personalizados.</p>
+        </div>
+    </section>
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Iniciar sesión o Registrarse</h2>
+            <input type="email" id="email" placeholder="Correo Electrónico" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button onclick="login()">Iniciar Sesión</button>
+            <button onclick="register()">Registrarse</button>
+            <hr>
+            <button class="google-btn" onclick="loginWithGoogle()">Iniciar con Google</button>
+            <button class="github-btn" onclick="loginWithGithub()">Iniciar con GitHub</button>
         </div>
     </div>
-    <div id="chessboard"></div>
-    <div id="game-controls">
-        <button id="reset-btn">Reiniciar Juego</button>
-    </div>
 
-    <script type="module" src="src/main.js"></script>
+    <footer>
+        <p>&copy; 2025 Juega Ajedrez Online. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>
+
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    header {
+        background-color: #333;
+        color: white;
+        padding: 50px 20px;
+    }
+    .btn {
+        background-color: #ffcc00;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        border-radius: 5px;
+        display: inline-block;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+    }
+    .close {
+        cursor: pointer;
+        float: right;
+        font-size: 24px;
+    }
+    input {
+        display: block;
+        margin: 10px auto;
+        padding: 10px;
+        width: 80%;
+    }
+    button {
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+        width: 100%;
+        border-radius: 5px;
+    }
+    .google-btn {
+        background-color: #db4437;
+    }
+    .github-btn {
+        background-color: #333;
+    }
+</style>
+
