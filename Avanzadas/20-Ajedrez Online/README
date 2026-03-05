@@ -131,3 +131,9 @@ npx serve chess
 
 Este proyecto no usa npm, webpack, ni ningún bundler.
 Todo funciona directamente en el navegador con ES Modules nativos.
+
+---
+
+## ☕ Web para jugar
+
+https://ajedrez-online-da69a.web.app/
