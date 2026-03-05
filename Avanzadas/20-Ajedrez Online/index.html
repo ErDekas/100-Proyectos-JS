@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ajedrez Online</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===== LOBBY ===== -->
+  <div id="lobby" class="screen active">
+    <div class="lobby-bg">
+      <div class="board-pattern"></div>
+    </div>
+    <div class="lobby-content">
+      <div class="logo">
+        <span class="logo-icon">♞</span>
+        <h1>ChessMate</h1>
+        <p class="tagline">Ajedrez online en tiempo real</p>
+      </div>
+
+      <div id="auth-section">
+        <div class="card" id="login-card">
+          <h2>Entrar</h2>
+          <input type="text" id="username-input" placeholder="Tu nombre de jugador" maxlength="20" />
+          <button id="btn-enter" class="btn-primary">Entrar al lobby →</button>
+        </div>
+      </div>
+
+      <div id="lobby-section" class="hidden">
+        <div class="lobby-header">
+          <span id="welcome-msg"></span>
+          <button id="btn-logout" class="btn-ghost">Salir</button>
+        </div>
+        <div class="lobby-actions">
+          <button id="btn-create" class="btn-primary btn-large">
+            <span class="btn-icon">+</span>
+            Crear partida
+          </button>
+          <div class="divider">o</div>
+          <div class="join-row">
+            <input type="text" id="game-code-input" placeholder="Código de partida..." maxlength="6" />
+            <button id="btn-join" class="btn-secondary">Unirse</button>
+          </div>
+        </div>
+
+        <div class="rooms-section">
+          <h3>Partidas abiertas <span id="rooms-count" class="badge">0</span></h3>
+          <div id="rooms-list" class="rooms-list">
+            <div class="empty-state">No hay partidas disponibles</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== GAME ===== -->
+  <div id="game-screen" class="screen">
+    <div class="game-layout">
+
+      <!-- Sidebar izquierda -->
+      <aside class="sidebar sidebar-left">
+        <div class="player-card" id="player-top-card">
+          <div class="player-avatar" id="avatar-top">♟</div>
+          <div class="player-info">
+            <span class="player-name" id="player-top-name">Esperando...</span>
+            <span class="player-color" id="player-top-color"></span>
+          </div>
+          <div class="player-timer" id="timer-top">10:00</div>
+        </div>
+
+        <div id="captured-top" class="captured-pieces"></div>
+
+        <div class="spacer"></div>
+
+        <div id="captured-bottom" class="captured-pieces"></div>
+
+        <div class="player-card" id="player-bottom-card">
+          <div class="player-avatar" id="avatar-bottom">♙</div>
+          <div class="player-info">
+            <span class="player-name" id="player-bottom-name">Tú</span>
+            <span class="player-color" id="player-bottom-color"></span>
+          </div>
+          <div class="player-timer" id="timer-bottom">10:00</div>
+        </div>
+      </aside>
+
+      <!-- Tablero central -->
+      <main class="board-container">
+        <div class="board-wrapper">
+          <div class="coords-left" id="coords-ranks"></div>
+          <div>
+            <div id="chessboard" class="chessboard"></div>
+            <div class="coords-bottom" id="coords-files"></div>
+          </div>
+        </div>
+
+        <div id="status-bar" class="status-bar">
+          <span id="status-text">Esperando oponente...</span>
+          <span id="game-code-display" class="game-code"></span>
+        </div>
+      </main>
+
+      <!-- Sidebar derecha -->
+      <aside class="sidebar sidebar-right">
+        <div class="sidebar-top">
+          <button id="btn-back-lobby" class="btn-ghost btn-icon-only" title="Volver al lobby">←</button>
+          <button id="btn-resign" class="btn-danger" title="Rendirse">Rendirse</button>
+          <button id="btn-draw" class="btn-ghost" title="Ofrecer tablas">½</button>
+        </div>
+
+        <div class="moves-panel">
+          <h3>Movimientos</h3>
+          <div id="moves-list" class="moves-list"></div>
+        </div>
+
+        <div class="chat-panel">
+          <h3>Chat</h3>
+          <div id="chat-messages" class="chat-messages"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Mensaje..." maxlength="100" />
+            <button id="btn-send-chat" class="btn-secondary">→</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Modal de resultado -->
+    <div id="result-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-icon" id="modal-icon">♛</div>
+        <h2 id="modal-title">¡Jaque Mate!</h2>
+        <p id="modal-desc">Las blancas ganan</p>
+        <div class="modal-actions">
+          <button id="btn-new-game" class="btn-primary">Nueva partida</button>
+          <button id="btn-lobby-modal" class="btn-ghost">Lobby</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de promoción -->
+    <div id="promotion-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Promoción de peón</h2>
+        <p>Elige una pieza</p>
+        <div class="promotion-choices" id="promotion-choices"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module" src="js/firebase-config.js"></script>
+  <script type="module" src="js/chess-engine.js"></script>
+  <script type="module" src="js/game-ui.js"></script>
+  <script type="module" src="js/lobby.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

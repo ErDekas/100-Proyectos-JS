@@ -1,0 +1,133 @@
+# ♞ ChessMate — Ajedrez Online
+
+Juego de ajedrez multijugador en tiempo real construido con **HTML + CSS + JS puro** y **Firebase Realtime Database**.
+
+---
+
+## 📁 Estructura de archivos
+
+```
+chess/
+├── index.html
+├── css/
+│   └── style.css
+└── js/
+    ├── firebase-config.js   ← ⚙️ Aquí van tus credenciales
+    ├── chess-engine.js      ← Motor de ajedrez completo
+    ├── game-ui.js           ← Renderizado del tablero
+    ├── lobby.js             ← Gestión de salas
+    └── app.js               ← Orquestador principal
+```
+
+---
+
+## 🚀 Configuración de Firebase
+
+### 1. Crear proyecto Firebase
+
+1. Ve a [https://console.firebase.google.com](https://console.firebase.google.com)
+2. Crea un nuevo proyecto (o usa uno existente)
+3. Ve a **Build → Realtime Database → Create Database**
+4. Elige la región más cercana y selecciona **"Start in test mode"** (para desarrollo)
+
+### 2. Obtener credenciales
+
+1. Ve a **Project Settings** (ícono ⚙️ en la barra lateral)
+2. Baja hasta **"Your apps"** → Haz clic en **</>** (Web)
+3. Registra tu app y copia el objeto `firebaseConfig`
+
+### 3. Pegar credenciales
+
+Abre `js/firebase-config.js` y reemplaza los valores:
+
+```javascript
+const firebaseConfig = {
+  apiKey:            "AIzaSy...",
+  authDomain:        "mi-proyecto.firebaseapp.com",
+  databaseURL:       "https://mi-proyecto-default-rtdb.firebaseio.com",
+  projectId:         "mi-proyecto",
+  storageBucket:     "mi-proyecto.appspot.com",
+  messagingSenderId: "123456789",
+  appId:             "1:123456789:web:abc123"
+};
+```
+
+### 4. Reglas de Firebase (Realtime Database)
+
+En la consola de Firebase, ve a **Realtime Database → Rules** y pega:
+
+```json
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+```
+
+> ⚠️ Estas reglas son para **desarrollo**. En producción, implementa autenticación.
+
+---
+
+## ▶️ Ejecutar el juego
+
+Como el proyecto usa ES Modules (`type="module"`), necesitas un servidor local:
+
+### Opción A — VS Code Live Server
+Instala la extensión **Live Server** y haz clic en "Go Live"
+
+### Opción B — Python
+```bash
+cd chess
+python3 -m http.server 8080
+# Abre http://localhost:8080
+```
+
+### Opción C — Node.js
+```bash
+npx serve chess
+```
+
+---
+
+## 🎮 Cómo jugar
+
+1. Abre el juego en **dos pestañas o dispositivos distintos**
+2. Ingresa tu nombre en cada una
+3. En una pestaña: haz clic en **"Crear partida"** → copia el código de 6 letras
+4. En la otra: pega el código y haz clic en **"Unirse"**
+5. ¡A jugar!
+
+---
+
+## ♟️ Funcionalidades
+
+- ✅ Movimientos legales completos (con validación de jaque)
+- ✅ Enroque corto y largo
+- ✅ Captura al paso (en passant)
+- ✅ Promoción de peón (elige la pieza)
+- ✅ Detección de jaque mate y tablas (ahogado, regla de 50 jugadas)
+- ✅ Temporizador 10 minutos por jugador
+- ✅ Lista de movimientos en notación algebraica
+- ✅ Chat en tiempo real
+- ✅ Partidas visibles en el lobby
+- ✅ Rendirse / ofrecer tablas
+- ✅ Tablero orientable (blancas abajo para blancas, negras abajo para negras)
+
+---
+
+## 🛠️ Tecnologías
+
+| Tecnología | Uso |
+|---|---|
+| HTML5 | Estructura |
+| CSS3 | Estilos, animaciones, layout con Grid |
+| JavaScript ES2022 | Lógica del juego y UI |
+| Firebase Realtime DB | Sincronización en tiempo real |
+
+---
+
+## 📦 Sin dependencias de build
+
+Este proyecto usa npm para firebase.
+- npm install firebase
