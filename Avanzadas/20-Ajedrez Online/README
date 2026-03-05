@@ -129,5 +129,5 @@ npx serve chess
 
 ## 📦 Sin dependencias de build
 
-Este proyecto usa npm para firebase.
-- npm install firebase
+Este proyecto no usa npm, webpack, ni ningún bundler.
+Todo funciona directamente en el navegador con ES Modules nativos.

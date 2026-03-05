@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ajedrez Online</title>
+  <title>ChessMate — Juega en línea</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <!-- ===== LOBBY ===== -->
-  <div id="lobby" class="screen active">
-    <div class="lobby-bg">
-      <div class="board-pattern"></div>
-    </div>
+  <!-- ===== AUTH ===== -->
+  <div id="auth-screen" class="screen active">
+    <div class="lobby-bg"><div class="board-pattern"></div></div>
     <div class="lobby-content">
       <div class="logo">
         <span class="logo-icon">♞</span>
@@ -22,36 +20,117 @@
         <p class="tagline">Ajedrez online en tiempo real</p>
       </div>
 
-      <div id="auth-section">
-        <div class="card" id="login-card">
-          <h2>Entrar</h2>
-          <input type="text" id="username-input" placeholder="Tu nombre de jugador" maxlength="20" />
-          <button id="btn-enter" class="btn-primary">Entrar al lobby →</button>
+      <!-- Login -->
+      <div class="card" id="login-panel">
+        <h2>Iniciar sesión</h2>
+        <button id="btn-google" class="btn-google">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continuar con Google
+        </button>
+        <div class="divider">o con email</div>
+        <input type="email"    id="login-email"    placeholder="Correo electrónico" />
+        <input type="password" id="login-password" placeholder="Contraseña" />
+        <button id="btn-login-email" class="btn-primary">Iniciar sesión</button>
+        <p class="auth-switch">¿No tienes cuenta? <a id="link-to-register">Regístrate</a></p>
+        <p id="login-error" class="auth-error hidden"></p>
+      </div>
+
+      <!-- Register -->
+      <div class="card hidden" id="register-panel">
+        <h2>Crear cuenta</h2>
+        <button id="btn-google-reg" class="btn-google">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-3.59-13.46-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continuar con Google
+        </button>
+        <div class="divider">o con email</div>
+        <input type="text"     id="reg-username" placeholder="Nombre de usuario (único)" maxlength="20" />
+        <input type="email"    id="reg-email"    placeholder="Correo electrónico" />
+        <input type="password" id="reg-password" placeholder="Contraseña (mín. 6 caracteres)" />
+        <button id="btn-register" class="btn-primary">Crear cuenta</button>
+        <p class="auth-switch">¿Ya tienes cuenta? <a id="link-to-login">Inicia sesión</a></p>
+        <p id="register-error" class="auth-error hidden"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== LOBBY ===== -->
+  <div id="lobby" class="screen">
+    <div class="lobby-bg"><div class="board-pattern"></div></div>
+    <div class="lobby-content">
+      <div class="logo">
+        <span class="logo-icon">♞</span>
+        <h1>ChessMate</h1>
+      </div>
+
+      <!-- Nav del perfil -->
+      <div class="lobby-header">
+        <div class="profile-mini">
+          <span class="profile-avatar">♟</span>
+          <div>
+            <span id="welcome-msg" class="profile-name"></span>
+            <span id="profile-stats" class="profile-stats-mini"></span>
+          </div>
+        </div>
+        <div style="display:flex;gap:0.5rem">
+          <button id="btn-profile" class="btn-ghost">Perfil</button>
+          <button id="btn-logout"  class="btn-ghost">Salir</button>
         </div>
       </div>
 
-      <div id="lobby-section" class="hidden">
-        <div class="lobby-header">
-          <span id="welcome-msg"></span>
-          <button id="btn-logout" class="btn-ghost">Salir</button>
+      <div class="lobby-actions">
+        <button id="btn-create" class="btn-primary btn-large">
+          <span class="btn-icon">+</span> Crear partida
+        </button>
+        <div class="divider">o</div>
+        <div class="join-row">
+          <input type="text" id="game-code-input" placeholder="Código de partida..." maxlength="6" />
+          <button id="btn-join" class="btn-secondary">Unirse</button>
         </div>
-        <div class="lobby-actions">
-          <button id="btn-create" class="btn-primary btn-large">
-            <span class="btn-icon">+</span>
-            Crear partida
-          </button>
-          <div class="divider">o</div>
-          <div class="join-row">
-            <input type="text" id="game-code-input" placeholder="Código de partida..." maxlength="6" />
-            <button id="btn-join" class="btn-secondary">Unirse</button>
+      </div>
+
+      <div class="rooms-section">
+        <h3>Partidas abiertas <span id="rooms-count" class="badge">0</span></h3>
+        <div id="rooms-list" class="rooms-list">
+          <div class="empty-state">No hay partidas disponibles</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PERFIL ===== -->
+  <div id="profile-screen" class="screen">
+    <div class="lobby-bg"><div class="board-pattern"></div></div>
+    <div class="lobby-content" style="max-width:560px">
+      <div class="profile-header-row">
+        <button id="btn-back-from-profile" class="btn-ghost">← Lobby</button>
+        <button id="btn-logout-profile"    class="btn-ghost">Salir</button>
+      </div>
+
+      <div class="card">
+        <div class="profile-top">
+          <div class="profile-big-avatar">♛</div>
+          <div>
+            <h2 id="profile-username-display"></h2>
+            <p  id="profile-email-display" class="text-muted"></p>
           </div>
+        </div>
+        <div class="profile-stats-grid">
+          <div class="stat-box win"><span id="stat-wins">0</span><label>Victorias</label></div>
+          <div class="stat-box draw"><span id="stat-draws">0</span><label>Tablas</label></div>
+          <div class="stat-box loss"><span id="stat-losses">0</span><label>Derrotas</label></div>
         </div>
 
-        <div class="rooms-section">
-          <h3>Partidas abiertas <span id="rooms-count" class="badge">0</span></h3>
-          <div id="rooms-list" class="rooms-list">
-            <div class="empty-state">No hay partidas disponibles</div>
-          </div>
+        <div class="username-edit-row">
+          <input type="text" id="new-username-input" placeholder="Cambiar nombre de usuario..." maxlength="20" />
+          <button id="btn-save-username" class="btn-secondary">Guardar</button>
+        </div>
+        <p id="username-edit-error" class="auth-error hidden"></p>
+      </div>
+
+      <div class="card">
+        <h3 style="font-family:var(--font-display);font-size:1.1rem;margin-bottom:0.75rem">Historial de partidas</h3>
+        <div id="game-history-list" class="game-history-list">
+          <div class="empty-state">Aún no has jugado ninguna partida</div>
         </div>
       </div>
     </div>
@@ -61,34 +140,28 @@
   <div id="game-screen" class="screen">
     <div class="game-layout">
 
-      <!-- Sidebar izquierda -->
       <aside class="sidebar sidebar-left">
         <div class="player-card" id="player-top-card">
           <div class="player-avatar" id="avatar-top">♟</div>
           <div class="player-info">
-            <span class="player-name" id="player-top-name">Esperando...</span>
+            <span class="player-name"  id="player-top-name">Esperando...</span>
             <span class="player-color" id="player-top-color"></span>
           </div>
           <div class="player-timer" id="timer-top">10:00</div>
         </div>
-
         <div id="captured-top" class="captured-pieces"></div>
-
         <div class="spacer"></div>
-
         <div id="captured-bottom" class="captured-pieces"></div>
-
         <div class="player-card" id="player-bottom-card">
           <div class="player-avatar" id="avatar-bottom">♙</div>
           <div class="player-info">
-            <span class="player-name" id="player-bottom-name">Tú</span>
+            <span class="player-name"  id="player-bottom-name">Tú</span>
             <span class="player-color" id="player-bottom-color"></span>
           </div>
           <div class="player-timer" id="timer-bottom">10:00</div>
         </div>
       </aside>
 
-      <!-- Tablero central -->
       <main class="board-container">
         <div class="board-wrapper">
           <div class="coords-left" id="coords-ranks"></div>
@@ -97,26 +170,22 @@
             <div class="coords-bottom" id="coords-files"></div>
           </div>
         </div>
-
         <div id="status-bar" class="status-bar">
           <span id="status-text">Esperando oponente...</span>
           <span id="game-code-display" class="game-code"></span>
         </div>
       </main>
 
-      <!-- Sidebar derecha -->
       <aside class="sidebar sidebar-right">
         <div class="sidebar-top">
-          <button id="btn-back-lobby" class="btn-ghost btn-icon-only" title="Volver al lobby">←</button>
-          <button id="btn-resign" class="btn-danger" title="Rendirse">Rendirse</button>
-          <button id="btn-draw" class="btn-ghost" title="Ofrecer tablas">½</button>
+          <button id="btn-back-lobby"  class="btn-ghost btn-icon-only" title="Lobby">←</button>
+          <button id="btn-resign"      class="btn-danger">Rendirse</button>
+          <button id="btn-draw"        class="btn-ghost">½</button>
         </div>
-
         <div class="moves-panel">
           <h3>Movimientos</h3>
           <div id="moves-list" class="moves-list"></div>
         </div>
-
         <div class="chat-panel">
           <h3>Chat</h3>
           <div id="chat-messages" class="chat-messages"></div>
@@ -128,20 +197,20 @@
       </aside>
     </div>
 
-    <!-- Modal de resultado -->
+    <!-- Modal resultado -->
     <div id="result-modal" class="modal hidden">
       <div class="modal-content">
         <div class="modal-icon" id="modal-icon">♛</div>
         <h2 id="modal-title">¡Jaque Mate!</h2>
-        <p id="modal-desc">Las blancas ganan</p>
+        <p  id="modal-desc">Las blancas ganan</p>
         <div class="modal-actions">
-          <button id="btn-new-game" class="btn-primary">Nueva partida</button>
+          <button id="btn-new-game"    class="btn-primary">Nueva partida</button>
           <button id="btn-lobby-modal" class="btn-ghost">Lobby</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal de promoción -->
+    <!-- Modal promoción -->
     <div id="promotion-modal" class="modal hidden">
       <div class="modal-content">
         <h2>Promoción de peón</h2>
@@ -151,11 +220,32 @@
     </div>
   </div>
 
-  <!-- Firebase SDK -->
-  <script type="module" src="js/firebase-config.js"></script>
-  <script type="module" src="js/chess-engine.js"></script>
-  <script type="module" src="js/game-ui.js"></script>
-  <script type="module" src="js/lobby.js"></script>
+  <!-- Modal de confirmación genérico -->
+  <div id="confirm-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-icon" id="confirm-icon">⚠</div>
+      <h2 id="confirm-title">¿Estás seguro?</h2>
+      <p id="confirm-desc"></p>
+      <div class="modal-actions">
+        <button id="confirm-ok"     class="btn-primary">Confirmar</button>
+        <button id="confirm-cancel" class="btn-ghost">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de oferta de tablas -->
+  <div id="draw-offer-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-icon">½</div>
+      <h2>Oferta de tablas</h2>
+      <p id="draw-offer-desc"></p>
+      <div class="modal-actions">
+        <button id="draw-accept" class="btn-primary">Aceptar</button>
+        <button id="draw-reject" class="btn-ghost">Rechazar</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -57,10 +57,13 @@ html, body {
 /* ===================================
    LOBBY
    =================================== */
-#lobby {
+#lobby,
+#auth-screen,
+#profile-screen {
   align-items: center;
   justify-content: center;
   position: relative;
+  overflow-y: auto;
 }
 
 .lobby-bg {
@@ -735,4 +738,144 @@ input[type="text"]::placeholder { color: var(--text-dim); }
     width: min(95vw, 95vh);
     height: min(95vw, 95vh);
   }
+}
+
+/* ===================================
+   AUTH
+   =================================== */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-google:hover { background: #f5f5f5; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+.auth-switch { text-align:center; color:var(--text-muted); font-size:0.85rem; }
+.auth-switch a { color:var(--gold); cursor:pointer; text-decoration:underline; }
+
+.auth-error {
+  color: #e07070;
+  font-size: 0.82rem;
+  text-align: center;
+  border: 1px solid rgba(192,57,43,0.3);
+  background: rgba(192,57,43,0.1);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+}
+
+/* ===================================
+   LOBBY HEADER PERFIL
+   =================================== */
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.profile-avatar { font-size: 1.5rem; }
+.profile-name   { font-weight: 600; color: var(--text-primary); display:block; }
+.profile-stats-mini { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+/* ===================================
+   PANTALLA DE PERFIL
+   =================================== */
+.profile-header-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.profile-big-avatar {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 0 12px var(--gold));
+}
+.text-muted { color: var(--text-muted); font-size: 0.85rem; }
+
+.profile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.stat-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.stat-box span  { font-size: 1.8rem; font-weight: 700; font-family: var(--font-mono); }
+.stat-box label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.stat-box.win   { border-color: rgba(90,138,90,0.5);  }
+.stat-box.win span  { color: var(--green-light); }
+.stat-box.loss  { border-color: rgba(192,57,43,0.4); }
+.stat-box.loss span { color: #e07070; }
+.stat-box.draw  { border-color: var(--border-light); }
+.stat-box.draw span { color: var(--gold); }
+
+.username-edit-row { display: flex; gap: 0.5rem; }
+.username-edit-row input { flex: 1; }
+
+/* ===================================
+   HISTORIAL DE PARTIDAS
+   =================================== */
+.game-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+}
+.history-result {
+  font-weight: 700;
+  font-family: var(--font-mono);
+  min-width: 40px;
+  text-align: center;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+.history-result.win  { background: rgba(90,138,90,0.2);  color: var(--green-light); }
+.history-result.loss { background: rgba(192,57,43,0.2);  color: #e07070; }
+.history-result.draw { background: rgba(212,175,55,0.15); color: var(--gold); }
+.history-opponent { flex: 1; color: var(--text-primary); }
+.history-color    { color: var(--text-muted); font-size: 0.75rem; }
+.history-date     { color: var(--text-dim);   font-size: 0.72rem; font-family: var(--font-mono); }
+
+/* Modal confirm — icono de advertencia */
+#confirm-modal .modal-icon { color: var(--gold); }
+#draw-offer-modal .modal-icon {
+  font-size: 3.5rem;
+  color: var(--text-muted);
+  filter: none;
 }
