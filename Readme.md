@@ -81,7 +81,7 @@
 
 ## **Proyectos Avanzados con Frameworks**
 
-- **Blog Personal** (React.js o Vue.js)
+- **Blog Personal** (React.js o Vue.js) ✅
 - **Plataforma de Aprendizaje en Línea** (Node.js, Express, MongoDB)
 - **Aplicación de Música en Streaming** (React.js, Node.js)
 - **Plataforma de Comercio Electrónico** (React.js, Node.js, MongoDB)
