@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Literata:ital,wght@0,300;0,400;1,300&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink:      #0d0d0d;
+  --paper:    #111010;
+  --surface:  #181716;
+  --surface2: #201f1e;
+  --rule:     #2a2826;
+  --muted:    #5a5654;
+  --body:     #b8b2aa;
+  --heading:  #e8e0d5;
+  --accent:   #c9a86c;
+  --accent2:  #8b5e3c;
+  --serif:    'Playfair Display', Georgia, serif;
+  --mono:     'DM Mono', monospace;
+  --body-font:'Literata', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--body);
+  font-family: var(--body-font);
+  font-size: 17px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--accent2); }
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up   { animation: fadeUp 0.6s ease forwards; }
+.delay-1   { animation-delay: 0.1s; opacity: 0; }
+.delay-2   { animation-delay: 0.2s; opacity: 0; }
+.delay-3   { animation-delay: 0.3s; opacity: 0; }
+.delay-4   { animation-delay: 0.4s; opacity: 0; }
+
+/* Shared section styles */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--heading);
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--heading);
+  letter-spacing: -0.02em;
+}
+.section-count {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.article-category {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--accent);
+  padding: 0.2em 0.7em;
+  margin-bottom: 1.2rem;
+}
+
+@media (max-width: 900px) {
+  body { font-size: 15px; }
+}
