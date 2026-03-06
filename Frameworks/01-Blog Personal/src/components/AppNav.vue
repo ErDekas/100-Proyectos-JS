@@ -35,7 +35,7 @@
           >{{ link.label }}</a>
         </li>
       </ul>
-      <div class="mobile-issue">Proyecto #61 / 100</div>
+      <div class="mobile-issue">01-Blog Personal</div>
     </div>
   </Transition>
 
