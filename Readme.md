@@ -79,7 +79,7 @@
 
 ---
 
-## **Proyectos Avanzados con Frameworks (opcional)**
+## **Proyectos Avanzados con Frameworks**
 
 - **Blog Personal** (React.js o Vue.js)
 - **Plataforma de Aprendizaje en Línea** (Node.js, Express, MongoDB)
@@ -94,7 +94,7 @@
 
 ---
 
-## **Nivel Avanzado (Continuación)**
+## **Nivel Avanzado 2 (Se pueden usar Frameworks pero no es obligatorio)**
 
 - **Plataforma de Código Colaborativo** (usando VSCode Live Share)
 - **Sistema de Reservas de Boletos de Cine**
