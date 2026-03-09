@@ -1,0 +1,85 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1>Aprende sin límites</h1>
+    <p>Accede a cientos de cursos y mejora tus habilidades con los mejores profesores.</p>
+    <div class="hero-buttons">
+      <a href="/courses" class="btn btn-primary btn-lg">Explorar Cursos</a>
+      <% if (!user) { %>
+        <a href="/auth/register" class="btn btn-outline btn-lg">Empezar Gratis</a>
+      <% } %>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-number">100+</span><span>Cursos</span></div>
+      <div class="stat"><span class="stat-number">3</span><span>Niveles</span></div>
+      <div class="stat"><span class="stat-number">∞</span><span>Posibilidades</span></div>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-illustration">
+      <i class="fas fa-laptop-code"></i>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2 class="section-title">¿Por qué EduLearn?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-play-circle"></i></div>
+        <h3>Aprende a tu ritmo</h3>
+        <p>Accede a lecciones cuando quieras, desde cualquier dispositivo.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-tasks"></i></div>
+        <h3>Seguimiento de progreso</h3>
+        <p>Monitorea tu avance en cada curso con estadísticas detalladas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <h3>Profesores expertos</h3>
+        <p>Aprende con profesionales del sector con experiencia real.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fas fa-certificate"></i></div>
+        <h3>Tareas y evaluación</h3>
+        <p>Practica con tareas y recibe feedback personalizado.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<% if (featuredCourses.length > 0) { %>
+<section class="featured-courses">
+  <div class="container">
+    <h2 class="section-title">Cursos Destacados</h2>
+    <div class="courses-grid">
+      <% featuredCourses.forEach(course => { %>
+        <div class="course-card">
+          <div class="course-thumbnail">
+            <img src="<%= course.thumbnail %>" alt="<%= course.title %>">
+            <span class="course-level level-<%= course.level.toLowerCase() %>"><%= course.level %></span>
+          </div>
+          <div class="course-info">
+            <span class="course-category"><%= course.category %></span>
+            <h3><a href="/courses/<%= course._id %>"><%= course.title %></a></h3>
+            <p><%= course.shortDescription || course.description.substring(0, 100) %>...</p>
+            <div class="course-meta">
+              <img src="<%= course.teacher.avatar %>" alt="" class="teacher-avatar-sm">
+              <span><%= course.teacher.name %></span>
+              <span class="students"><i class="fas fa-users"></i> <%= course.enrollments.length %></span>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <div class="center-btn">
+      <a href="/courses" class="btn btn-primary">Ver todos los cursos</a>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<%- include('partials/footer') %>

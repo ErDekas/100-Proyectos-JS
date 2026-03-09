@@ -1,0 +1,73 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="dashboard-header">
+    <div>
+      <h1>Panel de Administración</h1>
+      <p>Bienvenido/a, <strong><%= user.name %></strong></p>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon admin"><i class="fas fa-users"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= totalUsers %></span><span>Usuarios Totales</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon admin"><i class="fas fa-book"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= totalCourses %></span><span>Cursos Totales</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon admin"><i class="fas fa-user-graduate"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= totalStudents %></span><span>Estudiantes</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon admin"><i class="fas fa-chalkboard-teacher"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= totalTeachers %></span><span>Profesores</span></div>
+    </div>
+  </div>
+
+  <div class="admin-grid">
+    <div class="admin-panel-nav">
+      <h3>Navegación</h3>
+      <a href="/admin/users" class="admin-nav-link"><i class="fas fa-users"></i> Gestionar Usuarios</a>
+      <a href="/admin/courses" class="admin-nav-link"><i class="fas fa-book"></i> Gestionar Cursos</a>
+    </div>
+
+    <div>
+      <h2>Últimos Usuarios</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Usuario</th><th>Rol</th><th>Fecha</th></tr></thead>
+          <tbody>
+            <% recentUsers.forEach(u => { %>
+              <tr>
+                <td><div class="user-cell"><img src="<%= u.avatar %>" alt="" class="teacher-avatar-sm"><%= u.name %></div></td>
+                <td><span class="badge role-badge-sm role-<%= u.role %>"><%= u.role %></span></td>
+                <td><%= new Date(u.createdAt).toLocaleDateString('es-ES') %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="mt-lg">Últimos Cursos</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Curso</th><th>Profesor</th><th>Estado</th></tr></thead>
+          <tbody>
+            <% recentCourses.forEach(course => { %>
+              <tr>
+                <td><strong><%= course.title %></strong></td>
+                <td><%= course.teacher.name %></td>
+                <td><span class="badge <%= course.published ? 'badge-success' : 'badge-warning' %>"><%= course.published ? 'Publicado' : 'Borrador' %></span></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

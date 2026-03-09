@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/admin" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Admin</a>
+    <h1>Gestión de Cursos</h1>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Curso</th><th>Profesor</th><th>Estudiantes</th><th>Estado</th><th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        <% courses.forEach(course => { %>
+          <tr>
+            <td>
+              <div class="course-cell">
+                <img src="<%= course.thumbnail %>" alt="" class="course-thumb-sm">
+                <div>
+                  <strong><%= course.title %></strong>
+                  <span class="muted"><%= course.category %> · <%= course.level %></span>
+                </div>
+              </div>
+            </td>
+            <td><%= course.teacher ? course.teacher.name : 'N/A' %></td>
+            <td><%= course.enrollments.length %></td>
+            <td><span class="badge <%= course.published ? 'badge-success' : 'badge-warning' %>"><%= course.published ? 'Publicado' : 'Borrador' %></span></td>
+            <td class="actions-cell">
+              <form action="/admin/courses/<%= course._id %>/toggle-publish?_method=PUT" method="POST" style="display:inline">
+                <button type="submit" class="btn btn-sm btn-outline" title="<%= course.published ? 'Despublicar' : 'Publicar' %>">
+                  <i class="fas fa-<%= course.published ? 'eye-slash' : 'eye' %>"></i>
+                </button>
+              </form>
+              <form action="/admin/courses/<%= course._id %>?_method=DELETE" method="POST" style="display:inline" onsubmit="return confirm('¿Eliminar este curso?')">
+                <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,37 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="profile-layout">
+    <div class="profile-card">
+      <div class="profile-avatar-wrap">
+        <img src="<%= profileUser.avatar %>" alt="Avatar" class="profile-avatar">
+        <span class="role-badge role-<%= profileUser.role %>"><%= profileUser.role %></span>
+      </div>
+      <h2><%= profileUser.name %></h2>
+      <p class="profile-email"><i class="fas fa-envelope"></i> <%= profileUser.email %></p>
+      <p class="profile-bio"><%= profileUser.bio || 'Sin biografía aún.' %></p>
+      <p class="profile-since"><i class="fas fa-calendar"></i> Miembro desde <%= new Date(profileUser.createdAt).toLocaleDateString('es-ES', {year:'numeric',month:'long'}) %></p>
+    </div>
+
+    <div class="profile-edit">
+      <h3>Editar Perfil</h3>
+      <form action="/auth/profile" method="POST" enctype="multipart/form-data" class="edit-form">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" name="name" value="<%= profileUser.name %>" required>
+        </div>
+        <div class="form-group">
+          <label>Biografía</label>
+          <textarea name="bio" rows="4" placeholder="Cuéntanos sobre ti..."><%= profileUser.bio %></textarea>
+        </div>
+        <div class="form-group">
+          <label>Foto de perfil</label>
+          <input type="file" name="avatar" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

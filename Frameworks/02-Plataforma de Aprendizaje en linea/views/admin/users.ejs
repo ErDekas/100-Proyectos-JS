@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/admin" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Admin</a>
+    <h1>Gestión de Usuarios</h1>
+  </div>
+
+  <div class="filters-bar">
+    <form action="/admin/users" method="GET" class="search-form">
+      <input type="text" name="search" value="<%= query.search || '' %>" placeholder="Buscar por nombre o email...">
+      <select name="role">
+        <option value="">Todos los roles</option>
+        <option value="student" <%= query.role === 'student' ? 'selected' : '' %>>Estudiantes</option>
+        <option value="teacher" <%= query.role === 'teacher' ? 'selected' : '' %>>Profesores</option>
+        <option value="admin" <%= query.role === 'admin' ? 'selected' : '' %>>Administradores</option>
+      </select>
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+  </div>
+
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr><th>Usuario</th><th>Email</th><th>Rol</th><th>Registro</th><th>Acciones</th></tr>
+      </thead>
+      <tbody>
+        <% users.forEach(u => { %>
+          <tr>
+            <td><div class="user-cell"><img src="<%= u.avatar %>" alt="" class="teacher-avatar-sm"><%= u.name %></div></td>
+            <td><%= u.email %></td>
+            <td>
+              <form action="/admin/users/<%= u._id %>/role?_method=PUT" method="POST" class="inline-role-form">
+                <select name="role" onchange="this.form.submit()">
+                  <option value="student" <%= u.role === 'student' ? 'selected' : '' %>>Estudiante</option>
+                  <option value="teacher" <%= u.role === 'teacher' ? 'selected' : '' %>>Profesor</option>
+                  <option value="admin" <%= u.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                </select>
+              </form>
+            </td>
+            <td><%= new Date(u.createdAt).toLocaleDateString('es-ES') %></td>
+            <td>
+              <% if (u._id.toString() !== user._id.toString()) { %>
+                <form action="/admin/users/<%= u._id %>?_method=DELETE" method="POST" onsubmit="return confirm('¿Eliminar este usuario?')">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

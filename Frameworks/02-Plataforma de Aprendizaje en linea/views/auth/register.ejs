@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <i class="fas fa-graduation-cap auth-logo"></i>
+      <h2>Crear Cuenta</h2>
+      <p>Únete a EduLearn y empieza a aprender</p>
+    </div>
+
+    <form action="/auth/register" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="name"><i class="fas fa-user"></i> Nombre completo</label>
+        <input type="text" id="name" name="name" placeholder="Tu nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="role"><i class="fas fa-tag"></i> Tipo de cuenta</label>
+        <select id="role" name="role">
+          <option value="student">Estudiante</option>
+          <option value="teacher">Profesor</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword"><i class="fas fa-lock"></i> Confirmar contraseña</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite tu contraseña" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Crear Cuenta</button>
+    </form>
+
+    <div class="auth-footer">
+      <p>¿Ya tienes cuenta? <a href="/auth/login">Inicia sesión</a></p>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
