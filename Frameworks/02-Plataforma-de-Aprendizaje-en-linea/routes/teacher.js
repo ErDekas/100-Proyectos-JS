@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const teacherController = require('../controllers/teacherController');
-const { isTeacher } = require('../middleware/Auth');
+const { isTeacher } = require('../middleware/auth');
 const { uploadThumbnail, uploadLessonFile } = require('../config/cloudinary');
 
 router.use(isTeacher);

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const studentController = require('../controllers/studentController');
-const { isStudent } = require('../middleware/Auth');
+const { isStudent } = require('../middleware/auth');
 const { uploadSubmission } = require('../config/cloudinary');
 
 router.use(isStudent);

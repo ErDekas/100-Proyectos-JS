@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const { isAuthenticated, isGuest } = require('../middleware/Auth');
+const { isAuthenticated, isGuest } = require('../middleware/auth');
 const { uploadAvatar } = require('../config/cloudinary');
 
 router.get('/login', isGuest, authController.getLogin);
