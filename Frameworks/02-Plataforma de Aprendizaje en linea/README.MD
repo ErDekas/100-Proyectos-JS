@@ -62,6 +62,7 @@ npm run dev
 
 ```
 ├── app.js                # Entrada principal
+├── config/               # Funcionamiento del envio de email
 ├── controllers/          # Lógica de negocio
 ├── middleware/           # Autenticación y permisos
 ├── models/               # Esquemas MongoDB
