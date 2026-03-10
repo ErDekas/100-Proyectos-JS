@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | EduLearn</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo"><i class="fas fa-graduation-cap"></i> EduLearn</a>
+      <div class="nav-links">
+        <a href="/courses">Cursos</a>
+        <% if (user) { %>
+          <a href="/dashboard">Mi Panel</a>
+          <div class="nav-user">
+            <img src="<%= user.avatar %>" alt="Avatar" class="nav-avatar">
+            <span><%= user.name %></span>
+            <div class="dropdown">
+              <a href="/auth/profile"><i class="fas fa-user"></i> Perfil</a>
+              <% if (user.role === 'admin') { %><a href="/admin"><i class="fas fa-cog"></i> Admin</a><% } %>
+              <% if (user.role === 'teacher') { %><a href="/teacher"><i class="fas fa-chalkboard-teacher"></i> Mis Cursos</a><% } %>
+              <a href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
+            </div>
+          </div>
+        <% } else { %>
+          <a href="/auth/login" class="btn btn-outline">Iniciar Sesión</a>
+          <a href="/auth/register" class="btn btn-primary">Registrarse</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <% if (success && success.length > 0) { %>
+    <div class="alert alert-success"><i class="fas fa-check-circle"></i> <%= success %></div>
+  <% } %>
+  <% if (error && error.length > 0) { %>
+    <div class="alert alert-error"><i class="fas fa-exclamation-circle"></i> <%= error %></div>
+  <% } %>
+
+  <main class="main-content">

@@ -1,0 +1,78 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <h1>Explorar Cursos</h1>
+    <p>Encuentra el curso perfecto para ti</p>
+  </div>
+
+  <div class="courses-layout">
+    <aside class="filters-sidebar">
+      <h3>Filtros</h3>
+      <form action="/courses" method="GET">
+        <div class="filter-group">
+          <label>Buscar</label>
+          <input type="text" name="search" value="<%= query.search || '' %>" placeholder="Buscar cursos...">
+        </div>
+        <div class="filter-group">
+          <label>Categoría</label>
+          <select name="category">
+            <option value="">Todas</option>
+            <% categories.forEach(cat => { %>
+              <option value="<%= cat %>" <%= query.category === cat ? 'selected' : '' %>><%= cat %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Nivel</label>
+          <select name="level">
+            <option value="">Todos</option>
+            <option value="Principiante" <%= query.level === 'Principiante' ? 'selected' : '' %>>Principiante</option>
+            <option value="Intermedio" <%= query.level === 'Intermedio' ? 'selected' : '' %>>Intermedio</option>
+            <option value="Avanzado" <%= query.level === 'Avanzado' ? 'selected' : '' %>>Avanzado</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Aplicar Filtros</button>
+        <a href="/courses" class="btn btn-outline btn-full mt-sm">Limpiar</a>
+      </form>
+    </aside>
+
+    <div class="courses-main">
+      <div class="courses-count"><%= courses.length %> curso(s) encontrado(s)</div>
+      <% if (courses.length === 0) { %>
+        <div class="empty-state">
+          <i class="fas fa-search"></i>
+          <h3>No se encontraron cursos</h3>
+          <p>Intenta con otros filtros</p>
+        </div>
+      <% } else { %>
+        <div class="courses-grid">
+          <% courses.forEach(course => { %>
+            <div class="course-card">
+              <div class="course-thumbnail">
+                <img src="<%= course.thumbnail %>" alt="<%= course.title %>">
+                <span class="course-level level-<%= course.level.toLowerCase() %>"><%= course.level %></span>
+              </div>
+              <div class="course-info">
+                <span class="course-category"><%= course.category %></span>
+                <h3><a href="/courses/<%= course._id %>"><%= course.title %></a></h3>
+                <p><%= (course.shortDescription || course.description).substring(0, 90) %>...</p>
+                <div class="course-meta">
+                  <img src="<%= course.teacher.avatar %>" alt="" class="teacher-avatar-sm">
+                  <span><%= course.teacher.name %></span>
+                  <span class="students"><i class="fas fa-users"></i> <%= course.enrollments.length %></span>
+                </div>
+                <div class="course-footer">
+                  <span><i class="fas fa-book"></i> <%= course.totalLessons %> lecciones</span>
+                  <a href="/courses/<%= course._id %>" class="btn btn-sm btn-primary">Ver Curso</a>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

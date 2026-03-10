@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/student" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Mi Panel</a>
+    <h1><%= course.title %></h1>
+  </div>
+
+  <div class="course-student-layout">
+    <div class="curriculum-main">
+      <div class="progress-card">
+        <h3>Tu progreso</h3>
+        <div class="progress-bar-lg">
+          <div class="progress-fill" style="width:<%= enrollment.progress %>%"></div>
+        </div>
+        <div class="progress-info">
+          <span><%= enrollment.progress %>% completado</span>
+          <span><%= enrollment.completedLessons.length %> de <%= course.sections.reduce((a,s)=>a+s.lessons.length,0) %> lecciones</span>
+        </div>
+      </div>
+
+      <div class="curriculum">
+        <% course.sections.forEach(section => { %>
+          <div class="curriculum-section">
+            <div class="curriculum-section-header">
+              <h3><%= section.title %></h3>
+              <% if (section.description) { %><p class="muted"><%= section.description %></p><% } %>
+            </div>
+            <% section.lessons.forEach(lesson => { %>
+              <% const completed = enrollment.completedLessons.map(String).includes(lesson._id.toString()); %>
+              <a href="/courses/<%= course._id %>/lessons/<%= lesson._id %>" class="curriculum-lesson <%= completed ? 'completed' : '' %>">
+                <div class="lesson-check">
+                  <i class="fas fa-<%= completed ? 'check-circle' : 'circle' %>"></i>
+                </div>
+                <div class="lesson-info">
+                  <i class="fas fa-<%= lesson.type === 'video' ? 'play-circle' : lesson.type === 'file' ? 'file' : 'file-alt' %>"></i>
+                  <span><%= lesson.title %></span>
+                </div>
+                <% if (lesson.duration) { %><span class="lesson-duration muted"><%= lesson.duration %> min</span><% } %>
+              </a>
+            <% }) %>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+    <aside class="course-student-sidebar">
+      <div class="sidebar-card">
+        <h3>Acciones</h3>
+        <a href="/student/courses/<%= course._id %>/assignments" class="btn btn-outline btn-full">
+          <i class="fas fa-tasks"></i> Ver Tareas
+        </a>
+        <a href="/courses/<%= course._id %>" class="btn btn-outline btn-full mt-sm">
+          <i class="fas fa-info-circle"></i> Info del Curso
+        </a>
+      </div>
+      <div class="sidebar-card">
+        <h3>Profesor</h3>
+        <div class="teacher-mini">
+          <img src="<%= course.teacher.avatar %>" alt="" class="teacher-avatar">
+          <span><%= course.teacher.name %></span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

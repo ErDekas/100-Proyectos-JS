@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/teacher/courses/<%= course._id %>/edit" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver</a>
+    <h1>Estudiantes: <%= course.title %></h1>
+    <span><%= course.enrollments.length %> matriculado(s)</span>
+  </div>
+
+  <% if (course.enrollments.length === 0) { %>
+    <div class="empty-state"><i class="fas fa-user-graduate"></i><p>No hay estudiantes matriculados aún.</p></div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Estudiante</th><th>Email</th><th>Matriculado el</th><th>Progreso</th></tr>
+        </thead>
+        <tbody>
+          <% course.enrollments.forEach(enrollment => { %>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img src="<%= enrollment.student.avatar %>" alt="" class="teacher-avatar-sm">
+                  <%= enrollment.student.name %>
+                </div>
+              </td>
+              <td><%= enrollment.student.email %></td>
+              <td><%= new Date(enrollment.enrolledAt).toLocaleDateString('es-ES') %></td>
+              <td>
+                <div class="progress-cell">
+                  <div class="progress-bar"><div class="progress-fill" style="width:<%= enrollment.progress %>%"></div></div>
+                  <span><%= enrollment.progress %>%</span>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

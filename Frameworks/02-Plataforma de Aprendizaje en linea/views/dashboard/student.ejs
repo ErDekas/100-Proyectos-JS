@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="dashboard-header">
+    <div>
+      <h1>Mi Aprendizaje</h1>
+      <p>Hola, <strong><%= user.name %></strong> 👋</p>
+    </div>
+    <a href="/courses" class="btn btn-primary"><i class="fas fa-search"></i> Explorar Cursos</a>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-book-open"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= coursesWithProgress.length %></span><span>Cursos Matriculados</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= coursesWithProgress.filter(c=>c.progress===100).length %></span><span>Completados</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-fire"></i></div>
+      <div class="stat-info">
+        <span class="stat-number">
+          <%= coursesWithProgress.length > 0 ? Math.round(coursesWithProgress.reduce((a,c)=>a+c.progress,0)/coursesWithProgress.length) : 0 %>%
+        </span>
+        <span>Progreso Promedio</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Mis Cursos</h2>
+  <% if (coursesWithProgress.length === 0) { %>
+    <div class="empty-state">
+      <i class="fas fa-graduation-cap"></i>
+      <h3>Aún no te has matriculado en ningún curso</h3>
+      <a href="/courses" class="btn btn-primary">Explorar cursos</a>
+    </div>
+  <% } else { %>
+    <div class="courses-grid">
+      <% coursesWithProgress.forEach(({course, progress}) => { %>
+        <div class="course-card">
+          <div class="course-thumbnail">
+            <img src="<%= course.thumbnail %>" alt="<%= course.title %>">
+            <div class="progress-overlay">
+              <div class="progress-bar"><div class="progress-fill" style="width:<%= progress %>%"></div></div>
+              <span><%= progress %>%</span>
+            </div>
+          </div>
+          <div class="course-info">
+            <h3><%= course.title %></h3>
+            <p class="muted"><%= course.teacher.name %></p>
+            <div class="course-footer">
+              <span class="<%= progress === 100 ? 'text-success' : 'muted' %>">
+                <i class="fas fa-<%= progress === 100 ? 'trophy' : 'play' %>"></i>
+                <%= progress === 100 ? 'Completado' : 'En progreso' %>
+              </span>
+              <a href="/student/courses/<%= course._id %>" class="btn btn-sm btn-primary">
+                <%= progress > 0 ? 'Continuar' : 'Empezar' %>
+              </a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

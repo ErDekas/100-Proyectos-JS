@@ -1,0 +1,64 @@
+<%- include('../partials/header') %>
+
+<div class="lesson-layout">
+  <aside class="lesson-sidebar">
+    <div class="lesson-sidebar-header">
+      <a href="/student/courses/<%= course._id %>"><i class="fas fa-arrow-left"></i> Volver al curso</a>
+      <h3><%= course.title %></h3>
+      <div class="course-progress">
+        <div class="progress-bar"><div class="progress-fill" style="width: <%= enrollment.progress %>%"></div></div>
+        <span><%= enrollment.progress %>% completado</span>
+      </div>
+    </div>
+    <div class="lesson-list">
+      <% course.sections.forEach(sec => { %>
+        <div class="lesson-section-group">
+          <div class="lesson-section-title"><%= sec.title %></div>
+          <% sec.lessons.forEach(les => { %>
+            <a href="/courses/<%= course._id %>/lessons/<%= les._id %>"
+               class="lesson-link <%= les._id.toString() === lesson._id.toString() ? 'active' : '' %>
+                      <%= enrollment.completedLessons.map(String).includes(les._id.toString()) ? 'completed' : '' %>">
+              <i class="fas fa-<%= enrollment.completedLessons.map(String).includes(les._id.toString()) ? 'check-circle' : 'circle' %>"></i>
+              <%= les.title %>
+            </a>
+          <% }) %>
+        </div>
+      <% }) %>
+    </div>
+  </aside>
+
+  <main class="lesson-main">
+    <div class="lesson-header">
+      <h1><%= lesson.title %></h1>
+      <span class="lesson-type-badge"><%= lesson.type %></span>
+    </div>
+
+    <div class="lesson-content">
+      <% if (lesson.type === 'video' && lesson.videoUrl) { %>
+        <div class="video-wrapper">
+          <% if (lesson.videoUrl.includes('youtube') || lesson.videoUrl.includes('youtu.be')) { %>
+            <% const videoId = lesson.videoUrl.split(/v=|youtu\.be\//)[1]?.split('&')[0]; %>
+            <iframe src="https://www.youtube.com/embed/<%= videoId %>" frameborder="0" allowfullscreen></iframe>
+          <% } else { %>
+            <video controls src="<%= lesson.videoUrl %>"></video>
+          <% } %>
+        </div>
+      <% } else if (lesson.type === 'file' && lesson.fileUrl) { %>
+        <div class="file-download">
+          <i class="fas fa-file-download"></i>
+          <a href="<%= lesson.fileUrl %>" download class="btn btn-primary">Descargar archivo</a>
+        </div>
+      <% } %>
+
+      <% if (lesson.content) { %>
+        <div class="lesson-text"><%- lesson.content.replace(/\n/g, '<br>') %></div>
+      <% } %>
+    </div>
+
+    <div class="lesson-nav">
+      <span class="lesson-completed-badge"><i class="fas fa-check"></i> Lección marcada como completada</span>
+    </div>
+  </main>
+</div>
+
+<%- include('../partials/footer') %>

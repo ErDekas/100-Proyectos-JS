@@ -1,0 +1,59 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/teacher" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver</a>
+    <h1>Crear Nuevo Curso</h1>
+  </div>
+
+  <div class="form-card">
+    <form action="/teacher/courses/create" method="POST" enctype="multipart/form-data" class="edit-form">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Título del curso *</label>
+          <input type="text" name="title" required placeholder="Ej: Introducción a JavaScript">
+        </div>
+        <div class="form-group">
+          <label>Categoría</label>
+          <input type="text" name="category" placeholder="Ej: Programación, Diseño...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descripción corta</label>
+        <input type="text" name="shortDescription" placeholder="Un resumen breve del curso (máx. 150 caracteres)">
+      </div>
+      <div class="form-group">
+        <label>Descripción completa *</label>
+        <textarea name="description" rows="5" required placeholder="Describe en detalle qué aprenderán los estudiantes..."></textarea>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Nivel</label>
+          <select name="level">
+            <option>Principiante</option>
+            <option>Intermedio</option>
+            <option>Avanzado</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Idioma</label>
+          <input type="text" name="language" value="Español">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Etiquetas (separadas por comas)</label>
+        <input type="text" name="tags" placeholder="javascript, web, frontend">
+      </div>
+      <div class="form-group">
+        <label>Imagen del curso</label>
+        <input type="file" name="thumbnail" accept="image/*">
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Crear Curso y Añadir Contenido</button>
+        <a href="/teacher" class="btn btn-outline">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,68 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="dashboard-header">
+    <div>
+      <h1>Panel del Profesor</h1>
+      <p>Hola, <strong><%= user.name %></strong> 👋</p>
+    </div>
+    <a href="/teacher/courses/create" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo Curso</a>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-book"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= courses.length %></span><span>Cursos Creados</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= totalStudents %></span><span>Estudiantes</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-eye"></i></div>
+      <div class="stat-info"><span class="stat-number"><%= courses.filter(c=>c.published).length %></span><span>Publicados</span></div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Mis Cursos</h2>
+  <% if (courses.length === 0) { %>
+    <div class="empty-state">
+      <i class="fas fa-book-open"></i>
+      <h3>No tienes cursos aún</h3>
+      <a href="/teacher/courses/create" class="btn btn-primary">Crear tu primer curso</a>
+    </div>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr><th>Curso</th><th>Estado</th><th>Estudiantes</th><th>Lecciones</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <% courses.forEach(course => { %>
+            <tr>
+              <td>
+                <div class="course-cell">
+                  <img src="<%= course.thumbnail %>" alt="" class="course-thumb-sm">
+                  <div>
+                    <strong><%= course.title %></strong>
+                    <span class="muted"><%= course.category %></span>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge <%= course.published ? 'badge-success' : 'badge-warning' %>"><%= course.published ? 'Publicado' : 'Borrador' %></span></td>
+              <td><%= course.enrollments.length %></td>
+              <td><%= course.totalLessons %></td>
+              <td class="actions-cell">
+                <a href="/teacher/courses/<%= course._id %>/edit" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Editar</a>
+                <a href="/teacher/courses/<%= course._id %>/students" class="btn btn-sm btn-outline"><i class="fas fa-users"></i></a>
+                <a href="/teacher/courses/<%= course._id %>/assignments" class="btn btn-sm btn-outline"><i class="fas fa-tasks"></i></a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

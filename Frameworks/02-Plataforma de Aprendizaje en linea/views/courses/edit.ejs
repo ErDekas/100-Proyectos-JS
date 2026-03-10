@@ -1,0 +1,212 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/teacher" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Mis Cursos</a>
+    <h1>Editar: <%= course.title %></h1>
+    <span class="badge <%= course.published ? 'badge-success' : 'badge-warning' %>">
+      <%= course.published ? 'Publicado' : 'Borrador' %>
+    </span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('info')">Información</button>
+    <button class="tab-btn" onclick="showTab('content')">Contenido</button>
+    <button class="tab-btn" onclick="showTab('assignments')">Tareas</button>
+  </div>
+
+  <!-- Tab: Info -->
+  <div id="tab-info" class="tab-content active">
+    <div class="form-card">
+      <form action="/teacher/courses/<%= course._id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="edit-form">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" name="title" value="<%= course.title %>" required>
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <input type="text" name="category" value="<%= course.category %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descripción corta</label>
+          <input type="text" name="shortDescription" value="<%= course.shortDescription %>">
+        </div>
+        <div class="form-group">
+          <label>Descripción completa</label>
+          <textarea name="description" rows="5"><%= course.description %></textarea>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Nivel</label>
+            <select name="level">
+              <option <%= course.level==='Principiante'?'selected':'' %>>Principiante</option>
+              <option <%= course.level==='Intermedio'?'selected':'' %>>Intermedio</option>
+              <option <%= course.level==='Avanzado'?'selected':'' %>>Avanzado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Idioma</label>
+            <input type="text" name="language" value="<%= course.language %>">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Etiquetas (separadas por comas)</label>
+          <input type="text" name="tags" value="<%= course.tags.join(', ') %>">
+        </div>
+        <div class="form-group">
+          <label>Nueva imagen</label>
+          <img src="<%= course.thumbnail %>" alt="" style="height:80px;border-radius:8px;margin-bottom:8px;display:block">
+          <input type="file" name="thumbnail" accept="image/*">
+        </div>
+        <div class="form-group checkbox-group">
+          <label><input type="checkbox" name="published" <%= course.published ? 'checked' : '' %>> Publicar curso (visible para estudiantes)</label>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          <a href="/teacher/courses/<%= course._id %>/students" class="btn btn-outline">
+            <i class="fas fa-users"></i> Ver Estudiantes (<%= course.enrollments.length %>)
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Tab: Content -->
+  <div id="tab-content" class="tab-content">
+    <div class="form-card">
+      <h3>Añadir Sección</h3>
+      <form action="/teacher/courses/<%= course._id %>/sections" method="POST" class="inline-form">
+        <input type="text" name="title" placeholder="Nombre de la sección" required>
+        <input type="text" name="description" placeholder="Descripción (opcional)">
+        <button type="submit" class="btn btn-primary">Añadir Sección</button>
+      </form>
+    </div>
+
+    <% if (course.sections.length === 0) { %>
+      <div class="empty-state"><i class="fas fa-layer-group"></i><p>No hay secciones aún. Añade una arriba.</p></div>
+    <% } %>
+
+    <% course.sections.forEach((section, si) => { %>
+      <div class="section-block">
+        <div class="section-block-header">
+          <h3><i class="fas fa-layer-group"></i> <%= section.title %></h3>
+          <span><%= section.lessons.length %> lecciones</span>
+        </div>
+
+        <% section.lessons.forEach(lesson => { %>
+          <div class="lesson-item-edit">
+            <i class="fas fa-<%= lesson.type === 'video' ? 'play-circle' : lesson.type === 'file' ? 'file' : 'file-alt' %> lesson-icon"></i>
+            <span><%= lesson.title %></span>
+            <span class="lesson-type-tag"><%= lesson.type %></span>
+            <% if (lesson.duration) { %><span class="muted"><%= lesson.duration %> min</span><% } %>
+          </div>
+        <% }) %>
+
+        <details class="add-lesson-form">
+          <summary><i class="fas fa-plus"></i> Añadir Lección a "<%= section.title %>"</summary>
+          <form action="/teacher/courses/<%= course._id %>/sections/<%= section._id %>/lessons" method="POST" enctype="multipart/form-data" class="edit-form inner-form">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Título de la lección</label>
+                <input type="text" name="title" required>
+              </div>
+              <div class="form-group">
+                <label>Tipo</label>
+                <select name="type" onchange="toggleLessonFields(this)">
+                  <option value="text">Texto</option>
+                  <option value="video">Video</option>
+                  <option value="file">Archivo</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group lesson-field-video" style="display:none">
+              <label>URL del Video (YouTube u otro)</label>
+              <input type="text" name="videoUrl" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group lesson-field-file" style="display:none">
+              <label>Subir Archivo</label>
+              <input type="file" name="file">
+            </div>
+            <div class="form-group">
+              <label>Contenido / Descripción</label>
+              <textarea name="content" rows="4" placeholder="Escribe el contenido de la lección..."></textarea>
+            </div>
+            <div class="form-group">
+              <label>Duración (minutos)</label>
+              <input type="number" name="duration" min="0" placeholder="0">
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Lección</button>
+          </form>
+        </details>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Tab: Assignments -->
+  <div id="tab-assignments" class="tab-content">
+    <div class="form-card">
+      <h3>Nueva Tarea</h3>
+      <form action="/teacher/courses/<%= course._id %>/assignments" method="POST" class="edit-form">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Título</label>
+            <input type="text" name="title" required>
+          </div>
+          <div class="form-group">
+            <label>Fecha límite</label>
+            <input type="datetime-local" name="dueDate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea name="description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Puntuación máxima</label>
+          <input type="number" name="maxScore" value="100" min="1">
+        </div>
+        <button type="submit" class="btn btn-primary">Crear Tarea</button>
+      </form>
+    </div>
+
+    <div class="assignments-list">
+      <% course.assignments.forEach(assignment => { %>
+        <div class="assignment-card">
+          <div class="assignment-info">
+            <h4><%= assignment.title %></h4>
+            <p><%= assignment.description %></p>
+            <% if (assignment.dueDate) { %>
+              <span class="muted"><i class="fas fa-clock"></i> Entrega: <%= new Date(assignment.dueDate).toLocaleDateString('es-ES') %></span>
+            <% } %>
+            <span class="muted"><i class="fas fa-star"></i> Puntuación máx: <%= assignment.maxScore %></span>
+          </div>
+          <a href="/teacher/courses/<%= course._id %>/assignments/<%= assignment._id %>/submissions" class="btn btn-outline btn-sm">
+            Ver Entregas
+          </a>
+        </div>
+      <% }) %>
+      <% if (course.assignments.length === 0) { %>
+        <div class="empty-state"><i class="fas fa-tasks"></i><p>No hay tareas aún.</p></div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleLessonFields(select) {
+  const form = select.closest('form');
+  form.querySelectorAll('[class^="lesson-field-"]').forEach(el => el.style.display = 'none');
+  const target = form.querySelector('.lesson-field-' + select.value);
+  if (target) target.style.display = 'block';
+}
+</script>
+
+<%- include('../partials/footer') %>

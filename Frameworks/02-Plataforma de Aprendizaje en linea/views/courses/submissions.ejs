@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/teacher/courses/<%= course._id %>/edit" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver</a>
+    <h1>Entregas: <%= assignment.title %></h1>
+    <span><%= submissions.length %> entrega(s)</span>
+  </div>
+
+  <% if (submissions.length === 0) { %>
+    <div class="empty-state"><i class="fas fa-inbox"></i><p>No hay entregas todavía.</p></div>
+  <% } else { %>
+    <div class="submissions-list">
+      <% submissions.forEach(sub => { %>
+        <div class="submission-card <%= sub.graded ? 'graded' : '' %>">
+          <div class="submission-student">
+            <img src="<%= sub.student.avatar %>" alt="" class="teacher-avatar-sm">
+            <div>
+              <strong><%= sub.student.name %></strong>
+              <span class="muted"><%= new Date(sub.submittedAt).toLocaleString('es-ES') %></span>
+            </div>
+            <% if (sub.graded) { %>
+              <span class="badge badge-success"><%= sub.score %>/<%= assignment.maxScore %></span>
+            <% } else { %>
+              <span class="badge badge-warning">Sin calificar</span>
+            <% } %>
+          </div>
+          <div class="submission-content">
+            <% if (sub.content) { %><p><%= sub.content %></p><% } %>
+            <% if (sub.fileUrl) { %><a href="<%= sub.fileUrl %>" class="btn btn-outline btn-sm" download><i class="fas fa-download"></i> Archivo adjunto</a><% } %>
+          </div>
+          <form action="/teacher/courses/<%= course._id %>/submissions/<%= sub._id %>/grade" method="POST" class="grade-form">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Puntuación (0-<%= assignment.maxScore %>)</label>
+                <input type="number" name="score" min="0" max="<%= assignment.maxScore %>" value="<%= sub.score || '' %>">
+              </div>
+              <div class="form-group">
+                <label>Comentario</label>
+                <input type="text" name="feedback" value="<%= sub.feedback || '' %>" placeholder="Feedback para el alumno...">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Calificar</button>
+          </form>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

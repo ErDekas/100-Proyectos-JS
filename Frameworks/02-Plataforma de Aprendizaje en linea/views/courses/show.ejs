@@ -1,0 +1,116 @@
+<%- include('../partials/header') %>
+
+<div class="course-hero">
+  <div class="container">
+    <div class="course-hero-content">
+      <div class="course-hero-info">
+        <span class="course-category"><%= course.category %></span>
+        <h1><%= course.title %></h1>
+        <p class="course-description"><%= course.shortDescription || course.description %></p>
+        <div class="course-hero-meta">
+          <span class="badge badge-level"><%= course.level %></span>
+          <span><i class="fas fa-book"></i> <%= course.totalLessons %> lecciones</span>
+          <span><i class="fas fa-users"></i> <%= course.enrollmentCount %> estudiantes</span>
+          <span><i class="fas fa-globe"></i> <%= course.language %></span>
+        </div>
+        <div class="teacher-info">
+          <img src="<%= course.teacher.avatar %>" alt="" class="teacher-avatar">
+          <div>
+            <span class="teacher-label">Profesor</span>
+            <span class="teacher-name"><%= course.teacher.name %></span>
+          </div>
+        </div>
+      </div>
+      <div class="course-hero-action">
+        <img src="<%= course.thumbnail %>" alt="<%= course.title %>" class="course-thumbnail-lg">
+        <% if (isEnrolled) { %>
+          <a href="/student/courses/<%= course._id %>" class="btn btn-success btn-full btn-lg">
+            <i class="fas fa-play-circle"></i> Continuar Aprendiendo
+          </a>
+          <div class="progress-wrap">
+            <div class="progress-bar"><div class="progress-fill" style="width: <%= enrollment.progress %>%"></div></div>
+            <span><%= enrollment.progress %>% completado</span>
+          </div>
+        <% } else if (user) { %>
+          <form action="/courses/<%= course._id %>/enroll" method="POST">
+            <button type="submit" class="btn btn-primary btn-full btn-lg">
+              <i class="fas fa-plus-circle"></i> Matricularse Gratis
+            </button>
+          </form>
+        <% } else { %>
+          <a href="/auth/register" class="btn btn-primary btn-full btn-lg">
+            <i class="fas fa-user-plus"></i> Regístrate para matricularte
+          </a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container page-container">
+  <div class="course-detail-layout">
+    <div class="course-content">
+      <section class="course-section-block">
+        <h2>Sobre este curso</h2>
+        <p><%= course.description %></p>
+      </section>
+
+      <% if (course.tags.length > 0) { %>
+      <section class="course-section-block">
+        <h2>Temas</h2>
+        <div class="tags">
+          <% course.tags.forEach(tag => { %><span class="tag"><%= tag %></span><% }) %>
+        </div>
+      </section>
+      <% } %>
+
+      <section class="course-section-block">
+        <h2>Contenido del Curso</h2>
+        <p class="sections-summary"><%= course.sections.length %> secciones · <%= course.totalLessons %> lecciones</p>
+        <div class="accordion">
+          <% course.sections.forEach((section, si) => { %>
+            <div class="accordion-item">
+              <div class="accordion-header" onclick="toggleSection(this)">
+                <span><i class="fas fa-chevron-down"></i> <%= section.title %></span>
+                <span class="lessons-count"><%= section.lessons.length %> lecciones</span>
+              </div>
+              <div class="accordion-body">
+                <% section.lessons.forEach(lesson => { %>
+                  <div class="lesson-item">
+                    <i class="fas fa-<%= lesson.type === 'video' ? 'play-circle' : lesson.type === 'file' ? 'file' : 'file-alt' %>"></i>
+                    <span><%= lesson.title %></span>
+                    <% if (lesson.duration) { %><span class="lesson-duration"><%= lesson.duration %> min</span><% } %>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </section>
+    </div>
+
+    <aside class="course-sidebar">
+      <div class="teacher-card">
+        <h3>Tu Profesor</h3>
+        <div class="teacher-profile">
+          <img src="<%= course.teacher.avatar %>" alt="" class="teacher-avatar-lg">
+          <h4><%= course.teacher.name %></h4>
+          <% if (course.teacher.bio) { %><p><%= course.teacher.bio %></p><% } %>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+function toggleSection(el) {
+  const body = el.nextElementSibling;
+  const icon = el.querySelector('.fa-chevron-down, .fa-chevron-up');
+  body.style.display = body.style.display === 'none' ? 'block' : 'none';
+  icon.classList.toggle('fa-chevron-down');
+  icon.classList.toggle('fa-chevron-up');
+}
+document.querySelectorAll('.accordion-body').forEach((b, i) => { if (i > 0) b.style.display = 'none'; });
+</script>
+
+<%- include('../partials/footer') %>

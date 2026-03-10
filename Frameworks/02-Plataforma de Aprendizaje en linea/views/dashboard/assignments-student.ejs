@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/student/courses/<%= course._id %>" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver</a>
+    <h1>Tareas: <%= course.title %></h1>
+  </div>
+
+  <% if (assignmentsWithSubmissions.length === 0) { %>
+    <div class="empty-state"><i class="fas fa-tasks"></i><p>No hay tareas en este curso.</p></div>
+  <% } else { %>
+    <div class="assignments-list">
+      <% assignmentsWithSubmissions.forEach(({assignment, submission}) => { %>
+        <div class="assignment-card">
+          <div class="assignment-header">
+            <h3><%= assignment.title %></h3>
+            <% if (submission) { %>
+              <% if (submission.graded) { %>
+                <span class="badge badge-success"><%= submission.score %>/<%= assignment.maxScore %></span>
+              <% } else { %>
+                <span class="badge badge-info">Entregada · Pendiente calificación</span>
+              <% } %>
+            <% } else { %>
+              <span class="badge badge-warning">Pendiente</span>
+            <% } %>
+          </div>
+          <p><%= assignment.description %></p>
+          <% if (assignment.dueDate) { %>
+            <p class="muted"><i class="fas fa-clock"></i> Fecha límite: <%= new Date(assignment.dueDate).toLocaleDateString('es-ES', {day:'numeric',month:'long',year:'numeric'}) %></p>
+          <% } %>
+
+          <% if (submission && submission.graded && submission.feedback) { %>
+            <div class="feedback-box"><strong>Comentario del profesor:</strong> <%= submission.feedback %></div>
+          <% } %>
+
+          <% if (!submission) { %>
+            <details class="submit-form-details">
+              <summary><i class="fas fa-upload"></i> Entregar Tarea</summary>
+              <form action="/student/courses/<%= course._id %>/assignments/<%= assignment._id %>/submit" method="POST" enctype="multipart/form-data" class="edit-form inner-form">
+                <div class="form-group">
+                  <label>Respuesta / Comentario</label>
+                  <textarea name="content" rows="4" placeholder="Escribe tu respuesta..."></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Adjuntar archivo (opcional)</label>
+                  <input type="file" name="file">
+                </div>
+                <button type="submit" class="btn btn-primary">Entregar</button>
+              </form>
+            </details>
+          <% } else { %>
+            <div class="submission-done"><i class="fas fa-check"></i> Entregada el <%= new Date(submission.submittedAt).toLocaleDateString('es-ES') %></div>
+          <% } %>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>
