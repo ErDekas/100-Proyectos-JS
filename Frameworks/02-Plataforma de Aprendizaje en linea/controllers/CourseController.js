@@ -44,6 +44,12 @@ exports.enroll = async (req, res) => {
     const course = await Course.findById(req.params.id);
     if (!course) { req.flash('error', 'Curso no encontrado'); return res.redirect('/courses'); }
 
+    // Bloquear matrícula si el email no está verificado
+    if (!req.session.user.isVerified) {
+      req.flash('error', 'Debes verificar tu email para poder matricularte en cursos.');
+      return res.redirect(`/courses/${course._id}`);
+    }
+
     const alreadyEnrolled = course.enrollments.find(e => e.student.toString() === req.session.user._id.toString());
     if (alreadyEnrolled) { req.flash('error', 'Ya estás matriculado en este curso'); return res.redirect(`/courses/${course._id}`); }
 

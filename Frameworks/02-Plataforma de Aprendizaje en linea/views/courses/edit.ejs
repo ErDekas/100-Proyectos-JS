@@ -2,7 +2,7 @@
 
 <div class="container page-container">
   <div class="page-header">
-    <a href="/teacher" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Mis Cursos</a>
+    <a href="/teacher" class="btn btn-outline btn-sm" id="backBtn"><i class="fas fa-arrow-left"></i> <span id="backLabel">Mis Cursos</span></a>
     <h1>Editar: <%= course.title %></h1>
     <span class="badge <%= course.published ? 'badge-success' : 'badge-warning' %>">
       <%= course.published ? 'Publicado' : 'Borrador' %>
@@ -195,18 +195,57 @@
 </div>
 
 <script>
+const backLabels = {
+  info: { label: 'Mis Cursos', href: '/teacher' },
+  content: { label: 'Mis Cursos', href: '/teacher' },
+  assignments: { label: 'Mis Cursos', href: '/teacher' }
+};
+
 function showTab(tab) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   event.target.classList.add('active');
+  window.location.hash = tab;
+  updateBackBtn(tab);
 }
+
+function updateBackBtn(tab) {
+  const btn = document.getElementById('backBtn');
+  const label = document.getElementById('backLabel');
+  if (tab === 'info') {
+    btn.href = '/teacher';
+    label.textContent = 'Mis Cursos';
+  } else {
+    btn.href = '#';
+    btn.onclick = (e) => { e.preventDefault(); showTabDirect('info'); };
+    label.textContent = 'Información del Curso';
+  }
+}
+
+function showTabDirect(tab) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelector(`.tab-btn[onclick*="'${tab}'"]`).classList.add('active');
+  window.location.hash = tab;
+  updateBackBtn(tab);
+}
+
 function toggleLessonFields(select) {
   const form = select.closest('form');
   form.querySelectorAll('[class^="lesson-field-"]').forEach(el => el.style.display = 'none');
   const target = form.querySelector('.lesson-field-' + select.value);
   if (target) target.style.display = 'block';
 }
+
+// Al cargar, restaurar tab desde hash
+document.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (hash && document.getElementById('tab-' + hash)) {
+    showTabDirect(hash);
+  }
+});
 </script>
 
 <%- include('../partials/footer') %>

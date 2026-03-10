@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+
+<div class="container page-container">
+  <div class="page-header">
+    <a href="/teacher/courses/<%= course._id %>/edit" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> Volver al curso</a>
+    <h1>Tareas: <%= course.title %></h1>
+  </div>
+
+  <div class="form-card">
+    <h3><i class="fas fa-plus-circle"></i> Nueva Tarea</h3>
+    <form action="/teacher/courses/<%= course._id %>/assignments" method="POST" class="edit-form">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Título *</label>
+          <input type="text" name="title" required placeholder="Ej: Ejercicio práctico 1">
+        </div>
+        <div class="form-group">
+          <label>Fecha límite</label>
+          <input type="datetime-local" name="dueDate">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea name="description" rows="3" placeholder="Explica qué deben hacer los estudiantes..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Puntuación máxima</label>
+        <input type="number" name="maxScore" value="100" min="1" max="1000">
+      </div>
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Crear Tarea</button>
+    </form>
+  </div>
+
+  <h2 class="section-title" style="text-align:left; margin-top: 2rem;">Tareas creadas (<%= course.assignments.length %>)</h2>
+
+  <% if (course.assignments.length === 0) { %>
+    <div class="empty-state">
+      <i class="fas fa-tasks"></i>
+      <h3>No hay tareas aún</h3>
+      <p>Crea la primera tarea usando el formulario de arriba.</p>
+    </div>
+  <% } else { %>
+    <div class="assignments-list">
+      <% course.assignments.forEach(assignment => { %>
+        <div class="assignment-card">
+          <div class="assignment-header">
+            <h3><i class="fas fa-file-alt"></i> <%= assignment.title %></h3>
+            <a href="/teacher/courses/<%= course._id %>/assignments/<%= assignment._id %>/submissions" class="btn btn-sm btn-outline">
+              <i class="fas fa-inbox"></i> Ver Entregas
+            </a>
+          </div>
+          <% if (assignment.description) { %><p><%= assignment.description %></p><% } %>
+          <div class="assignment-meta">
+            <% if (assignment.dueDate) { %>
+              <span class="muted"><i class="fas fa-clock"></i> Entrega: <%= new Date(assignment.dueDate).toLocaleDateString('es-ES', {day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit'}) %></span>
+            <% } %>
+            <span class="muted"><i class="fas fa-star"></i> Puntuación máxima: <%= assignment.maxScore %></span>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

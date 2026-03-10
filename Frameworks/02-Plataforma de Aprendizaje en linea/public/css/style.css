@@ -312,6 +312,7 @@ img { max-width: 100%; }
 .assignment-header h3 { font-size: 1rem; }
 .assignment-info { flex: 1; }
 .assignment-card > .assignment-info ~ .btn { margin-top: 0; }
+.assignment-meta { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.6rem; }
 .feedback-box { background: #fff3cd; border-left: 3px solid var(--warning); padding: 0.8rem 1rem; border-radius: 5px; margin: 0.8rem 0; font-size: 0.88rem; }
 .submit-form-details summary { cursor: pointer; color: var(--primary); font-weight: 600; margin-top: 1rem; }
 .submission-done { color: var(--success); font-size: 0.88rem; font-weight: 600; margin-top: 0.8rem; }
@@ -375,3 +376,13 @@ img { max-width: 100%; }
   .hero h1 { font-size: 2rem; }
   .nav-links .btn { display: none; }
 }
+
+/* Email verification */
+.verify-icon { font-size: 4rem; margin-bottom: 1rem; }
+.verify-text { color: var(--muted); margin-bottom: 1.5rem; line-height: 1.7; }
+.verify-steps { text-align: left; background: var(--bg); border-radius: 10px; padding: 1.2rem 1.5rem; margin-bottom: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.verify-step { display: flex; align-items: center; gap: 0.8rem; font-size: 0.92rem; }
+.step-num { background: var(--primary); color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+.verify-note { background: #cce5ff; color: #004085; padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.88rem; margin-bottom: 0; }
+.unverified-banner { background: #fff3cd; border: 1.5px solid #ffc107; border-radius: 8px; padding: 0.8rem 1.2rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; font-size: 0.9rem; color: #856404; }
+.unverified-banner a { color: #856404; font-weight: 600; }

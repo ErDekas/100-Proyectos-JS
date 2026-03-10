@@ -9,6 +9,9 @@ const userSchema = new mongoose.Schema({
   avatar: { type: String, default: '/img/default-avatar.png' },
   bio: { type: String, default: '' },
   enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
+  isVerified: { type: Boolean, default: false },
+  verificationToken: { type: String, default: null },
+  verificationExpires: { type: Date, default: null },
   createdAt: { type: Date, default: Date.now }
 });
 

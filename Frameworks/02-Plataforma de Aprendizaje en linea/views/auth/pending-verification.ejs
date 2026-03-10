@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+
+<div class="auth-container">
+  <div class="auth-card" style="max-width: 500px; text-align: center;">
+    <div class="verify-icon">📧</div>
+    <h2>Revisa tu email</h2>
+    <p class="verify-text">
+      Te hemos enviado un enlace de verificación. Haz clic en él para activar tu cuenta y poder matricularte en cursos.
+    </p>
+    <div class="verify-steps">
+      <div class="verify-step">
+        <span class="step-num">1</span>
+        <span>Abre tu bandeja de entrada</span>
+      </div>
+      <div class="verify-step">
+        <span class="step-num">2</span>
+        <span>Busca un email de <strong>EduLearn</strong></span>
+      </div>
+      <div class="verify-step">
+        <span class="step-num">3</span>
+        <span>Haz clic en "Verificar mi cuenta"</span>
+      </div>
+    </div>
+    <p class="verify-note">
+      <i class="fas fa-info-circle"></i> Si no lo ves, revisa la carpeta de <strong>spam o correo no deseado</strong>.
+    </p>
+    <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #eee;">
+    <p style="color: var(--muted); font-size: 0.9rem;">¿No recibiste el email?</p>
+    <a href="/auth/resend-verification" class="btn btn-outline" style="margin-top: 0.5rem;">
+      <i class="fas fa-redo"></i> Reenviar email de verificación
+    </a>
+    <div class="auth-footer">
+      <a href="/auth/login">← Volver al inicio de sesión</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -85,7 +85,7 @@ exports.addLesson = async (req, res) => {
   try {
     const course = await Course.findOne({ _id: req.params.id, teacher: req.session.user._id });
     if (!course) return res.redirect('/teacher');
-    const section = course.sections.id(req.params.sectionId);
+    const section = course.sections.find(s => s._id.toString() === req.params.sectionId);
     if (!section) { req.flash('error', 'Sección no encontrada'); return res.redirect(`/teacher/courses/${course._id}/edit`); }
 
     const { title, type, content, videoUrl, duration } = req.body;
@@ -122,7 +122,14 @@ exports.getSubmissions = async (req, res) => {
   try {
     const course = await Course.findOne({ _id: req.params.id, teacher: req.session.user._id }).populate('submissions.student', 'name email avatar');
     if (!course) return res.redirect('/teacher');
-    const assignment = course.assignments.id(req.params.assignmentId);
+
+    // Buscar la tarea comparando strings para evitar fallos de tipo ObjectId
+    const assignment = course.assignments.find(a => a._id.toString() === req.params.assignmentId);
+    if (!assignment) {
+      req.flash('error', 'Tarea no encontrada');
+      return res.redirect(`/teacher/courses/${course._id}/assignments`);
+    }
+
     const submissions = course.submissions.filter(s => s.assignment.toString() === req.params.assignmentId);
     res.render('courses/submissions', { title: 'Entregas', course, assignment, submissions });
   } catch (err) {
@@ -136,7 +143,7 @@ exports.gradeSubmission = async (req, res) => {
   try {
     const course = await Course.findOne({ _id: req.params.id, teacher: req.session.user._id });
     if (!course) return res.redirect('/teacher');
-    const submission = course.submissions.id(req.params.submissionId);
+    const submission = course.submissions.find(s => s._id.toString() === req.params.submissionId);
     if (submission) {
       submission.score = req.body.score;
       submission.feedback = req.body.feedback;

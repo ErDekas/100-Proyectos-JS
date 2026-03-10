@@ -1,0 +1,23 @@
+<%- include('../partials/header') %>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <i class="fas fa-envelope auth-logo"></i>
+      <h2>Reenviar verificación</h2>
+      <p>Introduce tu email y te enviaremos un nuevo enlace</p>
+    </div>
+    <form action="/auth/resend-verification" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Enviar nuevo enlace</button>
+    </form>
+    <div class="auth-footer">
+      <a href="/auth/login">← Volver al inicio de sesión</a>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>
