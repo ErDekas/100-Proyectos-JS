@@ -36,11 +36,13 @@ img { max-width: 100%; }
 .nav-links { display: flex; align-items: center; gap: 1.5rem; }
 .nav-links a { color: rgba(255,255,255,0.85); font-size: 0.95rem; transition: color 0.2s; }
 .nav-links a:hover { color: white; text-decoration: none; }
-.nav-user { position: relative; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+.nav-user { position: relative; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none; }
 .nav-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
 .nav-user span { color: white; }
-.dropdown { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); min-width: 180px; overflow: hidden; }
-.nav-user:hover .dropdown { display: block; }
+.nav-chevron { color: rgba(255,255,255,0.6); font-size: 0.75rem; transition: transform 0.2s; }
+.dropdown { display: none; position: absolute; top: calc(100% + 12px); right: 0; background: white; border-radius: var(--radius); box-shadow: var(--shadow-lg); min-width: 180px; overflow: hidden; }
+.dropdown.open { display: block; }
+.nav-user:has(.dropdown.open) .nav-chevron { transform: rotate(180deg); }
 .dropdown a { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1rem; color: var(--text); font-size: 0.9rem; transition: background 0.2s; }
 .dropdown a:hover { background: var(--bg); text-decoration: none; }
 

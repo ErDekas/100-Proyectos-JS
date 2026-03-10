@@ -5,8 +5,8 @@
     <div class="profile-card">
       <div class="profile-avatar-wrap">
         <img src="<%= profileUser.avatar %>" alt="Avatar" class="profile-avatar">
-        <span class="role-badge role-<%= profileUser.role %>"><%= profileUser.role %></span>
       </div>
+      <span class="role-badge role-<%= profileUser.role %>"><%= profileUser.role %></span>
       <h2><%= profileUser.name %></h2>
       <p class="profile-email"><i class="fas fa-envelope"></i> <%= profileUser.email %></p>
       <p class="profile-bio"><%= profileUser.bio || 'Sin biografía aún.' %></p>

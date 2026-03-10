@@ -15,16 +15,27 @@
         <a href="/courses">Cursos</a>
         <% if (user) { %>
           <a href="/dashboard">Mi Panel</a>
-          <div class="nav-user">
+          <div class="nav-user" id="navUser" onclick="toggleDropdown(event)">
             <img src="<%= user.avatar %>" alt="Avatar" class="nav-avatar">
             <span><%= user.name %></span>
-            <div class="dropdown">
+            <i class="fas fa-chevron-down nav-chevron"></i>
+            <div class="dropdown" id="navDropdown">
               <a href="/auth/profile"><i class="fas fa-user"></i> Perfil</a>
               <% if (user.role === 'admin') { %><a href="/admin"><i class="fas fa-cog"></i> Admin</a><% } %>
               <% if (user.role === 'teacher') { %><a href="/teacher"><i class="fas fa-chalkboard-teacher"></i> Mis Cursos</a><% } %>
               <a href="/auth/logout"><i class="fas fa-sign-out-alt"></i> Salir</a>
             </div>
           </div>
+          <script>
+            function toggleDropdown(e) {
+              e.stopPropagation();
+              const dd = document.getElementById('navDropdown');
+              dd.classList.toggle('open');
+            }
+            document.addEventListener('click', () => {
+              document.getElementById('navDropdown')?.classList.remove('open');
+            });
+          </script>
         <% } else { %>
           <a href="/auth/login" class="btn btn-outline">Iniciar Sesión</a>
           <a href="/auth/register" class="btn btn-primary">Registrarse</a>
