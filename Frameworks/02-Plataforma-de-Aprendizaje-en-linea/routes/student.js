@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const studentController = require('../controllers/studentController');
+const studentController = require('../controllers/StudentController');
 const { isStudent } = require('../middleware/auth');
 const { uploadSubmission } = require('../config/cloudinary');
 
