@@ -65,7 +65,7 @@ exports.submitAssignment = async (req, res) => {
     if (existing) { req.flash('error', 'Ya has entregado esta tarea'); return res.redirect(`/student/courses/${course._id}/assignments`); }
 
     const submission = { student: req.session.user._id, assignment: req.params.assignmentId, content: req.body.content };
-    if (req.file) submission.fileUrl = '/uploads/' + req.file.filename;
+    if (req.file) submission.fileUrl = req.file.path;
     course.submissions.push(submission);
     await course.save();
     req.flash('success', 'Tarea entregada con éxito');

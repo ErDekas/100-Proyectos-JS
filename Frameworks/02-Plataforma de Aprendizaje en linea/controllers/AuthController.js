@@ -136,7 +136,7 @@ exports.updateProfile = async (req, res) => {
   try {
     const { name, bio } = req.body;
     const update = { name, bio };
-    if (req.file) update.avatar = '/uploads/' + req.file.filename;
+    if (req.file) update.avatar = req.file.path;
     const user = await User.findByIdAndUpdate(req.session.user._id, update, { new: true });
     req.session.user.name = user.name;
     req.session.user.avatar = user.avatar;

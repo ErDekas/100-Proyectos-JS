@@ -26,7 +26,7 @@ exports.postCreateCourse = async (req, res) => {
       title, description, shortDescription, category, level, language,
       tags: tags ? tags.split(',').map(t => t.trim()) : [],
       teacher: req.session.user._id,
-      thumbnail: req.file ? '/uploads/' + req.file.filename : '/img/default-course.png'
+      thumbnail: req.file ? req.file.path : '/img/default-course.png'
     });
     req.flash('success', 'Curso creado con éxito');
     res.redirect(`/teacher/courses/${course._id}/edit`);
@@ -55,7 +55,7 @@ exports.updateCourse = async (req, res) => {
     const update = { title, description, shortDescription, category, level, language,
       tags: tags ? tags.split(',').map(t => t.trim()) : [],
       published: published === 'on', updatedAt: new Date() };
-    if (req.file) update.thumbnail = '/uploads/' + req.file.filename;
+    if (req.file) update.thumbnail = req.file.path;
     await Course.findOneAndUpdate({ _id: req.params.id, teacher: req.session.user._id }, update);
     req.flash('success', 'Curso actualizado');
     res.redirect(`/teacher/courses/${req.params.id}/edit`);
@@ -90,7 +90,7 @@ exports.addLesson = async (req, res) => {
 
     const { title, type, content, videoUrl, duration } = req.body;
     const lesson = { title, type, content, videoUrl, duration: duration || 0, order: section.lessons.length };
-    if (req.file) lesson.fileUrl = '/uploads/' + req.file.filename;
+    if (req.file) lesson.fileUrl = req.file.path;
     section.lessons.push(lesson);
     await course.save();
     req.flash('success', 'Lección añadida');
