@@ -71,3 +71,4 @@ npm run dev
 ├── views/                # Templates EJS
 └── seed.js               # Datos de prueba
 ```
+
