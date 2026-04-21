@@ -83,11 +83,11 @@
 
 - **Blog Personal** (React.js o Vue.js) ✅
 - **Plataforma de Aprendizaje en Línea** (Node.js, Express, MongoDB) ✅
-- **Aplicación de Música en Streaming** (React.js, Node.js)
+- **Dashboard Analítico** (React.js, D3.js)
 - **Plataforma de Comercio Electrónico** (React.js, Node.js, MongoDB)
 - **Red Social Compleja** (React.js, Node.js, GraphQL)
 - **Aplicación de Realidad Virtual** (A-Frame, Three.js)
-- **Dashboard Analítico** (React.js, D3.js)
+- **Aplicación de Música en Streaming** (React.js, Node.js)
 - **Juego Multijugador en Tiempo Real** (Socket.io, Phaser.js)
 - **Sistema de Gestión de Proyectos** (Angular, Node.js, MongoDB)
 - **Aplicación de Viaje** (React Native, Node.js, MongoDB)
