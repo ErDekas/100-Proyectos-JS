@@ -21,7 +21,6 @@ const mainLinks: NavLink[] = [
 ]
 
 const channelLinks: NavLink[] = [
-  { id: 'usuarios',     label: 'Usuarios',     icon: <IconUser /> },
   { id: 'campanas',     label: 'Campañas',     icon: <IconMail /> },
   { id: 'conversiones', label: 'Conversiones', icon: <IconCart /> },
 ]
@@ -49,7 +48,10 @@ export function Sidebar({ user, onLogout }: SidebarProps) {
 
       <nav style={{ padding: 12, flex: 1 }}>
         <NavSection label="Principal" links={mainLinks}  active={activeNav} onSelect={setActiveNav} />
-        <NavSection label="Canales"   links={channelLinks} active={activeNav} onSelect={setActiveNav} />
+        <NavSection label="Canales" links={[
+          ...(user?.role === 'admin' ? [{ id: 'usuarios' as NavItem, label: 'Usuarios', icon: <IconUser /> }] : []),
+          ...channelLinks,
+        ]} active={activeNav} onSelect={setActiveNav} />
       </nav>
 
       <div style={{ padding: '14px 12px', borderTop: '0.5px solid var(--border)' }}>

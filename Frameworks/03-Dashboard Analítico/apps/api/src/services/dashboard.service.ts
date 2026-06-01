@@ -5,8 +5,21 @@ import type {
   Campaign, FunnelStep, FeedItem, DashboardPayload,
 } from '@analytiq/shared'
 
+const PERIOD_DAYS: Record<Period, number> = {
+  '7d':  7,
+  '30d': 30,
+  '90d': 90,
+  '1y':  365,
+}
+
+const VALID_PERIODS = new Set<Period>(['7d', '30d', '90d', '1y'])
+
+export function parsePeriod(qs: string | undefined): Period {
+  return VALID_PERIODS.has(qs as Period) ? (qs as Period) : '30d'
+}
+
 function periodToDays(p: Period): number {
-  return p === '7d' ? 7 : p === '30d' ? 30 : p === '90d' ? 90 : 365
+  return PERIOD_DAYS[p]
 }
 
 // ── KPIs ──────────────────────────────────────────────────────────────────────

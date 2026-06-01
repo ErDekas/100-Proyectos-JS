@@ -13,22 +13,27 @@ import { EmbudoPage }           from './EmbudoPage'
 import { ReportesPage }         from './ReportesPage'
 import { UsuariosPage }         from './UsuariosPage'
 import { useDashboardData }     from '../hooks/useDashboardData'
-import type { Period }          from '@analytiq/shared'
+import type { Period, DashboardPayload } from '@analytiq/shared'
 import { clsx }                 from 'clsx'
 
 const PERIODS: Period[] = ['7d', '30d', '90d', '1y']
+
+interface OverviewProps {
+  dbData:     DashboardPayload | undefined
+  dbLoading:  boolean
+  dbFetching: boolean
+  dbError:    Error | null
+  period:     Period
+}
 
 export function Dashboard() {
   const { period, setPeriod, activeNav } = useDashboardStore()
   const clearAuth = useAuthStore(s => s.clearAuth)
   const user      = useAuthStore(s => s.user)
 
-  const { kpis, timeSeries, isLoading: mktLoading } = useMarketData(period)
-  const { data: dbData, isLoading: dbLoading, refetch } = useDashboardData(period)
+  const { data: dbData, isLoading: dbLoading, isFetching: dbFetching, error: dbError, refetch } = useDashboardData(period)
 
   async function handleLogout() { await logout(); clearAuth() }
-
-  const isLoading = mktLoading || dbLoading
 
   function renderContent() {
     switch (activeNav) {
@@ -38,7 +43,7 @@ export function Dashboard() {
       case 'usuarios':     return <UsuariosPage />
       case 'campanas':     return <ReportesPage />
       case 'conversiones': return <EmbudoPage />
-      default:             return <OverviewContent kpis={kpis} timeSeries={timeSeries} dbData={dbData} isLoading={isLoading} />
+      default:             return <OverviewContent dbData={dbData} dbLoading={dbLoading} dbFetching={dbFetching} dbError={dbError} period={period} />
     }
   }
 
@@ -70,10 +75,25 @@ export function Dashboard() {
   )
 }
 
-function OverviewContent({ kpis, timeSeries, dbData, isLoading }: any) {
-  if (isLoading || !kpis || !timeSeries || !dbData) return <LoadingSkeleton />
+function OverviewContent({ dbData, dbLoading, dbFetching, dbError, period }: OverviewProps) {
+  const { kpis: coinKpis, timeSeries: coinTimeSeries, isLoading: mktLoading } = useMarketData(period)
+
+  if (dbLoading && !dbData) return <LoadingSkeleton />
+  if (!dbLoading && !dbData) {
+    return (
+      <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--ink3)' }}>
+        <p>Error al cargar los datos del dashboard.</p>
+        <p style={{ fontSize: 12, marginTop: 8 }}>{dbError?.message ?? 'Error de conexión con la API'}</p>
+      </div>
+    )
+  }
+
+  const kpis = coinKpis ?? dbData.kpis
+  const timeSeries = coinTimeSeries ?? dbData.timeSeries
+  const fadeTop = dbFetching && dbData ? { opacity: 0.6, transition: 'opacity .2s' } : {}
+
   return (
-    <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 18 }}>
+    <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 18, ...fadeTop }}>
       <KpiGrid kpis={kpis} />
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
         <TrendChart labels={timeSeries.map((d: any) => d.date)} sessions={timeSeries.map((d: any) => d.sessions)} revenue={timeSeries.map((d: any) => d.revenue)} />
@@ -87,7 +107,7 @@ function OverviewContent({ kpis, timeSeries, dbData, isLoading }: any) {
         </div>
       </div>
       <div style={{ fontSize: 11, color: 'var(--ink3)', fontFamily: 'DM Mono, monospace', textAlign: 'right' }}>
-        KPIs: CoinGecko API (tiempo real) · BD: {new Date(dbData.generatedAt).toLocaleTimeString('es')}
+        {coinKpis ? 'KPIs: CoinGecko API (tiempo real)' : 'KPIs: Base de datos'} · BD: {new Date(dbData.generatedAt).toLocaleTimeString('es')}
       </div>
     </div>
   )

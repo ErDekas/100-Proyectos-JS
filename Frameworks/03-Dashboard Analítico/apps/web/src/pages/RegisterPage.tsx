@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { login } from '../lib/api'
 import { useAuthStore } from '../store/auth'
 
 export function RegisterPage() {
@@ -18,8 +19,9 @@ export function RegisterPage() {
     setLoading(true); setError('')
 
     try {
-      // Signup
-      const signupRes = await fetch(`${import.meta.env.VITE_API_URL ?? 'http://localhost:3001'}/api/auth/signup`, {
+      // Signup (use direct fetch since signup endpoint returns no tokens)
+      const API = import.meta.env.VITE_API_URL ?? ''
+      const signupRes = await fetch(`${API}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: form.email, password: form.password, name: form.name }),
@@ -29,15 +31,9 @@ export function RegisterPage() {
         throw new Error(err.message ?? 'Error al registrarse')
       }
 
-      // Auto login after signup
-      const loginRes = await fetch(`${import.meta.env.VITE_API_URL ?? 'http://localhost:3001'}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password }),
-      })
-      if (!loginRes.ok) throw new Error('Cuenta creada, inicia sesión manualmente')
-      const data = await loginRes.json()
-      setAuth(data.user, data.accessToken)
+      // Auto login after signup via centralized apiFetch
+      const data = await login(form.email, form.password)
+      setAuth(data.user as any, data.accessToken, data.refreshToken)
       navigate('/')
     } catch (err: any) {
       setError(err.message)

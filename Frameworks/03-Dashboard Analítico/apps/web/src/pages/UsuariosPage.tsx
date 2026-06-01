@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuthStore } from '../store/auth'
 
 interface UserRecord {
@@ -10,7 +10,7 @@ interface UserRecord {
   last_sign_in_at?: string
 }
 
-const API = import.meta.env.VITE_API_URL ?? 'http://localhost:3001'
+const API = import.meta.env.VITE_API_URL ?? ''
 
 function useUsers() {
   const token = useAuthStore(s => s.token)
@@ -18,7 +18,8 @@ function useUsers() {
   const [loading, setLoading] = useState(true)
   const [error,   setError]   = useState('')
 
-  async function load() {
+  const load = useCallback(async () => {
+    if (!token) return
     setLoading(true)
     try {
       const res = await fetch(`${API}/api/users`, { headers: { Authorization: `Bearer ${token}` } })
@@ -26,9 +27,9 @@ function useUsers() {
       setUsers(await res.json())
     } catch (e: any) { setError(e.message) }
     finally { setLoading(false) }
-  }
+  }, [token])
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { load() }, [load])
   return { users, loading, error, reload: load, setUsers }
 }
 

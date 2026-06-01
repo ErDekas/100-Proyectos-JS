@@ -45,10 +45,6 @@ export async function authRoutes(app: FastifyInstance) {
     })
 
     const json = await res.json() as any
-    console.log('SUPABASE STATUS:', res.status)
-    console.log('SUPABASE RESPONSE:', JSON.stringify(json))
-    console.log('SUPABASE_URL:', process.env.SUPABASE_URL)
-    console.log('ANON_KEY starts with:', process.env.SUPABASE_ANON_KEY?.slice(0, 20))
 
     if (!res.ok) return reply.status(401).send({ error: 'AuthError', message: 'Invalid credentials', statusCode: 401 })
 

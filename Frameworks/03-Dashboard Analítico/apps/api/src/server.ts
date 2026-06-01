@@ -6,6 +6,7 @@ import swaggerUi from '@fastify/swagger-ui'
 import { initSentry } from './lib/sentry'
 import { dashboardRoutes } from './routes/dashboard'
 import { authRoutes } from './routes/auth'
+import { usersRoutes } from './routes/users'
 import { registerEtlJobs } from './jobs/etl'
 
 // ── Sentry (must init before anything else) ───────────────────────────────────
@@ -49,6 +50,7 @@ await app.register(swaggerUi, {
 // ── Routes ────────────────────────────────────────────────────────────────────
 await app.register(authRoutes)
 await app.register(dashboardRoutes)
+await app.register(usersRoutes)
 
 // Health check
 app.get('/health', async () => ({
@@ -58,10 +60,14 @@ app.get('/health', async () => ({
 }))
 
 // ── Global error handler ──────────────────────────────────────────────────────
-app.setErrorHandler((err, req, reply) => {
+app.setErrorHandler(async (err, req, reply) => {
   req.log.error(err)
-  const { captureError } = require('./lib/sentry')
-  captureError(err, { url: req.url, method: req.method })
+  try {
+    const { captureError } = await import('./lib/sentry')
+    await captureError(err, { url: req.url, method: req.method })
+  } catch (sentryErr) {
+    req.log.error(sentryErr, 'Sentry capture failed')
+  }
   reply.status(err.statusCode ?? 500).send({
     error: err.name ?? 'InternalError',
     message: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
@@ -72,9 +78,14 @@ app.setErrorHandler((err, req, reply) => {
 // ── Start ─────────────────────────────────────────────────────────────────────
 const PORT = Number(process.env.PORT ?? 3001)
 
-await app.listen({ port: PORT, host: '0.0.0.0' })
-app.log.info(`🚀  API listening on http://localhost:${PORT}`)
-app.log.info(`📖  Swagger docs at http://localhost:${PORT}/docs`)
+try {
+  await app.listen({ port: PORT, host: '0.0.0.0' })
+  app.log.info(`🚀  API listening on http://localhost:${PORT}`)
+  app.log.info(`📖  Swagger docs at http://localhost:${PORT}/docs`)
 
-// ── Register cron jobs ────────────────────────────────────────────────────────
-registerEtlJobs(app.log)
+  // ── Register cron jobs (after successful startup) ───────────────────────────
+  registerEtlJobs(app.log)
+} catch (err) {
+  app.log.error(err, 'Failed to start server')
+  process.exit(1)
+}

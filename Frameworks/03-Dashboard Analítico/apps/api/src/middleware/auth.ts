@@ -1,5 +1,4 @@
 import type { FastifyRequest, FastifyReply } from 'fastify'
-import { supabase } from '../lib/supabase'
 
 export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
   const auth = req.headers.authorization
@@ -8,18 +7,27 @@ export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
   }
 
   const token = auth.slice(7)
-  const { data, error } = await supabase.auth.getUser(token)
 
-  if (error || !data.user) {
+  // Validate token directly via Supabase REST API (same method as login route)
+  const res = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
+    headers: {
+      'apikey': process.env.SUPABASE_ANON_KEY!,
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+
+  if (!res.ok) {
     return reply.status(401).send({ error: 'Unauthorized', message: 'Invalid or expired token', statusCode: 401 })
   }
 
+  const user = await res.json() as any
+
   // Attach user to request
   ;(req as any).user = {
-    id:    data.user.id,
-    email: data.user.email,
-    role:  data.user.user_metadata?.role ?? 'viewer',
-    name:  data.user.user_metadata?.name ?? data.user.email,
+    id:    user.id,
+    email: user.email,
+    role:  user.user_metadata?.role ?? 'viewer',
+    name:  user.user_metadata?.name ?? user.email,
   }
 }
 

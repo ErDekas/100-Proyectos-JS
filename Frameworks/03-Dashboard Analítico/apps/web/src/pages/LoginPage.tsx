@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../lib/api'
 import { useAuthStore } from '../store/auth'
 
@@ -16,7 +16,7 @@ export function LoginPage() {
     setLoading(true); setError('')
     try {
       const data = await login(email, password)
-      setAuth(data.user as any, data.accessToken)
+      setAuth(data.user as any, data.accessToken, data.refreshToken)
       navigate('/')
     } catch (err: any) {
       setError(err.message ?? 'Error al iniciar sesión')
@@ -101,6 +101,11 @@ export function LoginPage() {
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
+
+          <p style={{ fontSize: 12, color: 'var(--ink3)', textAlign: 'center', marginTop: 8 }}>
+            ¿No tienes cuenta?{' '}
+            <Link to="/register" style={{ color: 'var(--blue)', textDecoration: 'none', fontWeight: 500 }}>Crear cuenta</Link>
+          </p>
         </form>
       </div>
     </div>
