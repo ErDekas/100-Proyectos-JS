@@ -1,12 +1,14 @@
 import 'dotenv/config'
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
+import rateLimit from '@fastify/rate-limit'
 import swagger from '@fastify/swagger'
 import swaggerUi from '@fastify/swagger-ui'
 import { initSentry } from './lib/sentry'
 import { dashboardRoutes } from './routes/dashboard'
 import { authRoutes } from './routes/auth'
 import { usersRoutes } from './routes/users'
+import { coingeckoRoutes } from './routes/coingecko'
 import { registerEtlJobs } from './jobs/etl'
 
 // ── Sentry (must init before anything else) ───────────────────────────────────
@@ -30,6 +32,11 @@ await app.register(cors, {
   credentials: true,
 })
 
+await app.register(rateLimit, {
+  max: 100,
+  timeWindow: '1 minute',
+})
+
 await app.register(swagger, {
   openapi: {
     info: { title: 'Analytiq API', version: '2.0.0' },
@@ -51,6 +58,7 @@ await app.register(swaggerUi, {
 await app.register(authRoutes)
 await app.register(dashboardRoutes)
 await app.register(usersRoutes)
+await app.register(coingeckoRoutes)
 
 // Health check
 app.get('/health', async () => ({

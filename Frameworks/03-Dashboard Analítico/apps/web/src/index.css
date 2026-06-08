@@ -136,3 +136,8 @@
   .status-pending { background: var(--amber-l); color: var(--amber); }
   .status-paused  { background: var(--surf3);   color: var(--ink3); }
 }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

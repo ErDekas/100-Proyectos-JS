@@ -1,7 +1,7 @@
 // CoinGecko API — free, no auth required
 // Docs: https://www.coingecko.com/en/api/documentation
 
-const BASE = 'https://api.coingecko.com/api/v3'
+const BASE = import.meta.env.VITE_API_URL ?? ''
 
 export interface CoinPrice {
   id: string
@@ -23,27 +23,23 @@ export interface MarketChart {
 
 // Top coins for dashboard
 export async function fetchTopCoins(days = 30): Promise<CoinPrice[]> {
-  const res = await fetch(
-    `${BASE}/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=7d`,
-    { headers: { 'Accept': 'application/json' } }
-  )
+  const qs = `vs_currency=eur&order=market_cap_desc&per_page=10&page=1&sparkline=true&price_change_percentage=7d`
+  const res = await fetch(`${BASE}/api/coingecko/markets?${qs}`)
   if (!res.ok) throw new Error('CoinGecko API error')
   return res.json()
 }
 
 // Historical data for trend chart
 export async function fetchMarketChart(coinId: string, days: number): Promise<MarketChart> {
-  const res = await fetch(
-    `${BASE}/coins/${coinId}/market_chart?vs_currency=eur&days=${days}&interval=${days <= 7 ? 'hourly' : 'daily'}`,
-    { headers: { 'Accept': 'application/json' } }
-  )
+  const interval = days <= 7 ? 'hourly' : 'daily'
+  const res = await fetch(`${BASE}/api/coingecko/chart/${coinId}?vs_currency=eur&days=${days}&interval=${interval}`)
   if (!res.ok) throw new Error('CoinGecko API error')
   return res.json()
 }
 
 // Global market stats
 export async function fetchGlobalStats() {
-  const res = await fetch(`${BASE}/global`, { headers: { 'Accept': 'application/json' } })
+  const res = await fetch(`${BASE}/api/coingecko/global`)
   if (!res.ok) throw new Error('CoinGecko API error')
   const data = await res.json()
   return data.data
@@ -66,6 +62,7 @@ export function mapToKpis(coins: CoinPrice[], global: any) {
       value: fmt(totalVol),
       rawValue: totalVol,
       delta: `${avgChange >= 0 ? '↑' : '↓'} ${Math.abs(avgChange).toFixed(1)}%`,
+      deltaValue: avgChange,
       positive: avgChange >= 0,
       accent: 'blue' as const,
     },
@@ -74,6 +71,7 @@ export function mapToKpis(coins: CoinPrice[], global: any) {
       value: fmt(totalMcap),
       rawValue: totalMcap,
       delta: `${avgChange >= 0 ? '↑' : '↓'} ${Math.abs(avgChange * 0.8).toFixed(1)}%`,
+      deltaValue: avgChange * 0.8,
       positive: avgChange >= 0,
       accent: 'green' as const,
     },
@@ -82,6 +80,7 @@ export function mapToKpis(coins: CoinPrice[], global: any) {
       value: `${avgChange >= 0 ? '+' : ''}${avgChange.toFixed(2)}%`,
       rawValue: avgChange,
       delta: avgChange >= 0 ? '↑ En positivo' : '↓ En negativo',
+      deltaValue: avgChange,
       positive: avgChange >= 0,
       accent: 'amber' as const,
     },
@@ -90,6 +89,7 @@ export function mapToKpis(coins: CoinPrice[], global: any) {
       value: activeCoins.toLocaleString('es'),
       rawValue: activeCoins,
       delta: '↑ En tiempo real',
+      deltaValue: 0,
       positive: true,
       accent: 'purple' as const,
     },

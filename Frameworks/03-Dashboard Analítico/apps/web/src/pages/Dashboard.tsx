@@ -1,6 +1,7 @@
 import { useDashboardStore }    from '../store/dashboard'
 import { useMarketData }        from '../hooks/useMarketData'
 import { useAuthStore }         from '../store/auth'
+import { useToastStore }        from '../store/toast'
 import { logout }               from '../lib/api'
 import { KpiGrid }              from '../components/KpiGrid'
 import { TrendChart }           from '../components/TrendChart'
@@ -14,6 +15,7 @@ import { ReportesPage }         from './ReportesPage'
 import { UsuariosPage }         from './UsuariosPage'
 import { useDashboardData }     from '../hooks/useDashboardData'
 import type { Period, DashboardPayload } from '@analytiq/shared'
+import { DashboardSkeleton }   from '../components/LoadingSkeleton'
 import { clsx }                 from 'clsx'
 
 const PERIODS: Period[] = ['7d', '30d', '90d', '1y']
@@ -32,8 +34,9 @@ export function Dashboard() {
   const user      = useAuthStore(s => s.user)
 
   const { data: dbData, isLoading: dbLoading, isFetching: dbFetching, error: dbError, refetch } = useDashboardData(period)
+  const addToast = useToastStore(s => s.addToast)
 
-  async function handleLogout() { await logout(); clearAuth() }
+  async function handleLogout() { addToast('info', 'Cerrando sesión...'); await logout(); clearAuth() }
 
   function renderContent() {
     switch (activeNav) {
@@ -78,8 +81,8 @@ export function Dashboard() {
 function OverviewContent({ dbData, dbLoading, dbFetching, dbError, period }: OverviewProps) {
   const { kpis: coinKpis, timeSeries: coinTimeSeries, isLoading: mktLoading } = useMarketData(period)
 
-  if (dbLoading && !dbData) return <LoadingSkeleton />
-  if (!dbLoading && !dbData) {
+  if (!dbData) {
+    if (dbLoading) return <DashboardSkeleton />
     return (
       <div style={{ padding: '40px 24px', textAlign: 'center', color: 'var(--ink3)' }}>
         <p>Error al cargar los datos del dashboard.</p>
@@ -96,7 +99,7 @@ function OverviewContent({ dbData, dbLoading, dbFetching, dbError, period }: Ove
     <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 18, ...fadeTop }}>
       <KpiGrid kpis={kpis} />
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 12 }}>
-        <TrendChart labels={timeSeries.map((d: any) => d.date)} sessions={timeSeries.map((d: any) => d.sessions)} revenue={timeSeries.map((d: any) => d.revenue)} />
+        <TrendChart labels={timeSeries.map(d => d.date)} sessions={timeSeries.map(d => d.sessions)} revenue={timeSeries.map(d => d.revenue)} />
         <ChannelChart channels={dbData.channels} />
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
@@ -113,13 +116,3 @@ function OverviewContent({ dbData, dbLoading, dbFetching, dbError, period }: Ove
   )
 }
 
-function LoadingSkeleton() {
-  return (
-    <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 18 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
-        {[...Array(4)].map((_, i) => <div key={i} style={{ height: 100, background: 'var(--surf)', borderRadius: 10, border: '0.5px solid var(--border2)', opacity: 0.6 }} />)}
-      </div>
-      <div style={{ height: 280, background: 'var(--surf)', borderRadius: 10, border: '0.5px solid var(--border2)', opacity: 0.6 }} />
-    </div>
-  )
-}

@@ -1,6 +1,9 @@
-import type { FastifyInstance } from 'fastify'
+import type { FastifyInstance, FastifyRequest } from 'fastify'
+import type { Period } from '@analytiq/shared'
 import { authenticate } from '../middleware/auth'
 import { getDashboard, parsePeriod } from '../services/dashboard.service'
+
+interface DashboardQuery { period: Period }
 
 export async function dashboardRoutes(app: FastifyInstance) {
   app.get('/api/dashboard', {
@@ -13,8 +16,8 @@ export async function dashboardRoutes(app: FastifyInstance) {
         properties: { period: { type: 'string', enum: ['7d','30d','90d','1y'] } },
       },
     },
-  }, async (req, reply) => {
-    const period = parsePeriod((req.query as any).period)
+  }, async (req: FastifyRequest, reply) => {
+    const { period } = req.query as DashboardQuery
 
     try {
       const data = await getDashboard(period)

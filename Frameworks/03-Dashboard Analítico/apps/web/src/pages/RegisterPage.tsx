@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../lib/api'
 import { useAuthStore } from '../store/auth'
+import { useToastStore } from '../store/toast'
 
 export function RegisterPage() {
   const navigate  = useNavigate()
   const setAuth   = useAuthStore(s => s.setAuth)
+  const addToast  = useToastStore(s => s.addToast)
   const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
   const [error,   setError]   = useState('')
   const [loading, setLoading] = useState(false)
@@ -33,9 +35,11 @@ export function RegisterPage() {
 
       // Auto login after signup via centralized apiFetch
       const data = await login(form.email, form.password)
+      addToast('success', 'Cuenta creada correctamente')
       setAuth(data.user as any, data.accessToken, data.refreshToken)
       navigate('/')
     } catch (err: any) {
+      addToast('error', err.message)
       setError(err.message)
     } finally {
       setLoading(false)

@@ -15,7 +15,9 @@ const SignupSchema = LoginSchema.extend({
 export async function authRoutes(app: FastifyInstance) {
 
   // POST /api/auth/signup
-  app.post('/api/auth/signup', async (req, reply) => {
+  app.post('/api/auth/signup', {
+    config: { rateLimit: { max: 3, timeWindow: '1 minute' } },
+  }, async (req, reply) => {
     const body = SignupSchema.safeParse(req.body)
     if (!body.success) return reply.status(400).send({ error: 'ValidationError', message: body.error.message, statusCode: 400 })
 
@@ -31,7 +33,9 @@ export async function authRoutes(app: FastifyInstance) {
   })
 
   // POST /api/auth/login
-  app.post('/api/auth/login', async (req, reply) => {
+  app.post('/api/auth/login', {
+    config: { rateLimit: { max: 5, timeWindow: '1 minute' } },
+  }, async (req, reply) => {
     const body = LoginSchema.safeParse(req.body)
     if (!body.success) return reply.status(400).send({ error: 'ValidationError', message: body.error.message, statusCode: 400 })
 
@@ -65,8 +69,8 @@ export async function authRoutes(app: FastifyInstance) {
   })
 
   // POST /api/auth/refresh
-  app.post('/api/auth/refresh', async (req, reply) => {
-    const { refreshToken } = (req.body as any) ?? {}
+  app.post<{ Body: { refreshToken: string } }>('/api/auth/refresh', async (req, reply) => {
+    const { refreshToken } = req.body
     if (!refreshToken) return reply.status(400).send({ error: 'BadRequest', message: 'refreshToken required', statusCode: 400 })
 
     const { data, error } = await supabase.auth.refreshSession({ refresh_token: refreshToken })
@@ -81,7 +85,7 @@ export async function authRoutes(app: FastifyInstance) {
 
   // GET /api/auth/me
   app.get('/api/auth/me', { preHandler: authenticate }, async (req, reply) => {
-    reply.send((req as any).user)
+    reply.send(req.user)
   })
 
   // POST /api/auth/logout

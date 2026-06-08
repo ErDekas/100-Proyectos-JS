@@ -13,7 +13,7 @@ export function TrendChart({ labels, sessions, revenue }: Props) {
   const options: ChartOptions<'line'> = {
     responsive:true, maintainAspectRatio:false,
     plugins:{ legend:{display:false}, tooltip:{ mode:'index', intersect:false, backgroundColor:isDark?'#1e293b':'#fff', titleColor:textC, bodyColor:isDark?'#f1f5f9':'#0f172a', borderColor:isDark?'rgba(241,245,249,.13)':'rgba(15,23,42,.1)', borderWidth:1, padding:10,
-      callbacks:{ label:(ctx)=>ctx.datasetIndex===0?`  Sesiones: ${ctx.parsed.y.toLocaleString()}`:`  Ingresos: €${ctx.parsed.y.toLocaleString()}` }}},
+      callbacks:{ label:(ctx)=>{ const y = ctx.parsed.y ?? 0; return ctx.datasetIndex===0?`  Sesiones: ${y.toLocaleString()}`:`  Ingresos: €${y.toLocaleString()}`} }}},
     scales:{
       x:{ grid:{color:gridC}, ticks:{color:textC,font:{size:10},maxTicksLimit:8,maxRotation:0} },
       y:{ grid:{color:gridC}, ticks:{color:textC,font:{size:10},callback:(v)=>Number(v)>=1000?`${(Number(v)/1000).toFixed(0)}k`:v}, position:'left' },

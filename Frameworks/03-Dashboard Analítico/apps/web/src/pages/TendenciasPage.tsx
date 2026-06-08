@@ -115,10 +115,10 @@ export function TendenciasPage() {
       {coinData && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
           {[
-            { label: 'Precio actual', value: `€${coinData.current_price.toLocaleString('es')}` },
-            { label: 'Market Cap', value: `€${(coinData.market_cap / 1e9).toFixed(2)}B` },
-            { label: 'Volumen 24h', value: `€${(coinData.total_volume / 1e9).toFixed(2)}B` },
-            { label: 'Cambio 24h', value: `${coinData.price_change_percentage_24h >= 0 ? '+' : ''}${coinData.price_change_percentage_24h.toFixed(2)}%`, positive: coinData.price_change_percentage_24h >= 0 },
+            { label: 'Precio actual', value: `€${(coinData.current_price ?? 0).toLocaleString('es')}` },
+            { label: 'Market Cap', value: `€${((coinData.market_cap ?? 0) / 1e9).toFixed(2)}B` },
+            { label: 'Volumen 24h', value: `€${((coinData.total_volume ?? 0) / 1e9).toFixed(2)}B` },
+            { label: 'Cambio 24h', value: `${(coinData.price_change_percentage_24h ?? 0) >= 0 ? '+' : ''}${(coinData.price_change_percentage_24h ?? 0).toFixed(2)}%`, positive: (coinData.price_change_percentage_24h ?? 0) >= 0 },
           ].map(s => (
             <div key={s.label} className="card">
               <div style={{ fontSize: 11, fontWeight: 500, color: 'var(--ink3)', textTransform: 'uppercase', letterSpacing: '.5px', fontFamily: 'DM Mono, monospace', marginBottom: 8 }}>{s.label}</div>
@@ -177,12 +177,12 @@ export function TendenciasPage() {
                 <tr key={c.id} style={{ borderBottom: i < coins.length - 1 ? '0.5px solid var(--border)' : 'none', cursor: 'pointer' }} onClick={() => setCoinId(c.id)}>
                   <td style={{ padding: '10px 12px', color: 'var(--ink3)', fontFamily: 'DM Mono, monospace' }}>{i + 1}</td>
                   <td style={{ padding: '10px 12px', color: 'var(--ink)', fontWeight: 500 }}>{c.name} <span style={{ color: 'var(--ink3)', fontFamily: 'DM Mono, monospace', fontSize: 11 }}>{c.symbol.toUpperCase()}</span></td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', color: 'var(--ink)' }}>€{c.current_price.toLocaleString('es')}</td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', fontWeight: 500, color: c.price_change_percentage_24h >= 0 ? 'var(--green)' : 'var(--red)' }}>
-                    {c.price_change_percentage_24h >= 0 ? '+' : ''}{c.price_change_percentage_24h.toFixed(2)}%
+                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', color: 'var(--ink)' }}>€{(c.current_price ?? 0).toLocaleString('es')}</td>
+                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', fontWeight: 500, color: (c.price_change_percentage_24h ?? 0) >= 0 ? 'var(--green)' : 'var(--red)' }}>
+                    {(c.price_change_percentage_24h ?? 0) >= 0 ? '+' : ''}{(c.price_change_percentage_24h ?? 0).toFixed(2)}%
                   </td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{(c.market_cap / 1e9).toFixed(2)}B</td>
-                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{(c.total_volume / 1e9).toFixed(2)}B</td>
+                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{((c.market_cap ?? 0) / 1e9).toFixed(2)}B</td>
+                  <td style={{ padding: '10px 12px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{((c.total_volume ?? 0) / 1e9).toFixed(2)}B</td>
                 </tr>
               ))}
             </tbody>

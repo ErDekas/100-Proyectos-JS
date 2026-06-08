@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useAuthStore } from '../store/auth'
+import { useToastStore } from '../store/toast'
 
 interface UserRecord {
   id: string
@@ -43,11 +44,12 @@ export function UsuariosPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '', role: 'viewer' as 'admin' | 'viewer' })
   const [saving, setSaving] = useState(false)
   const [msg,    setMsg]    = useState('')
+  const addToast = useToastStore(s => s.addToast)
 
   function resetForm() { setForm({ name: '', email: '', password: '', role: 'viewer' }) }
 
   async function createUser() {
-    setSaving(true); setMsg('')
+    setSaving(true)
     try {
       const res = await fetch(`${API}/api/users`, {
         method: 'POST',
@@ -56,14 +58,14 @@ export function UsuariosPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.message)
-      setMsg('Usuario creado correctamente'); setShowCreate(false); resetForm(); reload()
-    } catch (e: any) { setMsg(e.message) }
+      addToast('success', 'Usuario creado correctamente'); setShowCreate(false); resetForm(); reload()
+    } catch (e: any) { addToast('error', e.message) }
     finally { setSaving(false) }
   }
 
   async function updateUser() {
     if (!editUser) return
-    setSaving(true); setMsg('')
+    setSaving(true)
     try {
       const body: any = { name: form.name, role: form.role }
       if (form.password) body.password = form.password
@@ -74,8 +76,8 @@ export function UsuariosPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.message)
-      setMsg('Usuario actualizado'); setEditUser(null); resetForm(); reload()
-    } catch (e: any) { setMsg(e.message) }
+      addToast('success', 'Usuario actualizado'); setEditUser(null); resetForm(); reload()
+    } catch (e: any) { addToast('error', e.message) }
     finally { setSaving(false) }
   }
 

@@ -22,8 +22,7 @@ export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
 
   const user = await res.json() as any
 
-  // Attach user to request
-  ;(req as any).user = {
+  req.user = {
     id:    user.id,
     email: user.email,
     role:  user.user_metadata?.role ?? 'viewer',
@@ -33,7 +32,7 @@ export async function authenticate(req: FastifyRequest, reply: FastifyReply) {
 
 export async function requireAdmin(req: FastifyRequest, reply: FastifyReply) {
   await authenticate(req, reply)
-  if ((req as any).user?.role !== 'admin') {
+  if (req.user?.role !== 'admin') {
     return reply.status(403).send({ error: 'Forbidden', message: 'Admin access required', statusCode: 403 })
   }
 }

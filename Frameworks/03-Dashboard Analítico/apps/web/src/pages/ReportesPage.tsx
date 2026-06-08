@@ -18,8 +18,8 @@ export function ReportesPage() {
       .filter(c => !minPrice || c.current_price >= Number(minPrice))
       .filter(c => !maxPrice || c.current_price <= Number(maxPrice))
       .sort((a, b) => {
-        const av = a[sortKey] as number
-        const bv = b[sortKey] as number
+        const av = (a[sortKey] ?? 0) as number
+        const bv = (b[sortKey] ?? 0) as number
         return sortDir === 'asc' ? av - bv : bv - av
       })
   }, [coins, search, sortKey, sortDir, minPrice, maxPrice])
@@ -33,8 +33,8 @@ export function ReportesPage() {
     const headers = ['Nombre', 'Símbolo', 'Precio (€)', 'Cambio 24h (%)', 'Market Cap (€)', 'Volumen 24h (€)']
     const rows = filtered.map(c => [
       c.name, c.symbol.toUpperCase(),
-      c.current_price, c.price_change_percentage_24h.toFixed(2),
-      c.market_cap, c.total_volume,
+      c.current_price ?? 0, (c.price_change_percentage_24h ?? 0).toFixed(2),
+      c.market_cap ?? 0, c.total_volume ?? 0,
     ])
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n')
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
@@ -67,10 +67,10 @@ export function ReportesPage() {
             <tr>
               <td class="mono">${i + 1}</td>
               <td><strong>${c.name}</strong> <span style="color:#94a3b8">${c.symbol.toUpperCase()}</span></td>
-              <td class="mono">€${c.current_price.toLocaleString('es')}</td>
-              <td class="mono ${c.price_change_percentage_24h >= 0 ? 'up' : 'dn'}">${c.price_change_percentage_24h >= 0 ? '+' : ''}${c.price_change_percentage_24h.toFixed(2)}%</td>
-              <td class="mono">€${(c.market_cap / 1e9).toFixed(2)}B</td>
-              <td class="mono">€${(c.total_volume / 1e9).toFixed(2)}B</td>
+              <td class="mono">€${(c.current_price ?? 0).toLocaleString('es')}</td>
+              <td class="mono ${(c.price_change_percentage_24h ?? 0) >= 0 ? 'up' : 'dn'}">${(c.price_change_percentage_24h ?? 0) >= 0 ? '+' : ''}${(c.price_change_percentage_24h ?? 0).toFixed(2)}%</td>
+              <td class="mono">€${((c.market_cap ?? 0) / 1e9).toFixed(2)}B</td>
+              <td class="mono">€${((c.total_volume ?? 0) / 1e9).toFixed(2)}B</td>
             </tr>
           `).join('')}
         </tbody>
@@ -158,12 +158,12 @@ export function ReportesPage() {
                     <div style={{ fontWeight: 500, color: 'var(--ink)' }}>{c.name}</div>
                     <div style={{ fontSize: 10, color: 'var(--ink3)', fontFamily: 'DM Mono, monospace' }}>{c.symbol.toUpperCase()}</div>
                   </td>
-                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', color: 'var(--ink)', fontWeight: 500 }}>€{c.current_price.toLocaleString('es')}</td>
-                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', fontWeight: 500, color: c.price_change_percentage_24h >= 0 ? 'var(--green)' : 'var(--red)' }}>
-                    {c.price_change_percentage_24h >= 0 ? '+' : ''}{c.price_change_percentage_24h.toFixed(2)}%
+                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', color: 'var(--ink)', fontWeight: 500 }}>€{(c.current_price ?? 0).toLocaleString('es')}</td>
+                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', fontWeight: 500, color: (c.price_change_percentage_24h ?? 0) >= 0 ? 'var(--green)' : 'var(--red)' }}>
+                    {(c.price_change_percentage_24h ?? 0) >= 0 ? '+' : ''}{(c.price_change_percentage_24h ?? 0).toFixed(2)}%
                   </td>
-                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{(c.market_cap / 1e9).toFixed(2)}B</td>
-                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{(c.total_volume / 1e9).toFixed(2)}B</td>
+                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{((c.market_cap ?? 0) / 1e9).toFixed(2)}B</td>
+                  <td style={{ padding: '12px 16px', fontFamily: 'DM Mono, monospace', color: 'var(--ink2)' }}>€{((c.total_volume ?? 0) / 1e9).toFixed(2)}B</td>
                 </tr>
               ))}
             </tbody>
