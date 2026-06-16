@@ -1,15 +1,20 @@
 import 'dotenv/config'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import Fastify from 'fastify'
 import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
 import swagger from '@fastify/swagger'
 import swaggerUi from '@fastify/swagger-ui'
+import fastifyStatic from '@fastify/static'
 import { initSentry } from './lib/sentry'
 import { dashboardRoutes } from './routes/dashboard'
 import { authRoutes } from './routes/auth'
 import { usersRoutes } from './routes/users'
 import { coingeckoRoutes } from './routes/coingecko'
 import { registerEtlJobs } from './jobs/etl'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // ── Sentry (must init before anything else) ───────────────────────────────────
 initSentry()
@@ -27,7 +32,7 @@ const app = Fastify({
 // ── Plugins ───────────────────────────────────────────────────────────────────
 await app.register(cors, {
   origin: process.env.NODE_ENV === 'production'
-    ? ['https://your-dashboard.vercel.app']   // ← update with your domain
+    ? [process.env.CORS_ORIGIN ?? true]
     : true,
   credentials: true,
 })
@@ -59,6 +64,24 @@ await app.register(authRoutes)
 await app.register(dashboardRoutes)
 await app.register(usersRoutes)
 await app.register(coingeckoRoutes)
+
+// ── Production: serve frontend static files ───────────────────────────────────
+if (process.env.NODE_ENV === 'production') {
+  const webDist = path.resolve(__dirname, '../../web/dist')
+  await app.register(fastifyStatic, {
+    root: webDist,
+    prefix: '/',
+    wildcard: false,
+    decorateReply: false,
+  })
+
+  app.setNotFoundHandler(async (req, reply) => {
+    if (req.url.startsWith('/api/') || req.url.startsWith('/health')) {
+      return reply.status(404).send({ error: 'NotFound', message: 'Route not found', statusCode: 404 })
+    }
+    return reply.sendFile('index.html')
+  })
+}
 
 // Health check
 app.get('/health', async () => ({

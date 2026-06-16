@@ -9,7 +9,8 @@
     "dev": "concurrently \"npm run dev -w apps/api\" \"npm run dev -w apps/web\"",
     "dev:api": "npm run dev -w apps/api",
     "dev:web": "npm run dev -w apps/web",
-    "build": "npm run build -w packages/shared && npm run build -w apps/api && npm run build -w apps/web",
+    "build": "npm run build -w packages/shared && npm run build -w apps/web",
+    "start": "npx tsx apps/api/src/server.ts",
     "db:migrate": "npm run migrate -w apps/api",
     "db:seed": "npm run seed -w apps/api"
   },
